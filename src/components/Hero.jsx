@@ -8,7 +8,7 @@ export default function Hero({ onOpenModal }) {
   const videoRef = useRef(null);
 
   // Estados para o efeito de digitação (Typewriter)
-  const words = ["leads.", "vendas.", "faturamento."];
+  const words = ["leads", "vendas", "faturamento"];
   const [wordIndex, setWordIndex] = useState(0);
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -122,10 +122,15 @@ export default function Hero({ onOpenModal }) {
           </span>
           
           {/* Digitação interativa (Typewriter) */}
-          <span className="font-extrabold block mt-2 sm:mt-4 text-brand-black min-h-[1.25em] text-center">
-            mais{' '}
-            <span className="inline-block text-brand-black border-r-3 border-brand-black pr-1.5 animate-[blink_0.75s_step-end_infinite] min-w-[1px]">
-              {currentText || "\u00A0"}
+          <span className="font-extrabold block mt-2 sm:mt-4 text-brand-black text-center">
+            <span className="block min-h-[1.15em]">
+              mais{' '}
+              <span className="inline-block text-brand-black border-r-3 border-brand-black pr-1.5 animate-[blink_0.75s_step-end_infinite] min-w-[1px]">
+                {currentText || "\u00A0"}
+              </span>
+            </span>
+            <span className="block mt-1 sm:mt-1.5 text-brand-black">
+              todos os meses.
             </span>
           </span>
         </motion.h1>

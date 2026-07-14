@@ -8,36 +8,36 @@ const cards = [
     id: 1,
     icon: Eye,
     title: "Clareza total sobre onde seu dinheiro está indo",
-    text: "Chega de relatórios com termos técnicos confusos que ninguém lê. Você saberá exatamente quantos leads foram gerados, quantas vendas ocorreram e qual o custo por aquisição (CPA) — mês a mês.",
+    text: "Chega de relatório que ninguém entende. Você sabe exatamente quantos leads, quantas vendas e qual custo — mês a mês.",
     colSpan: "md:col-span-2"
   },
   {
     id: 2,
     icon: Users,
-    title: "Estrutura completa de marketing",
-    text: "Tenha estratégia, tráfego pago, redação de criativos e análise de dados trabalhando integrados — por uma pequena fração do custo de manter uma equipe CLT própria.",
+    title: "Estrutura de marketing sem o custo de contratar um time interno",
+    text: "Estratégia, tráfego, criativo e análise de dados trabalhando juntos — pelo custo de uma fração de uma equipe própria.",
     colSpan: "md:col-span-1"
   },
   {
     id: 3,
     icon: Clock,
-    title: "Recupere seu tempo",
-    text: "Enquanto nosso time cuida do algoritmo, das contas de anúncios e da leitura analítica diária, você foca na operação, em fechar novos negócios e atender bem.",
+    title: "Você recupera o tempo que gastaria tentando entender algoritmo",
+    text: "Enquanto cuidamos da execução, você foca em vender e atender — que é o que só você sabe fazer.",
     colSpan: "md:col-span-1"
   },
   {
     id: 4,
     icon: LineChart,
-    title: "Crescimento sustentável e incremental",
-    text: "Nosso motor comercial não depende de golpes de sorte ou criativos milagrosos passageiros. O loop constante garante que cada ciclo de testes aprende com o anterior, blindando seus resultados a longo prazo.",
+    title: "Crescimento que se sustenta, não que depende de um golpe de sorte",
+    text: "O Loop garante que cada ciclo aprende com o anterior. O resultado de hoje melhora o resultado de amanhã.",
     colSpan: "md:col-span-2",
     hasTrend: true
   },
   {
     id: 5,
     icon: MessageSquare,
-    title: "Um parceiro próximo",
-    text: "Sem central de atendimento fria ou e-mails formais com 48h de espera. Você tem contato direto no WhatsApp com quem realmente executa e decide a estratégia da sua conta.",
+    title: "Um parceiro que você consegue realmente falar",
+    text: "Sem central de atendimento genérica. Você tem contato direto com quem está tocando sua conta.",
     colSpan: "md:col-span-1"
   },
   {

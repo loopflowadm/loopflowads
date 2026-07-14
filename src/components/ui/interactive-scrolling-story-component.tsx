@@ -147,67 +147,93 @@ export function ScrollingFeatureShowcase({ onOpenModal }: ShowcaseProps) {
           <div className="relative flex flex-col justify-center p-8 md:p-16 py-20 z-20">
             
             {/* Bloco Unificado de Conteúdo + CTA (Paginação integrada no topo do próprio bloco de conteúdo) */}
-            <div className="flex flex-col gap-10 text-left">
+            <div className="flex flex-col gap-5 md:gap-6 text-left">
               
-              {/* Paginação de Barras no Estilo Editorial (Integrado no fluxo, descendo junto com o texto) */}
-              <div className="flex space-x-2.5">
-                {slidesData.map((slide, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handlePaginationClick(index)}
-                    className="h-1.5 rounded-full transition-all duration-500 ease-in-out cursor-pointer"
-                    style={{
-                      width: index === activeIndex ? '3.5rem' : '1.5rem',
-                      backgroundColor: index === activeIndex ? slidesData[activeIndex].accentColor : 'rgba(255, 255, 255, 0.12)'
-                    }}
-                    aria-label={`Ir para ${slide.phase}`}
-                  />
-                ))}
+              {/* Texto Fixo Superior (Intro do Loop) */}
+              <div className="space-y-2 max-w-xl">
+                <h3 className="text-lg sm:text-xl font-extrabold text-white tracking-tight leading-snug">
+                  Marketing que funciona não é uma campanha. <span className="text-brand-yellow">Marketing é um ciclo comercial.</span>
+                </h3>
+                <p className="text-xs sm:text-sm text-neutral-400 font-medium leading-relaxed">
+                  Por isso a Loop Flow não entrega &ldquo;uma ação de marketing&rdquo;. Nós implementamos um motor de resultados previsível no seu negócio, rodando em loop:
+                </p>
               </div>
 
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeIndex}
-                  initial={{ opacity: 0, y: 15, filter: "blur(5px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: -15, filter: "blur(5px)" }}
-                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex flex-col"
-                >
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="font-mono text-sm font-black uppercase tracking-widest" style={{ color: slidesData[activeIndex].accentColor }}>
-                      {slidesData[activeIndex].phase}
-                    </span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
-                    <span className="text-xs text-neutral-400 font-bold uppercase tracking-wider">
-                      {slidesData[activeIndex].subtitle}
-                    </span>
-                  </div>
+              {/* CARD DE CONTEÚDO DINÂMICO (Agrupa a fase atual e seus detalhes para diminuir carga cognitiva) */}
+              <div className="bg-white/[0.02] border border-white/10 rounded-3xl p-6 md:p-8 shadow-[0_12px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.05)] relative overflow-hidden space-y-6">
+                
+                {/* Efeito de backlight interno sutil com a cor da fase */}
+                <div 
+                  className="absolute -top-12 -right-12 w-32 h-32 rounded-full blur-2xl pointer-events-none transition-all duration-1000 opacity-10"
+                  style={{ backgroundColor: slidesData[activeIndex].accentColor }}
+                />
 
-                  {/* Título Aumentado */}
-                  <h2 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-white mb-6 leading-[1.1]">
-                    {slidesData[activeIndex].title}
-                  </h2>
-                  
-                  {/* Descrição Aumentada */}
-                  <p className="text-lg md:text-xl text-neutral-200/90 leading-relaxed font-semibold max-w-xl">
-                    {slidesData[activeIndex].description}
-                  </p>
-                </motion.div>
-              </AnimatePresence>
+                {/* Paginação de Barras no Estilo Editorial */}
+                <div className="flex space-x-2">
+                  {slidesData.map((slide, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handlePaginationClick(index)}
+                      className="h-1 rounded-full transition-all duration-500 ease-in-out cursor-pointer"
+                      style={{
+                        width: index === activeIndex ? '3rem' : '1.25rem',
+                        backgroundColor: index === activeIndex ? slidesData[activeIndex].accentColor : 'rgba(255, 255, 255, 0.12)'
+                      }}
+                      aria-label={`Ir para ${slide.phase}`}
+                    />
+                  ))}
+                </div>
 
-              {/* Bloco de Ação (CTA) Posicionado Logo Abaixo do Texto */}
-              <div className="flex flex-col gap-2.5">
-                <button
-                  onClick={onOpenModal}
-                  className="group relative overflow-hidden bg-brand-yellow text-brand-black font-extrabold py-4 px-8 rounded-2xl transition-all shadow-2xl hover:bg-brand-yellow/95 hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer flex items-center gap-2 text-xs uppercase tracking-wider w-full sm:w-auto justify-center"
-                >
-                  <span>Quero meu diagnóstico gratuito</span>
-                  <Calendar className="w-4 h-4 text-brand-black" />
-                </button>
-                <span className="text-[10px] text-neutral-500 uppercase tracking-widest font-bold pl-1 text-left">
-                  Fale com nossos especialistas
-                </span>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeIndex}
+                    initial={{ opacity: 0, y: 15, filter: "blur(5px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, y: -15, filter: "blur(5px)" }}
+                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                    className="flex flex-col relative z-10"
+                  >
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="font-mono text-xs font-black uppercase tracking-widest" style={{ color: slidesData[activeIndex].accentColor }}>
+                        {slidesData[activeIndex].phase}
+                      </span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                      <span className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider">
+                        {slidesData[activeIndex].subtitle}
+                      </span>
+                    </div>
+
+                    {/* Título da Fase */}
+                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-white mb-4 leading-tight">
+                      {slidesData[activeIndex].title}
+                    </h2>
+                    
+                    {/* Descrição da Fase */}
+                    <p className="text-sm md:text-base text-neutral-300 leading-relaxed font-semibold max-w-xl">
+                      {slidesData[activeIndex].description}
+                    </p>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Bloco de Ação (CTA) e Parágrafo sobre departamento terceirizado */}
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2.5">
+                  <button
+                    onClick={onOpenModal}
+                    className="group relative overflow-hidden bg-brand-yellow text-brand-black font-extrabold py-4 px-8 rounded-2xl transition-all shadow-2xl hover:bg-brand-yellow/95 hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer flex items-center gap-2 text-xs uppercase tracking-wider w-full sm:w-auto justify-center"
+                  >
+                    <span>Quero meu diagnóstico gratuito</span>
+                    <Calendar className="w-4 h-4 text-brand-black" />
+                  </button>
+                  <span className="text-[10px] text-neutral-500 uppercase tracking-widest font-bold pl-1 text-left">
+                    Fale com nossos especialistas
+                  </span>
+                </div>
+                
+                <p className="text-xs sm:text-sm text-neutral-400 font-medium leading-relaxed max-w-xl text-left border-l-2 border-brand-yellow/50 pl-3.5 py-0.5">
+                  Nós funcionamos como o seu <strong className="text-white italic">departamento de marketing terceirizado</strong>. Fazemos o diagnóstico, desenhamos a estratégia, executamos o tráfego pago (Ads) e acompanhamos cada indicador. Você foca naquilo que faz de melhor: fechar negócios e atender bem seus clientes.
+                </p>
               </div>
             </div>
           </div>

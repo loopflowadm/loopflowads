@@ -77,7 +77,12 @@ export default function Hero({ onOpenModal }) {
         poster={heroPoster}
         className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0 opacity-45 contrast-[1.12] brightness-[1.05]"
       >
-        {videoSrc && <source src={videoSrc} type="video/mp4" />}
+        {videoSrc && (
+          <>
+            <source src={videoSrc.replace('.mp4', '.webm')} type="video/webm" />
+            <source src={videoSrc} type="video/mp4" />
+          </>
+        )}
         Seu navegador não suporta a tag de vídeo.
       </video>
 

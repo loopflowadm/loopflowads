@@ -228,13 +228,15 @@ export function ScrollingFeatureShowcase({ onOpenModal }: ShowcaseProps) {
                   >
                     <video
                       ref={(el) => { videoRefs.current[index] = el; }}
-                      src={slide.videoUrl}
                       className="w-full h-full object-contain"
                       muted
                       playsInline
                       loop
                       preload={index === activeIndex ? "auto" : "none"}
-                    />
+                    >
+                      <source src={slide.videoUrl.replace('.mp4', '.webm')} type="video/webm" />
+                      <source src={slide.videoUrl} type="video/mp4" />
+                    </video>
                   </div>
                 ))}
               </div>

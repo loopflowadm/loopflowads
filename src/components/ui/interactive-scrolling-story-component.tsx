@@ -9,7 +9,7 @@ const slidesData = [
     subtitle: "Identificação de Gargalos",
     title: "Diagnóstico",
     description: "Entendemos seu negócio, seu momento e onde está o gargalo real (nem sempre é o que parece).",
-    videoUrl: "/videos/Lupa.mp4",
+    videoUrl: "/videos/Lupa.webm",
     bgColor: "#0A0A0A", // Preto oficial da agência
     accentColor: "#FFF5C2",
     textColor: "#ffffff",
@@ -19,7 +19,7 @@ const slidesData = [
     subtitle: "Planejamento Focado em ROI",
     title: "Estratégia",
     description: "Montamos um plano com prioridade clara: o que fazer primeiro, com qual verba, e qual resultado esperar.",
-    videoUrl: "/videos/Clipboard.mp4",
+    videoUrl: "/videos/Clipboard.webm",
     bgColor: "#0A0A0A", // Preto oficial da agência
     accentColor: "#FFE066",
     textColor: "#ffffff",
@@ -29,7 +29,7 @@ const slidesData = [
     subtitle: "Mão na Massa e Testes",
     title: "Execução e Otimização",
     description: "Colocamos a mão na massa: tráfego pago, direcionamento de copy e criativos, testamos, medimos e ajustamos. Sem terceirizar para quem você nunca vai falar.",
-    videoUrl: "/videos/Foguete.mp4",
+    videoUrl: "/videos/Foguete.webm",
     bgColor: "#0A0A0A", // Preto oficial da agência
     accentColor: "#FFCC00",
     textColor: "#ffffff",
@@ -39,7 +39,7 @@ const slidesData = [
     subtitle: "Crescimento sem Sorte",
     title: "Escala e expansão",
     description: "Validado o que funciona, aumentamos o investimento e expandimos para novos canais e públicos — sempre com o mesmo rigor de acompanhamento. Crescer não é sorte, é repetir o que já provou resultado.",
-    videoUrl: "/videos/Símbolo_circular.mp4",
+    videoUrl: "/videos/Símbolo_circular.webm",
     bgColor: "#0A0A0A", // Preto oficial da agência
     accentColor: "#E6B800",
     textColor: "#ffffff",
@@ -234,8 +234,8 @@ export function ScrollingFeatureShowcase({ onOpenModal }: ShowcaseProps) {
                       loop
                       preload={index === activeIndex ? "auto" : "none"}
                     >
-                      <source src={slide.videoUrl.replace('.mp4', '.webm')} type="video/webm" />
-                      <source src={slide.videoUrl} type="video/mp4" />
+                      <source src={slide.videoUrl} type="video/webm" />
+                      <source src={slide.videoUrl.replace('.webm', '.mp4')} type="video/mp4" />
                     </video>
                   </div>
                 ))}

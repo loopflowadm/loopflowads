@@ -19,7 +19,7 @@ export default function Hero({ onOpenModal }) {
   // Atrasar o carregamento do vídeo de fundo de 11MB para otimizar performance (Speed Index/LCP)
   useEffect(() => {
     const loadTimer = setTimeout(() => {
-      setVideoSrc("/videos/hero.mp4");
+      setVideoSrc("/videos/hero.webm");
     }, 400);
     return () => clearTimeout(loadTimer);
   }, []);

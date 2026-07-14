@@ -233,7 +233,7 @@ export function ScrollingFeatureShowcase({ onOpenModal }: ShowcaseProps) {
                       muted
                       playsInline
                       loop
-                      preload="auto"
+                      preload={index === activeIndex ? "auto" : "none"}
                     />
                   </div>
                 ))}

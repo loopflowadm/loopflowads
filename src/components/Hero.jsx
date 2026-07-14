@@ -13,12 +13,22 @@ export default function Hero({ onOpenModal }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(120);
 
+  const [videoSrc, setVideoSrc] = useState("");
+
+  // Atrasar o carregamento do vídeo de fundo de 11MB para otimizar performance (Speed Index/LCP)
+  useEffect(() => {
+    const loadTimer = setTimeout(() => {
+      setVideoSrc("/videos/hero.mp4");
+    }, 1200);
+    return () => clearTimeout(loadTimer);
+  }, []);
+
   // Configurar a velocidade do vídeo de fundo
   useEffect(() => {
-    if (videoRef.current) {
+    if (videoRef.current && videoSrc) {
       videoRef.current.playbackRate = 0.55;
     }
-  }, []);
+  }, [videoSrc]);
 
   // Lógica do Typewriter
   useEffect(() => {
@@ -65,7 +75,7 @@ export default function Hero({ onOpenModal }) {
         playsInline
         className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0 opacity-45 contrast-[1.12] brightness-[1.05]"
       >
-        <source src="/videos/hero.mp4" type="video/mp4" />
+        {videoSrc && <source src={videoSrc} type="video/mp4" />}
         Seu navegador não suporta a tag de vídeo.
       </video>
 

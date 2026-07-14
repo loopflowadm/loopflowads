@@ -39,7 +39,7 @@ export default function BenefitsSection() {
   };
 
   return (
-    <section id="beneficios" className="py-24 relative overflow-hidden bg-brand-yellow select-none border-b border-black/5">
+    <section id="beneficios" className="py-16 sm:py-24 relative overflow-hidden bg-brand-yellow select-none border-b border-black/5">
       
       {/* Grid de fundo sutil em preto sobre amarelo */}
       <div 
@@ -66,7 +66,7 @@ export default function BenefitsSection() {
             Você sabe exatamente quantos leads, quantas vendas e qual custo — mês a mês.
           </p>
         </div>
-
+ 
         {/* Grid de 4 Cards em 2x2 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
           {benefitCards.map((card, index) => (
@@ -77,7 +77,7 @@ export default function BenefitsSection() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.15 }}
               variants={cardVariants}
-              className="bg-white border border-black/5 rounded-[32px] p-8 text-left transition-all duration-300 shadow-[0_8px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.06)] hover:-translate-y-1 relative z-10 flex flex-col justify-start h-full"
+              className="bg-white border border-black/5 rounded-[32px] p-6 sm:p-8 text-left transition-all duration-300 shadow-[0_8px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.06)] hover:-translate-y-1 relative z-10 flex flex-col justify-start h-full"
             >
               <h3 className="text-lg sm:text-xl font-extrabold text-brand-black tracking-tight leading-snug mb-3 md:min-h-[56px]">
                 {card.title}

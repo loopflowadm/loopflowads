@@ -3,7 +3,7 @@ import { Award, ShieldCheck, Users } from 'lucide-react';
 
 export default function CredibilitySection({ onOpenModal }) {
   return (
-    <section className="py-24 relative overflow-hidden bg-white border-t border-neutral-200/40 select-none">
+    <section className="py-16 sm:py-24 relative overflow-hidden bg-white border-t border-neutral-200/40 select-none">
       
       <div className="max-w-6xl mx-auto px-6">
         
@@ -26,7 +26,7 @@ export default function CredibilitySection({ onOpenModal }) {
           <div className="lg:col-span-7 flex flex-col space-y-6">
             
             {/* Card Quem Toca */}
-            <div className="p-8 text-left bg-white border border-neutral-200/70 rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.03)] flex flex-col justify-center">
+            <div className="p-6 sm:p-8 text-left bg-white border border-neutral-200/70 rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.03)] flex flex-col justify-center">
               <div className="flex items-center gap-3 mb-4">
                 <Users className="w-6 h-6 text-neutral-500 shrink-0" />
                 <h3 className="text-xl font-bold text-brand-black tracking-tight">
@@ -44,7 +44,7 @@ export default function CredibilitySection({ onOpenModal }) {
             </div>
 
             {/* Certificação Card com badges circulares */}
-            <div className="p-8 text-left bg-white border border-neutral-200/70 rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.03)] flex flex-col justify-center">
+            <div className="p-6 sm:p-8 text-left bg-white border border-neutral-200/70 rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.03)] flex flex-col justify-center">
               <div className="flex items-center gap-2.5 text-brand-black font-bold text-base tracking-tight mb-6">
                 <Award className="w-5 h-5 text-[#0064e0] shrink-0" />
                 <span>Certificado pelas próprias plataformas que operamos</span>
@@ -80,7 +80,7 @@ export default function CredibilitySection({ onOpenModal }) {
           <div className="lg:col-span-5 flex flex-col justify-between items-stretch">
             
             {/* Card Condição de Entrada */}
-            <div className="p-8 text-left space-y-6 bg-brand-black border border-white/10 rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex-1 flex flex-col justify-between relative overflow-hidden group">
+            <div className="p-6 sm:p-8 text-left space-y-6 bg-brand-black border border-white/10 rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex-1 flex flex-col justify-between relative overflow-hidden group">
               
               {/* Retroiluminação de fundo azul suave no topo direito do card */}
               <div className="absolute -top-12 -right-12 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />

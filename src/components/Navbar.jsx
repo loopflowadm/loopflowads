@@ -44,7 +44,8 @@ export default function Navbar({ onOpenModal }) {
               : "bg-brand-black text-brand-yellow hover:bg-neutral-900 shadow-[0_4px_12px_rgba(0,0,0,0.15)] hover:-translate-y-0.5 active:scale-[0.96]"
           }`}
         >
-          <span>Diagnóstico Gratuito</span>
+          <span className="hidden sm:inline">Diagnóstico Gratuito</span>
+          <span className="sm:hidden">Diagnóstico</span>
           <Sparkles className={`w-3.5 h-3.5 ${scrolled ? 'fill-brand-black text-brand-black' : 'fill-brand-yellow text-brand-yellow'}`} />
         </button>
       </div>

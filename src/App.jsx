@@ -65,7 +65,7 @@ export default function App() {
       <FaqSection />
 
       {/* SEÇÃO CTA FINAL (Fundo Amarelo, Container Central Preto) */}
-      <section className="py-24 relative overflow-hidden bg-brand-yellow select-none">
+      <section className="py-16 sm:py-24 relative overflow-hidden bg-brand-yellow select-none">
         
         {/* Grid de fundo sutil em preto sobre amarelo */}
         <div 

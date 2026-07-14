@@ -46,7 +46,7 @@ export default function FaqSection() {
   };
 
   return (
-    <section id="faq" className="py-24 relative overflow-hidden bg-brand-black border-t border-white/5">
+    <section id="faq" className="py-16 sm:py-24 relative overflow-hidden bg-brand-black border-t border-white/5">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}

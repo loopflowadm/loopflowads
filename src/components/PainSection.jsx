@@ -44,7 +44,7 @@ export default function PainSection() {
   };
 
   return (
-    <section id="dores" className="py-24 relative overflow-hidden bg-brand-black select-none border-b border-white/5">
+    <section id="dores" className="py-16 sm:py-24 relative overflow-hidden bg-brand-black select-none border-b border-white/5">
       
       {/* Grid de fundo sutil em branco sobre preto */}
       <div 
@@ -70,13 +70,13 @@ export default function PainSection() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.15 }}
             variants={cardVariants}
-            className="bg-transparent rounded-[32px] p-8 sm:p-10 flex flex-col justify-center min-h-[340px] sm:min-h-[360px] text-left"
+            className="bg-transparent rounded-[32px] p-6 md:p-10 flex flex-col justify-center min-h-0 md:min-h-[360px] text-left"
           >
             <h2 className="text-4xl sm:text-[2.8rem] lg:text-[3.2rem] font-black text-brand-yellow tracking-tight leading-[1.05]">
               Você reconhece algum desses sinais?
             </h2>
           </motion.div>
-
+          
           {/* Cards de Dores */}
           {pains.map((pain, index) => {
             return (
@@ -87,11 +87,11 @@ export default function PainSection() {
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.15 }}
                 variants={cardVariants}
-                className="bg-[#0e0e0e] border border-white/10 rounded-[32px] p-8 sm:p-10 text-left transition-all duration-500 shadow-[0_12px_40px_rgba(0,0,0,0.3)] hover:border-brand-yellow/40 hover:bg-[#121212] flex flex-col gap-6 min-h-[340px] sm:min-h-[360px] group relative"
+                className="bg-[#0e0e0e] border border-white/10 rounded-[32px] p-6 sm:p-8 md:p-10 text-left transition-all duration-500 shadow-[0_12px_40px_rgba(0,0,0,0.3)] hover:border-brand-yellow/40 hover:bg-[#121212] flex flex-col gap-6 min-h-0 md:min-h-[360px] group relative"
               >
                 {/* Tag superior de numeração clássica de luxo */}
                 <div className="flex justify-between items-center w-full">
-                  <span className="font-mono text-brand-yellow text-sm font-semibold">/ 0{index + 1}</span>
+                  <span className="font-mono text-brand-yellow text-sm font-bold tracking-widest whitespace-nowrap">0{index + 1}</span>
                 </div>
 
                 {/* Conteúdo de Texto e Título */}

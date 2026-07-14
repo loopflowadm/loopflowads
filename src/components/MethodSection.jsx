@@ -41,7 +41,7 @@ export default function MethodSection({ onOpenModal }) {
   };
 
   return (
-    <section id="metodo" className="py-24 relative overflow-hidden bg-brand-yellow select-none border-b border-black/5">
+    <section id="metodo" className="py-16 sm:py-24 relative overflow-hidden bg-brand-yellow select-none border-b border-black/5">
       
       {/* Grid de fundo sutil em preto sobre amarelo */}
       <div 

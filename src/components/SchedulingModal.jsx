@@ -188,7 +188,7 @@ export default function SchedulingModal({ isOpen, onClose }) {
                       <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest block">
                         Dias Disponíveis
                       </label>
-                      <div className="grid grid-cols-5 gap-2.5">
+                      <div className="grid grid-cols-5 gap-1.5 sm:gap-2.5">
                         {businessDays.map((date, idx) => {
                           const isSelected = selectedDate && selectedDate.toDateString() === date.toDateString();
                           const dayName = date.toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', '');
@@ -199,16 +199,16 @@ export default function SchedulingModal({ isOpen, onClose }) {
                               key={idx}
                               type="button"
                               onClick={() => handleDateSelect(date)}
-                              className={`p-3 rounded-xl border flex flex-col items-center justify-center gap-1 cursor-pointer transition-all shadow-sm ${
+                              className={`py-2.5 px-1 sm:p-3 rounded-xl border flex flex-col items-center justify-center gap-1 cursor-pointer transition-all shadow-sm ${
                                 isSelected
                                   ? "bg-brand-yellow border-brand-yellow text-brand-black font-bold scale-105 shadow-[0_0_12px_rgba(255,204,0,0.2),inset_0_1px_0_rgba(255,255,255,0.2)]"
                                   : "bg-brand-light-gray/30 border-white/5 text-slate-300 hover:border-white/12"
                               }`}
                             >
-                              <span className={`text-[10px] uppercase ${isSelected ? 'text-brand-black font-bold' : 'text-neutral-500'}`}>
+                              <span className={`text-[9px] xs:text-[10px] uppercase ${isSelected ? 'text-brand-black font-bold' : 'text-neutral-500'}`}>
                                 {dayName}
                               </span>
-                              <span className="text-base font-bold">{dayNum}</span>
+                              <span className="text-sm xs:text-base font-bold">{dayNum}</span>
                             </button>
                           );
                         })}
@@ -233,7 +233,7 @@ export default function SchedulingModal({ isOpen, onClose }) {
                                 key={idx}
                                 type="button"
                                 onClick={() => setSelectedTime(time)}
-                                className={`py-2.5 px-3 rounded-xl border text-xs font-semibold cursor-pointer transition-all ${
+                                className={`py-2.5 px-1.5 sm:px-3 rounded-xl border text-xs font-semibold cursor-pointer transition-all ${
                                   isSelected
                                     ? "bg-brand-yellow border-brand-yellow text-brand-black shadow-md shadow-brand-yellow/10"
                                     : "bg-brand-light-gray/20 border-white/5 text-slate-300 hover:border-white/10"
@@ -345,7 +345,7 @@ export default function SchedulingModal({ isOpen, onClose }) {
                       <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">
                         Qual o principal gargalo do seu marketing hoje? *
                       </label>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="grid grid-cols-1 xs:grid-cols-2 sm:flex sm:flex-wrap gap-2">
                         {["Falta de leads", "Baixa conversão comercial", "Verba desperdiçada", "Falta de tempo", "Outro"].map((tag) => {
                           const isSel = formData.bottleneck === tag;
                           return (
@@ -353,7 +353,7 @@ export default function SchedulingModal({ isOpen, onClose }) {
                               key={tag}
                               type="button"
                               onClick={() => handleBottleneckSelect(tag)}
-                              className={`py-2 px-4 rounded-full border text-xs cursor-pointer transition-all ${
+                              className={`py-2 px-3 sm:px-4 rounded-full border text-xs cursor-pointer transition-all text-center justify-center flex items-center ${
                                 isSel 
                                   ? "bg-brand-yellow border-brand-yellow text-brand-black font-bold shadow-md" 
                                   : "bg-brand-light-gray/20 border-white/5 text-brand-gray hover:border-white/10"

@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
+  
+  --color-brand-yellow: #FFCC00;
+  --color-brand-yellow-hover: #FACC15;
+  --color-brand-black: #0A0A0A;
+  --color-brand-dark: #171717;
+  --color-brand-gray: #A3A3A3;
+  --color-brand-light-gray: #262626;
+  --color-brand-yellow-glow: rgba(255, 204, 0, 0.08);
+}
+
+html, body {
+  background-color: #0A0A0A;
+  color: #FFFFFF;
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  scroll-behavior: smooth;
+  overflow-x: clip;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0A0A0A;
+}
+::-webkit-scrollbar-thumb {
+  background: #171717;
+  border-radius: 9999px;
+  border: 2px solid #0A0A0A;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #FFCC00;
+}
+
+/* Seleção */
+::selection {
+  background-color: #FFCC00;
+  color: #0A0A0A;
+}
+
+/* Glassmorphism Apple macOS Estilo Premium */
+.glass {
+  background: rgba(23, 23, 23, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-light {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Efeito de Gradiente de Texto Contínuo sem Bug de Quebra de Linha */
+.gradient-text {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* Background Grid sutil */
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+}
+
+/* Animação do Cursor Piscante do Typewriter */
+@keyframes blink {
+  50% { border-color: transparent }
+}

@@ -13,11 +13,11 @@ const faqs = [
   },
   {
     question: "Não tenho tempo para gerenciar mais uma frente de trabalho.",
-    answer: "Esse é o principal motivo pelo qual você nos contrata. Você não vai gerenciar nada operacional. Nós assumimos toda a execução, criação, análise e configurações técnicas. Daremos visibilidade total a você através de um painel de indicadores direto, sem demandar mais reuniões ou e-mails na sua rotina."
+    answer: "Esse é o principal motivo pelo qual você nos contrata. Você não vai gerenciar nada operacional. Nós assumimos toda a execução, análise e configurações técnicas. Daremos visibilidade total a você através de um painel de indicadores direto, sem demandar mais reuniões ou e-mails na sua rotina."
   },
   {
     question: "Meu nicho é muito específico. O método funciona para mim?",
-    answer: "O Método Loop Flow é focado em engenharia de processos e testes científicos. Ele já foi testado com sucesso em negócios locais, clínicas de saúde, escritórios de advocacia, e-commerce e indústrias B2B. A estratégia de canais muda conforme o público, mas o processo de validar dados e escalar o que dá certo nunca muda."
+    answer: "O Método Loop é um processo de diagnóstico e teste. Ele já foi testado com sucesso em negócios locais, clínicas de saúde, escritórios de advocacia, e-commerce e indústrias B2B. A estratégia de canais muda conforme o público, mas o processo de validar dados e escalar o que dá certo nunca muda."
   },
   {
     question: "Vou ficar preso a um contrato de fidelidade longo?",
@@ -56,9 +56,8 @@ export default function FaqSection() {
         
         {/* Título de Seção */}
         <div className="text-center mb-16">
-          <span className="text-xs uppercase tracking-widest text-brand-gray font-bold block mb-3">Transparência</span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Perguntas Frequentes & Objeções
+            Perguntas Frequentes
           </h2>
         </div>
 

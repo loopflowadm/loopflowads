@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, ChevronDown, BarChart3, Users, Target } from 'lucide-react';
+import { Calendar, ChevronDown } from 'lucide-react';
 import heroPoster from '../assets/hero.png';
 
 export default function Hero({ onOpenModal }) {
@@ -96,16 +96,7 @@ export default function Hero({ onOpenModal }) {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[750px] bg-brand-yellow/40 rounded-full blur-[130px] pointer-events-none z-10" />
       
       <div className="relative z-20 max-w-4xl mx-auto px-6 text-center flex flex-col items-center">
-        {/* Badge superior estático - Atrasado para a saída da Splash Screen acelerada (1.4s) */}
-        <motion.div
-          initial={{ opacity: 0, filter: 'blur(8px)', y: 15 }}
-          animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 1.4 }}
-          className="inline-flex items-center gap-2 px-4.5 py-2 rounded-full bg-brand-black border border-white/10 text-xs text-brand-yellow font-bold mb-8 shadow-2xl"
-        >
-          <span className="w-2 h-2 rounded-full bg-brand-yellow animate-pulse" />
-          <span>Descubra onde seu marketing está travando o crescimento</span>
-        </motion.div>
+
 
         {/* Headline Tipográfica Premium - Atrasado para a saída da Splash Screen (1.5s) */}
         <motion.h1
@@ -143,10 +134,7 @@ export default function Hero({ onOpenModal }) {
           className="text-sm sm:text-base md:text-lg text-neutral-800/80 font-medium leading-relaxed max-w-3xl mb-8"
         >
           Diagnóstico, estratégia, execução e acompanhamento de indicadores — tudo em um só lugar,<br className="hidden sm:inline" />
-          com uma equipe que trata seu marketing como se fosse o próprio negócio{"\u00A0"}dela.
-          <span className="block mt-4 font-semibold text-brand-black/90">
-            Agende uma call de diagnóstico gratuita e descubra,<br className="hidden sm:inline" /> em 30 minutos, onde seu marketing está travando.
-          </span>
+          com uma equipe que trata seu marketing como se fosse seu próprio negócio.
         </motion.p>
 
         {/* CTAs */}
@@ -154,7 +142,7 @@ export default function Hero({ onOpenModal }) {
           initial={{ opacity: 0, filter: 'blur(8px)', y: 20 }}
           animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
           transition={{ duration: 0.8, delay: 1.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col items-center gap-3.5 mb-16 w-full"
+          className="flex flex-col items-center gap-3.5 mb-6 w-full"
         >
           <button
             onClick={onOpenModal}
@@ -166,42 +154,17 @@ export default function Hero({ onOpenModal }) {
               <Calendar className="w-5 h-5 text-brand-yellow" />
             </span>
           </button>
-
-          <a
-            href="#metodo"
-            className="inline-flex items-center gap-1 text-xs text-brand-black/60 hover:text-brand-black font-extrabold transition-all duration-200 group mt-1 py-1"
-          >
-            <span>Conhecer o Método</span>
-            <ChevronDown className="w-3.5 h-3.5 text-brand-black/60 group-hover:text-brand-black group-hover:translate-y-0.5 transition-all" />
-          </a>
         </motion.div>
 
-        {/* Provas Sociais - Alinhamento e quebra de linhas para duas linhas simétricas em todos */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 2.0 }}
-          className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-12 py-5 px-8 rounded-3xl bg-brand-black border border-white/5 max-w-2xl text-xs md:text-sm text-left font-semibold text-slate-300 shadow-2xl"
+        {/* Call to action secondary subtitle */}
+        <motion.p
+          initial={{ opacity: 0, filter: 'blur(10px)', y: 25 }}
+          animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+          transition={{ duration: 0.8, delay: 1.9, ease: [0.16, 1, 0.3, 1] }}
+          className="text-sm sm:text-base text-neutral-800/80 font-bold max-w-2xl leading-relaxed mt-2"
         >
-          <div className="flex items-center gap-2.5">
-            <BarChart3 className="w-4.5 h-4.5 text-brand-yellow shrink-0" />
-            <span className="leading-tight">
-              Processo Baseado <br /> em Dados
-            </span>
-          </div>
-          <div className="flex items-center gap-2.5">
-            <Users className="w-4.5 h-4.5 text-brand-yellow shrink-0" />
-            <span className="leading-tight">
-              Time Sênior <br /> Ex-Meta
-            </span>
-          </div>
-          <div className="hidden md:flex items-center gap-2.5">
-            <Target className="w-4.5 h-4.5 text-brand-yellow shrink-0" />
-            <span className="leading-tight">
-              Foco Total em <br /> Retorno (ROI)
-            </span>
-          </div>
-        </motion.div>
+          Agende uma call de diagnóstico gratuita e descubra,<br className="hidden sm:inline" /> em 30 minutos, onde seu marketing está travando.
+        </motion.p>
       </div>
 
       {/* Indicador de scroll */}

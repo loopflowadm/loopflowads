@@ -4,7 +4,7 @@ import { Calendar, ArrowUp } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import PainSection from './components/PainSection';
-import { ScrollingFeatureShowcase } from './components/ui/interactive-scrolling-story-component';
+import MethodSection from './components/MethodSection';
 import CredibilitySection from './components/CredibilitySection';
 import BenefitsSection from './components/BenefitsSection';
 import FaqSection from './components/FaqSection';
@@ -52,8 +52,8 @@ export default function App() {
       {/* Componente PainSection (Branco) */}
       <PainSection />
 
-      {/* Novo Componente de Método Interativo de Rolagem (Preto com Física de Scroll Nativo) */}
-      <ScrollingFeatureShowcase onOpenModal={openModal} />
+      {/* Componente Método (Amarelo) */}
+      <MethodSection onOpenModal={openModal} />
 
       {/* Componente CredibilitySection (Branco) */}
       <CredibilitySection onOpenModal={openModal} />
@@ -82,10 +82,6 @@ export default function App() {
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
           {/* Caixa Preta Sólida sobre o Fundo Amarelo */}
           <div className="bg-brand-black rounded-[32px] p-8 sm:p-16 border border-neutral-800 shadow-2xl text-center">
-            <span className="text-xs uppercase tracking-widest text-brand-yellow font-extrabold block mb-4">
-              AÇÃO IMEDIATA
-            </span>
-            
             <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight max-w-3xl mx-auto mb-6">
               Antes de gastar mais um real sem saber o retorno, entenda onde seu marketing está travando o crescimento.
             </h2>
@@ -118,14 +114,11 @@ export default function App() {
 
       {/* RODAPÉ (Preto com o Logotipo Oficial da Loop Flow) */}
       <footer className="bg-brand-black border-t border-white/5 py-12 text-neutral-500 text-xs font-semibold select-none">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center md:items-start gap-6">
           
-          {/* Logo e Copyright */}
-          <div className="flex flex-col items-center md:items-start gap-3">
+          {/* Logo */}
+          <div className="flex flex-col items-center md:items-start">
             <Logo className="h-5.5 w-auto" color="#FFCC00" />
-            <p className="font-semibold text-center md:text-left text-neutral-600">
-              © {new Date().getFullYear()} Loop Flow. Todos os direitos reservados.
-            </p>
           </div>
 
           {/* Links e Informações Adicionais */}
@@ -141,6 +134,13 @@ export default function App() {
             </p>
           </div>
 
+        </div>
+
+        {/* Copyright Centralizado no Rodapé Inferior */}
+        <div className="max-w-6xl mx-auto px-6 border-t border-white/5 mt-10 pt-6 text-center text-neutral-600">
+          <p className="font-semibold">
+            © {new Date().getFullYear()} Loop Flow. Todos os direitos reservados.
+          </p>
         </div>
 
         {/* Botão flutuante para voltar ao topo */}

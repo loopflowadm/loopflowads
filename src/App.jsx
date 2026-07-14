@@ -11,6 +11,10 @@ import FaqSection from './components/FaqSection';
 import SchedulingModal from './components/SchedulingModal';
 import Logo from './components/Logo';
 
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -25,10 +29,6 @@ export default function App() {
     }, 1500);
     return () => clearTimeout(timer);
   }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   return (
     <div className="min-h-screen bg-brand-black text-white font-sans antialiased">
@@ -94,6 +94,7 @@ export default function App() {
             {/* Botão de Agendamento */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button
+                type="button"
                 onClick={openModal}
                 className="group relative overflow-hidden bg-brand-yellow text-brand-black font-extrabold py-4.5 px-10 rounded-2xl transition-all shadow-xl hover:bg-brand-yellow-hover hover:shadow-2xl hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer w-full sm:w-auto text-center"
               >
@@ -145,6 +146,7 @@ export default function App() {
 
         {/* Botão flutuante para voltar ao topo */}
         <button 
+          type="button"
           onClick={scrollToTop}
           className="fixed bottom-6 right-6 w-10 h-10 bg-brand-dark hover:bg-brand-light-gray flex items-center justify-center border border-white/10 text-brand-gray hover:text-brand-yellow rounded-full transition-all shadow-md z-40 cursor-pointer active:scale-90"
           title="Voltar ao topo"

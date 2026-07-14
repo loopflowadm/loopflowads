@@ -50,6 +50,15 @@ interface ShowcaseProps {
   onOpenModal?: () => void;
 }
 
+const gridPatternStyle = {
+  '--grid-color': 'rgba(255, 204, 0, 0.015)',
+  backgroundImage: `
+    linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px)
+  `,
+  backgroundSize: '3.5rem 3.5rem',
+} as React.CSSProperties;
+
 export function ScrollingFeatureShowcase({ onOpenModal }: ShowcaseProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -103,15 +112,7 @@ export function ScrollingFeatureShowcase({ onOpenModal }: ShowcaseProps) {
     transition: 'background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1), color 0.8s ease',
   };
 
-  // Padrão de grid sutil de luxo
-  const gridPatternStyle = {
-    '--grid-color': 'rgba(255, 204, 0, 0.015)',
-    backgroundImage: `
-      linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px)
-    `,
-    backgroundSize: '3.5rem 3.5rem',
-  } as React.CSSProperties;
+
 
   // Lida com o clique nas barras de paginação para rolar o window suavemente até o slide correspondente
   const handlePaginationClick = (index: number) => {
@@ -172,6 +173,7 @@ export function ScrollingFeatureShowcase({ onOpenModal }: ShowcaseProps) {
                 <div className="flex space-x-2">
                   {slidesData.map((slide, index) => (
                     <button
+                      type="button"
                       key={index}
                       onClick={() => handlePaginationClick(index)}
                       className="h-1 rounded-full transition-all duration-500 ease-in-out cursor-pointer"
@@ -220,6 +222,7 @@ export function ScrollingFeatureShowcase({ onOpenModal }: ShowcaseProps) {
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2.5">
                   <button
+                    type="button"
                     onClick={onOpenModal}
                     className="group relative overflow-hidden bg-brand-yellow text-brand-black font-extrabold py-4 px-8 rounded-2xl transition-all shadow-2xl hover:bg-brand-yellow/95 hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer flex items-center gap-2 text-xs uppercase tracking-wider w-full sm:w-auto justify-center"
                   >

@@ -72,6 +72,7 @@ export default function FaqSection() {
                 className="rounded-2xl overflow-hidden border border-white/5 bg-brand-dark/20 hover:border-white/10 transition-all duration-300"
               >
                 <button
+                  type="button"
                   onClick={() => toggleFaq(index)}
                   className="w-full flex items-center justify-between py-5 px-6 text-left cursor-pointer transition-colors duration-200"
                 >

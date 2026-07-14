@@ -109,6 +109,7 @@ export default function CredibilitySection({ onOpenModal }) {
               {/* Botão Amarelo de Agendar Conversa na base do card */}
               <div className="pt-6 relative z-10 w-full mt-auto">
                 <button
+                  type="button"
                   onClick={onOpenModal}
                   className="w-full py-4.5 px-6 bg-brand-yellow text-brand-black font-extrabold rounded-2xl shadow-xl hover:bg-white hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer flex items-center justify-center gap-2 text-sm font-black"
                 >

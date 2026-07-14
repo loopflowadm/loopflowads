@@ -3,12 +3,13 @@ import { motion } from 'framer-motion';
 import { Calendar, ChevronDown } from 'lucide-react';
 import heroPoster from '../assets/hero.png';
 
+const words = ["leads", "vendas", "faturamento"];
+
 export default function Hero({ onOpenModal }) {
   const heroRef = useRef(null);
   const videoRef = useRef(null);
 
   // Estados para o efeito de digitação (Typewriter)
-  const words = ["leads", "vendas", "faturamento"];
   const [wordIndex, setWordIndex] = useState(0);
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -145,6 +146,7 @@ export default function Hero({ onOpenModal }) {
           className="flex flex-col items-center gap-3.5 mb-6 w-full"
         >
           <button
+            type="button"
             onClick={onOpenModal}
             className="group relative overflow-hidden bg-brand-black text-brand-yellow font-extrabold py-4.5 px-10 rounded-2xl transition-all shadow-2xl hover:bg-neutral-900 hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer w-full sm:w-auto text-center"
           >

@@ -37,6 +37,7 @@ export default function Navbar({ onOpenModal }) {
 
         {/* CTA Amarelo com Volume Tátil Apple style */}
         <button
+          type="button"
           onClick={onOpenModal}
           className={`relative inline-flex items-center gap-1.5 font-extrabold text-xs py-2.5 px-5 rounded-full transition-all cursor-pointer ${
             scrolled 

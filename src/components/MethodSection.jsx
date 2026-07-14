@@ -30,15 +30,16 @@ const steps = [
   }
 ];
 
+const elementVariants = {
+  hidden: { opacity: 0, y: 25 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
+  }
+};
+
 export default function MethodSection({ onOpenModal }) {
-  const elementVariants = {
-    hidden: { opacity: 0, y: 25 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
-    }
-  };
 
   return (
     <section id="metodo" className="py-16 sm:py-24 relative overflow-hidden bg-brand-yellow select-none border-b border-black/5">
@@ -139,6 +140,7 @@ export default function MethodSection({ onOpenModal }) {
           className="flex justify-center"
         >
           <button
+            type="button"
             onClick={onOpenModal}
             className="group relative overflow-hidden bg-brand-black text-brand-yellow font-extrabold py-4.5 px-10 rounded-2xl transition-all shadow-2xl hover:bg-neutral-900 hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer w-full sm:w-auto text-center"
           >

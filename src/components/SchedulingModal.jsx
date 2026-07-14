@@ -3,6 +3,34 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Clock, Check, Sparkles, Send, ArrowLeft, Video } from 'lucide-react';
 import Logo from './Logo';
 
+const availableTimes = ["09:00", "10:30", "14:00", "15:30", "17:00"];
+
+const getNextBusinessDays = () => {
+  const days = [];
+  const today = new Date();
+  let current = new Date(today);
+  
+  current.setDate(current.getDate() + 1);
+
+  while (days.length < 5) {
+    const dayOfWeek = current.getDay();
+    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+      days.push(new Date(current));
+    }
+    current.setDate(current.getDate() + 1);
+  }
+  return days;
+};
+
+const formatSelectedDate = (date) => {
+  if (!date) return '';
+  return date.toLocaleDateString('pt-BR', { 
+    weekday: 'long', 
+    day: 'numeric', 
+    month: 'long' 
+  });
+};
+
 export default function SchedulingModal({ isOpen, onClose }) {
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -15,25 +43,7 @@ export default function SchedulingModal({ isOpen, onClose }) {
     bottleneck: '',
   });
 
-  const getNextBusinessDays = () => {
-    const days = [];
-    const today = new Date();
-    let current = new Date(today);
-    
-    current.setDate(current.getDate() + 1);
-
-    while (days.length < 5) {
-      const dayOfWeek = current.getDay();
-      if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-        days.push(new Date(current));
-      }
-      current.setDate(current.getDate() + 1);
-    }
-    return days;
-  };
-
   const businessDays = getNextBusinessDays();
-  const availableTimes = ["09:00", "10:30", "14:00", "15:30", "17:00"];
 
   const handleDateSelect = (date) => {
     setSelectedDate(date);
@@ -68,14 +78,7 @@ export default function SchedulingModal({ isOpen, onClose }) {
     }
   };
 
-  const formatSelectedDate = (date) => {
-    if (!date) return '';
-    return date.toLocaleDateString('pt-BR', { 
-      weekday: 'long', 
-      day: 'numeric', 
-      month: 'long' 
-    });
-  };
+
 
   return (
     <AnimatePresence>
@@ -141,6 +144,7 @@ export default function SchedulingModal({ isOpen, onClose }) {
                 <div className="flex items-center gap-2">
                   {step === 2 && (
                     <button 
+                      type="button"
                       onClick={handlePrevStep}
                       className="p-1.5 rounded-lg text-brand-gray hover:text-white hover:bg-white/5 mr-1"
                     >
@@ -162,6 +166,7 @@ export default function SchedulingModal({ isOpen, onClose }) {
                 </div>
                 
                 <button 
+                  type="button"
                   onClick={onClose}
                   className="w-8 h-8 rounded-full bg-brand-light-gray/50 hover:bg-brand-light-gray flex items-center justify-center border border-white/5 text-brand-gray hover:text-white transition-all cursor-pointer shadow-sm"
                 >
@@ -250,6 +255,7 @@ export default function SchedulingModal({ isOpen, onClose }) {
                     {/* Botão Próximo */}
                     <div className="pt-4 border-t border-white/5">
                       <button
+                        type="button"
                         onClick={handleNextStep}
                         disabled={!selectedDate || !selectedTime}
                         className={`w-full py-3.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2.5 cursor-pointer transition-all shadow-sm ${
@@ -412,6 +418,7 @@ export default function SchedulingModal({ isOpen, onClose }) {
                     </div>
 
                     <button
+                      type="button"
                       onClick={() => {
                         onClose();
                         setStep(1);

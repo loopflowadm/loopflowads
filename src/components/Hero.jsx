@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, ChevronDown, BarChart3, Users, Target } from 'lucide-react';
+import heroPoster from '../assets/hero.png';
 
 export default function Hero({ onOpenModal }) {
   const heroRef = useRef(null);
@@ -19,7 +20,7 @@ export default function Hero({ onOpenModal }) {
   useEffect(() => {
     const loadTimer = setTimeout(() => {
       setVideoSrc("/videos/hero.mp4");
-    }, 1200);
+    }, 400);
     return () => clearTimeout(loadTimer);
   }, []);
 
@@ -73,6 +74,7 @@ export default function Hero({ onOpenModal }) {
         loop
         muted
         playsInline
+        poster={heroPoster}
         className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0 opacity-45 contrast-[1.12] brightness-[1.05]"
       >
         {videoSrc && <source src={videoSrc} type="video/mp4" />}

@@ -97,7 +97,7 @@ export default function CredibilitySection({ onOpenModal }) {
                   </h3>
                   
                   <p className="text-sm text-neutral-400 leading-relaxed font-semibold mt-4">
-                    Por sermos uma operação nova, o primeiro trimestre tem investimento promocional. Se o resultado for satisfatório, seguimos juntos no valor padrão a partir do <strong>3º mês</strong>. Você não está apostando no escuro. Está testando a metodologia pagando menos até ter certeza de que funciona pra você.
+                    Por sermos uma operação nova, o primeiro trimestre tem investimento promocional. Se o resultado for satisfatório, seguimos juntos no valor padrão a partir do <strong>3º mês</strong>. Você não está apostando no escuro, está testando a metodologia pagando menos até ter certeza de que funciona pra você.
                   </p>
                 </div>
                 

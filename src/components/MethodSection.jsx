@@ -13,13 +13,13 @@ const steps = [
   {
     id: 2,
     title: "2. Estrutura de Aquisição",
-    text: "Revisamos a esteira completa: criativos, segmentação, landing page e rastreamento de dados — Montamos um plano com prioridade clara.",
+    text: "Revisamos a esteira completa: criativos, segmentação, landing page e rastreamento de dados. Montamos um plano com prioridade clara.",
     icon: Filter
   },
   {
     id: 3,
     title: "3. Execução e Otimização",
-    text: "Colocamos a mão na massa: ciclos constantes de teste, leitura de dados e ajustes — Relatórios profissionais e reuniões periódicas.",
+    text: "Colocamos a mão na massa: ciclos constantes de teste, leitura de dados e ajustes. Relatórios profissionais e reuniões periódicas.",
     icon: Settings
   },
   {

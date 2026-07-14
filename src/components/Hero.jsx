@@ -133,7 +133,7 @@ export default function Hero({ onOpenModal }) {
           transition={{ duration: 0.8, delay: 1.65, ease: [0.16, 1, 0.3, 1] }}
           className="text-sm sm:text-base md:text-lg text-neutral-800/80 font-medium leading-relaxed max-w-3xl mb-8"
         >
-          Diagnóstico, estratégia, execução e acompanhamento de indicadores — tudo em um só lugar,<br className="hidden sm:inline" />
+          Diagnóstico, estratégia, execução e acompanhamento de indicadores. Tudo em um só lugar,<br className="hidden sm:inline" />
           com uma equipe que trata seu marketing como se fosse seu próprio negócio.
         </motion.p>
 

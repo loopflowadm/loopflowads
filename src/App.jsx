@@ -88,7 +88,7 @@ export default function App() {
             
             <p className="text-sm text-neutral-400 font-semibold max-w-xl mx-auto mb-10 leading-relaxed uppercase tracking-wider">
               A call de diagnóstico é gratuita, dura cerca de 30 minutos e não tem compromisso. 
-              Você sai dela com clareza absoluta — com ou sem contrato com a gente.
+              Você sai dela com clareza absoluta. Com ou sem contrato com a gente.
             </p>
 
             {/* Botão de Agendamento */}

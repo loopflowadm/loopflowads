@@ -5,7 +5,7 @@ import { Plus, HelpCircle } from 'lucide-react';
 const faqs = [
   {
     question: "Já contratei agência antes e não funcionou. Por que seria diferente?",
-    answer: "A maioria das agências tradicionais vende campanhas prontas e criativos padronizados. A Loop Flow entrega processo comercial — com diagnóstico profundo antes de qualquer real investido em tráfego. Você entende os gargalos e só decide seguir conosco após aprovar o plano estratégico desenhado para o seu momento."
+    answer: "A maioria das agências tradicionais vende campanhas prontas e criativos padronizados. A Loop Flow entrega processo comercial. Com diagnóstico profundo antes de qualquer real investido em tráfego. Você entende os gargalos e só decide seguir conosco após aprovar o plano estratégico desenhado para o seu momento."
   },
   {
     question: "Não tenho orçamento grande para marketing comercial. É viável?",

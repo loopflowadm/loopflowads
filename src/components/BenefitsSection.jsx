@@ -5,12 +5,12 @@ const benefitCards = [
   {
     id: 1,
     title: "Estrutura de marketing sem o custo de contratar um time interno",
-    text: "Estratégia, tráfego, criativo e análise de dados trabalhando juntos — pelo custo de uma fração de uma equipe própria."
+    text: "Estratégia, tráfego, criativo e análise de dados trabalhando juntos. Pelo custo de uma fração de uma equipe própria."
   },
   {
     id: 2,
     title: "Você recupera o tempo que gastaria tentando entender algoritmo",
-    text: "Enquanto cuidamos da execução, você foca em vender e atender — que é o que só você sabe fazer."
+    text: "Enquanto cuidamos da execução, você foca em vender e atender. Que é o que só você sabe fazer."
   },
   {
     id: 3,
@@ -63,7 +63,7 @@ export default function BenefitsSection() {
           <p className="mt-4 text-sm sm:text-base text-neutral-800 font-semibold leading-relaxed max-w-2xl mx-auto">
             Chega de relatório que ninguém entende.
             <br />
-            Você sabe exatamente quantos leads, quantas vendas e qual custo — mês a mês.
+            Você sabe exatamente quantos leads, quantas vendas e qual custo. Mês a mês.
           </p>
         </div>
  

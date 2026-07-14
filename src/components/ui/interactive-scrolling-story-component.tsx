@@ -38,7 +38,7 @@ const slidesData = [
     phase: "Fase 04",
     subtitle: "Crescimento sem Sorte",
     title: "Escala e expansão",
-    description: "Validado o que funciona, aumentamos o investimento e expandimos para novos canais e públicos — sempre com o mesmo rigor de acompanhamento. Crescer não é sorte, é repetir o que já provou resultado.",
+    description: "Validado o que funciona, aumentamos o investimento e expandimos para novos canais e públicos. Sempre com o mesmo rigor de acompanhamento. Crescer não é sorte, é repetir o que já provou resultado.",
     videoUrl: "/videos/Símbolo_circular.webm",
     bgColor: "#0A0A0A", // Preto oficial da agência
     accentColor: "#E6B800",

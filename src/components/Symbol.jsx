@@ -4,7 +4,7 @@ export default function Symbol({ className = "w-8 h-8", color = "#FFCC00" }) {
   return (
     <svg 
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="1000 170 730 730" 
+      viewBox="800 0 2100 1910" 
       className={className}
       fill={color}
       role="img"

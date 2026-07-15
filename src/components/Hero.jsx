@@ -16,6 +16,7 @@ export default function Hero({ onOpenModal }) {
   const [typingSpeed, setTypingSpeed] = useState(120);
 
   const [videoSrc, setVideoSrc] = useState("");
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   // Atrasar o carregamento do vídeo de fundo de 11MB para otimizar performance (Speed Index/LCP)
   useEffect(() => {
@@ -27,8 +28,13 @@ export default function Hero({ onOpenModal }) {
 
   // Configurar a velocidade do vídeo de fundo
   useEffect(() => {
-    if (videoRef.current && videoSrc) {
-      videoRef.current.playbackRate = 0.55;
+    if (videoRef.current) {
+      if (videoSrc) {
+        videoRef.current.playbackRate = 0.55;
+      }
+      if (videoRef.current.readyState >= 3) {
+        setIsVideoLoaded(true);
+      }
     }
   }, [videoSrc]);
 
@@ -68,7 +74,7 @@ export default function Hero({ onOpenModal }) {
   return (
     <section ref={heroRef} className="relative min-h-[95vh] flex items-center justify-center pt-28 pb-12 overflow-hidden bg-brand-yellow select-none">
       
-      {/* 1. Vídeo de fundo em cores originais com opacidade equilibrada */}
+      {/* 1. Vídeo de fundo em cores originais com opacidade equilibrada e esmaecimento suave */}
       <video
         ref={videoRef}
         autoPlay
@@ -76,7 +82,11 @@ export default function Hero({ onOpenModal }) {
         muted
         playsInline
         poster={heroPoster}
-        className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0 opacity-45 contrast-[1.12] brightness-[1.05]"
+        onLoadedData={() => setIsVideoLoaded(true)}
+        onCanPlay={() => setIsVideoLoaded(true)}
+        className={`absolute inset-0 w-full h-full object-cover pointer-events-none z-0 contrast-[1.12] brightness-[1.05] transition-opacity duration-1000 ${
+          isVideoLoaded ? "opacity-45" : "opacity-0"
+        }`}
       >
         {videoSrc && (
           <>

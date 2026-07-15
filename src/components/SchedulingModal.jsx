@@ -7,7 +7,7 @@ export default function SchedulingModal({ isOpen, onClose }) {
   // Parâmetros do Calendly:
   // hide_event_type_details = 1 (Remove os detalhes do evento e logo do Calendly internos, já que temos na nossa sidebar)
   // hide_gdpr_banner = 1 (Oculta o banner de cookies interno)
-  const calendlyUrl = "https://calendly.com/loopflow-adm/30min?hide_event_type_details=1&hide_gdpr_banner=1";
+  const calendlyUrl = "https://calendly.com/loopflowsolutions/30min?hide_event_type_details=1&hide_gdpr_banner=1";
 
   return (
     <AnimatePresence>

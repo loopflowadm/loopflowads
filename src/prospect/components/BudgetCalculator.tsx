@@ -492,10 +492,20 @@ const BudgetCalculator: React.FC<BudgetCalculatorProps> = ({ prospect, onBack })
                       </div>
                     </div>
 
-                    <div className="col-span-2 bg-yellow-400 p-6 rounded-2xl flex flex-col justify-center items-center text-center border border-yellow-500 overflow-hidden relative">
-                      <div className="relative z-10 w-full">
-                        <div className="text-[10px] font-black text-black/40 uppercase tracking-[0.2em] mb-1">Aumento de Lucro Líquido Previsto</div>
-                        <div className="text-4xl font-black italic text-black leading-none tracking-tighter">{formatCurrency(metrics.lucroExtraEstimado)}</div>
+                    <div className="col-span-2 bg-yellow-400 p-6 rounded-2xl flex flex-col justify-center items-center text-center border border-yellow-500 overflow-hidden relative text-black">
+                      <div className="relative z-10 w-full flex justify-between items-center px-4">
+                        <div className="text-left">
+                          <div className="text-[10px] font-black text-black/50 uppercase tracking-[0.25em] mb-1">Lucro Líquido Extra</div>
+                          <div className="text-3xl font-black italic text-black leading-none tracking-tighter">{formatCurrency(metrics.lucroExtraEstimado)}</div>
+                        </div>
+                        {metrics.totalRecorrenteMensal > 0 && metrics.lucroExtraEstimado > 0 && (
+                          <div className="text-right">
+                            <div className="text-[10px] font-black text-black/50 uppercase tracking-[0.25em] mb-1">ROI Mensal</div>
+                            <div className="text-3xl font-black italic text-black leading-none tracking-tighter">
+                              +{((metrics.lucroExtraEstimado / metrics.totalRecorrenteMensal) * 100).toFixed(0)}%
+                            </div>
+                          </div>
+                        )}
                       </div>
                       <div className="text-[9px] font-black text-black/30 uppercase tracking-tight italic leading-tight mt-3 flex items-center justify-center gap-2">
                         <div className="w-1.5 h-1.5 bg-black/20 rounded-full"></div>
@@ -917,12 +927,24 @@ const BudgetCalculator: React.FC<BudgetCalculatorProps> = ({ prospect, onBack })
                 </div>
               </div>
 
-              <div className="bg-yellow-400 p-8 rounded-3xl shadow-[0_20px_40px_rgba(250,204,21,0.15)] transform hover:scale-[1.02] transition-transform">
-                <div className="text-[10px] font-black text-black/60 uppercase tracking-[0.2em] mb-1">Lucro Líquido Extra</div>
-                <div className="text-4xl font-black italic text-black leading-none">
-                  {formatCurrency(metrics.lucroExtraEstimado > 0 ? metrics.lucroExtraEstimado : 0)}
+              <div className="bg-yellow-400 p-8 rounded-3xl shadow-[0_20px_40px_rgba(250,204,21,0.15)] transform hover:scale-[1.02] transition-transform text-black">
+                <div className="flex justify-between items-start w-full">
+                  <div>
+                    <div className="text-[10px] font-black text-black/60 uppercase tracking-[0.2em] mb-1">Lucro Líquido Extra</div>
+                    <div className="text-4xl font-black italic text-black leading-none">
+                      {formatCurrency(metrics.lucroExtraEstimado > 0 ? metrics.lucroExtraEstimado : 0)}
+                    </div>
+                  </div>
+                  {metrics.totalRecorrenteMensal > 0 && metrics.lucroExtraEstimado > 0 && (
+                    <div className="text-right">
+                      <div className="text-[10px] font-black text-black/60 uppercase tracking-[0.2em] mb-1">ROI Mensal</div>
+                      <div className="text-3xl font-black italic text-black leading-none">
+                        +{((metrics.lucroExtraEstimado / metrics.totalRecorrenteMensal) * 100).toFixed(0)}%
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div className="mt-3 text-[8px] font-black text-black/40 uppercase tracking-widest">Projeção conservadora baseada em benchmarks</div>
+                <div className="mt-4 text-[8px] font-black text-black/45 uppercase tracking-widest">Projeção conservadora baseada em benchmarks</div>
               </div>
             </div>
 

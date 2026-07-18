@@ -63,6 +63,16 @@ const ProspectDashboard: React.FC = () => {
     if (!editingIntegrationsProspect) return;
 
     const id = editingIntegrationsProspect.id;
+    const currentProspect = prospects.find(p => p.id === id);
+    const serializedGoogleSheetsUrl = JSON.stringify({
+      sheetsUrl: editGoogleSheetsUrl || '',
+      contactName: currentProspect?.contactName || '',
+      contactPhone: currentProspect?.contactPhone || '',
+      websiteUrl: currentProspect?.websiteUrl || '',
+      estimatedRevenue: currentProspect?.estimatedRevenue || '',
+      mainPainPoint: currentProspect?.mainPainPoint || ''
+    });
+
     const updatedList = prospects.map(p => p.id === id ? {
       ...p,
       googleSheetsUrl: editGoogleSheetsUrl,
@@ -75,7 +85,7 @@ const ProspectDashboard: React.FC = () => {
 
     const { error } = await supabase.from('prospects')
       .update({
-        google_sheets_url: editGoogleSheetsUrl || null,
+        google_sheets_url: serializedGoogleSheetsUrl,
         meta_ad_account_id: editMetaAdAccountId || null,
         meta_access_token: editMetaAccessToken || null
       })
@@ -192,12 +202,42 @@ const ProspectDashboard: React.FC = () => {
 
       const mapped = data.map((p: any) => {
         const local = backupMap.get(p.id);
+        let parsedSheetsUrl = p.google_sheets_url || '';
+        let contactName = '';
+        let contactPhone = '';
+        let websiteUrl = '';
+        let estimatedRevenue = '';
+        let mainPainPoint = '';
+
+        if (p.google_sheets_url && p.google_sheets_url.trim().startsWith('{')) {
+          try {
+            const parsed = JSON.parse(p.google_sheets_url);
+            parsedSheetsUrl = parsed.sheetsUrl || '';
+            contactName = parsed.contactName || '';
+            contactPhone = parsed.contactPhone || '';
+            websiteUrl = parsed.websiteUrl || '';
+            estimatedRevenue = parsed.estimatedRevenue || '';
+            mainPainPoint = parsed.mainPainPoint || '';
+          } catch (e) {}
+        } else {
+          contactName = local?.contactName || '';
+          contactPhone = local?.contactPhone || '';
+          websiteUrl = local?.websiteUrl || '';
+          estimatedRevenue = local?.estimatedRevenue || '';
+          mainPainPoint = local?.mainPainPoint || '';
+        }
+
         return {
           id: p.id,
           name: p.name,
           segment: p.segment,
           logo: p.logo || '',
-          googleSheetsUrl: p.google_sheets_url || '',
+          googleSheetsUrl: parsedSheetsUrl,
+          contactName,
+          contactPhone,
+          websiteUrl,
+          estimatedRevenue,
+          mainPainPoint,
           status: (p.status !== undefined && p.status !== null) ? p.status : (local?.status || 'novo'),
           metaAdAccountId: (p.meta_ad_account_id !== undefined && p.meta_ad_account_id !== null) ? p.meta_ad_account_id : (local?.metaAdAccountId || ''),
           metaAccessToken: (p.meta_access_token !== undefined && p.meta_access_token !== null) ? p.meta_access_token : (local?.metaAccessToken || ''),
@@ -224,11 +264,25 @@ const ProspectDashboard: React.FC = () => {
       segment: data.segment,
       logo: data.logo || '',
       googleSheetsUrl: data.googleSheetsUrl || '',
+      contactName: data.contactName || '',
+      contactPhone: data.contactPhone || '',
+      websiteUrl: data.websiteUrl || '',
+      estimatedRevenue: data.estimatedRevenue || '',
+      mainPainPoint: data.mainPainPoint || '',
       status: 'novo',
       metaAdAccountId: data.metaAdAccountId || '',
       metaAccessToken: data.metaAccessToken || '',
       date: new Date().toISOString()
     };
+
+    const serializedGoogleSheetsUrl = JSON.stringify({
+      sheetsUrl: data.googleSheetsUrl || '',
+      contactName: data.contactName || '',
+      contactPhone: data.contactPhone || '',
+      websiteUrl: data.websiteUrl || '',
+      estimatedRevenue: data.estimatedRevenue || '',
+      mainPainPoint: data.mainPainPoint || ''
+    });
 
     // Salva no Supabase (Nuvem)
     const { error } = await supabase.from('prospects').insert([
@@ -237,7 +291,7 @@ const ProspectDashboard: React.FC = () => {
         name: data.name,
         segment: data.segment,
         logo: data.logo || null,
-        google_sheets_url: data.googleSheetsUrl || null,
+        google_sheets_url: serializedGoogleSheetsUrl,
         status: 'novo',
         meta_ad_account_id: data.metaAdAccountId || null,
         meta_access_token: data.metaAccessToken || null

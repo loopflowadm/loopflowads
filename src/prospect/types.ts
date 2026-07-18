@@ -29,6 +29,11 @@ export interface ProspectData {
   status?: 'novo' | 'agendado' | 'proposta' | 'ganho' | 'perdido';
   metaAdAccountId?: string;
   metaAccessToken?: string;
+  contactName?: string;
+  contactPhone?: string;
+  websiteUrl?: string;
+  estimatedRevenue?: string;
+  mainPainPoint?: string;
 }
 
 export type AppState = 'list' | 'setup' | 'menu' | 'presentation' | 'calculator' | 'performance-dashboard' | 'pitch-editor';

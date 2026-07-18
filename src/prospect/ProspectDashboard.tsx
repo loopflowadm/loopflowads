@@ -9,7 +9,7 @@ import PerformanceDashboard from './components/PerformanceDashboard';
 import PitchEditor from './components/PitchEditor';
 import Logo from './components/Logo';
 import { supabase } from '../lib/supabase';
-import { Trash2, Play, Calendar, Plus, TrendingUp, GripVertical, Settings, Calculator, Menu, X, CheckCircle2 } from 'lucide-react';
+import { Trash2, Play, Calendar, Plus, TrendingUp, GripVertical, Settings, Calculator, Menu, X, CheckCircle2, Sun, Moon } from 'lucide-react';
 
 // Toast notification system
 type Toast = { id: string; message: string; type: 'success' | 'error' };
@@ -32,6 +32,9 @@ interface ProspectWithId extends ProspectData {
 const ProspectDashboard: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     return sessionStorage.getItem('loopflow_gestor_auth') === 'true';
+  });
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    return (localStorage.getItem('loopflow_theme') as 'light' | 'dark') || 'dark';
   });
   const [view, setView] = useState<AppState>('list');
   const [prospects, setProspects] = useState<ProspectWithId[]>([]);
@@ -576,10 +579,36 @@ const ProspectDashboard: React.FC = () => {
 
           {/* Sidebar Footer */}
           <div className="px-4 py-4 border-t border-zinc-900 shrink-0">
-            <div className="flex items-center gap-2.5 px-1 mb-3">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></div>
-              <span className="text-[9px] text-zinc-500 font-black uppercase tracking-widest">Sessão Ativa</span>
+            <div className="flex items-center justify-between px-1 mb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></div>
+                <span className="text-[9px] text-zinc-500 font-black uppercase tracking-widest">Sessão Ativa</span>
+              </div>
             </div>
+
+            {/* Alternador de Tema */}
+            <button
+              onClick={() => {
+                const newTheme = theme === 'light' ? 'dark' : 'light';
+                setTheme(newTheme);
+                localStorage.setItem('loopflow_theme', newTheme);
+              }}
+              className="w-full flex items-center justify-center gap-2 bg-zinc-900 hover:bg-zinc-850 text-zinc-400 hover:text-white border border-zinc-800 py-2.5 rounded-xl font-black uppercase text-[9px] tracking-widest transition-colors cursor-pointer text-center mb-2.5"
+              aria-label="Alternar tema claro/escuro"
+            >
+              {theme === 'light' ? (
+                <>
+                  <Moon className="w-3.5 h-3.5" />
+                  <span>Tema Escuro</span>
+                </>
+              ) : (
+                <>
+                  <Sun className="w-3.5 h-3.5" />
+                  <span>Tema Claro</span>
+                </>
+              )}
+            </button>
+
             <button
               onClick={() => {
                 sessionStorage.removeItem('loopflow_gestor_auth');
@@ -596,7 +625,9 @@ const ProspectDashboard: React.FC = () => {
       )}
 
       {/* Main Workspace Frame */}
-      <div className="flex-1 min-h-screen overflow-y-auto flex flex-col md:ml-0">
+      <div className={`flex-1 min-h-screen overflow-y-auto flex flex-col md:ml-0 transition-colors duration-300 ${
+        (theme === 'light' && view !== 'presentation') ? 'theme-light bg-zinc-50 text-zinc-900' : 'bg-zinc-950 text-white'
+      }`}>
         {/* Mobile topbar */}
         {view !== 'presentation' && (
           <div className="md:hidden flex items-center gap-4 px-4 py-3 border-b border-zinc-900 bg-zinc-950 sticky top-0 z-20">

@@ -9,7 +9,7 @@ import PerformanceDashboard from './components/PerformanceDashboard';
 import PitchEditor from './components/PitchEditor';
 import Logo from './components/Logo';
 import { supabase } from '../lib/supabase';
-import { Trash2, Play, Calendar, Plus, TrendingUp, GripVertical, Settings, Calculator, Menu, X, CheckCircle2, Sun, Moon } from 'lucide-react';
+import { Trash2, Play, Calendar, Plus, TrendingUp, GripVertical, Settings, Calculator, Menu, X, CheckCircle2, Sun, Moon, LayoutGrid, LogOut, ChevronDown } from 'lucide-react';
 
 // Toast notification system
 type Toast = { id: string; message: string; type: 'success' | 'error' };
@@ -364,262 +364,79 @@ const ProspectDashboard: React.FC = () => {
             />
           )}
 
-          {/* Sidebar panel */}
-          <div className={`fixed md:sticky top-0 left-0 z-40 md:z-auto w-72 bg-zinc-950 border-r border-zinc-900 flex flex-col justify-between h-screen shrink-0 select-none transition-transform duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
-          {/* Sidebar inner — flex col flex-1 min-h-0 */}
-          <div className="flex flex-col flex-1 min-h-0">
-
-            <div className="px-5 pt-6 pb-5 border-b border-zinc-900 shrink-0">
-              <div className="w-20 h-9">
-                <Logo className="w-full h-full" />
+          {/* Sidebar panel (Minimalist w-20 Icon-only) */}
+          <div className={`fixed md:sticky top-0 left-0 z-40 md:z-auto w-20 bg-zinc-950 border-r border-zinc-900 flex flex-col justify-between h-screen shrink-0 select-none transition-transform duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+            {/* Sidebar inner */}
+            <div className="flex flex-col flex-1 min-h-0 items-center py-6">
+              
+              {/* Logo */}
+              <div className="mb-8 shrink-0">
+                <div className="w-12 h-6">
+                  <Logo className="w-full h-full text-yellow-400" />
+                </div>
               </div>
+
+              {/* Navigation Icons */}
+              <div className="flex-1 flex flex-col items-center gap-4 w-full px-2">
+                <button
+                  onClick={() => { setView('list'); setSidebarOpen(false); }}
+                  className={`w-12 h-12 flex items-center justify-center rounded-2xl transition-all cursor-pointer group relative ${
+                    view === 'list'
+                      ? 'bg-yellow-400 text-black shadow-lg shadow-yellow-400/10'
+                      : 'text-zinc-400 hover:text-white hover:bg-zinc-900/60'
+                  }`}
+                  aria-label="Ver painel CRM"
+                >
+                  <LayoutGrid className="w-5 h-5 shrink-0" />
+                  <span className="absolute left-16 bg-zinc-900 text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-1.5 rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity border border-zinc-800 shadow-xl whitespace-nowrap z-50">
+                    Painel CRM
+                  </span>
+                </button>
+              </div>
+
             </div>
 
-            {/* === NAV + LEADS (scrollável) === */}
-            <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-transparent">
+            {/* Sidebar Footer */}
+            <div className="px-4 py-4 border-t border-zinc-900 shrink-0 flex flex-col items-center gap-3">
+              {/* Session Indicator */}
+              <div className="flex items-center justify-center w-full relative group">
+                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></div>
+                <span className="absolute left-16 bg-zinc-900 text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-1.5 rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity border border-zinc-800 shadow-xl whitespace-nowrap z-50">
+                  Sessão Ativa
+                </span>
+              </div>
 
-              {/* Nav */}
+              {/* Alternador de Tema */}
               <button
-                onClick={() => { setView('list'); setSidebarOpen(false); }}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold uppercase text-[10px] tracking-widest transition-all cursor-pointer ${
-                  view === 'list'
-                    ? 'bg-yellow-400 text-black shadow-lg shadow-yellow-400/10'
-                    : 'text-zinc-400 hover:text-white hover:bg-zinc-900/60'
-                }`}
-                aria-label="Ver painel CRM"
+                onClick={() => {
+                  const newTheme = theme === 'light' ? 'dark' : 'light';
+                  setTheme(newTheme);
+                  localStorage.setItem('loopflow_theme', newTheme);
+                }}
+                className="w-12 h-12 flex items-center justify-center bg-zinc-900 hover:bg-zinc-850 text-zinc-400 hover:text-white border border-zinc-800 rounded-2xl transition-colors cursor-pointer group relative"
+                aria-label="Alternar tema"
               >
-                <GripVertical className="w-3.5 h-3.5 shrink-0" />
-                <span>Painel CRM</span>
+                {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+                <span className="absolute left-16 bg-zinc-900 text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-1.5 rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity border border-zinc-800 shadow-xl whitespace-nowrap z-50">
+                  Alternar Tema
+                </span>
               </button>
 
-              {/* Divider */}
-              <div className="pt-3 pb-1">
-                <span className="text-[9px] font-black text-zinc-600 uppercase tracking-widest px-2 block">Leads</span>
-              </div>
-
-              {/* === LEADS: seletor compacto + dropdown === */}
-              {prospects.length === 0 ? (
-                <div className="px-2 py-3">
-                  <p className="text-[9px] text-zinc-600 font-bold uppercase tracking-widest">Nenhum lead.</p>
-                </div>
-              ) : (
-                <div className="space-y-0.5">
-
-                  {/* Trigger button — só 1 avatar (o ativo) */}
-                  <button
-                    onClick={() => setLeadsOpen(prev => !prev)}
-                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-zinc-900/60 transition-all cursor-pointer group"
-                    aria-expanded={leadsOpen}
-                    aria-label="Selecionar lead"
-                  >
-                    {/* Avatar do lead ativo OU placeholder */}
-                    <div className={`w-7 h-7 rounded-lg overflow-hidden flex items-center justify-center shrink-0 border ${
-                      activeProspect ? 'border-yellow-400/60' : 'border-zinc-800'
-                    }`}>
-                      {activeProspect ? (
-                        activeProspect.logo ? (
-                          <img src={activeProspect.logo} alt={activeProspect.name} className="w-full h-full object-cover" />
-                        ) : (
-                          <div className="w-full h-full bg-yellow-400 text-black flex items-center justify-center text-[10px] font-black">
-                            {activeProspect.name.charAt(0).toUpperCase()}
-                          </div>
-                        )
-                      ) : (
-                        <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
-                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-zinc-600">
-                            <circle cx="6" cy="4.5" r="2" stroke="currentColor" strokeWidth="1.2"/>
-                            <path d="M2 10c0-2.2 1.8-4 4-4s4 1.8 4 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-                          </svg>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Label */}
-                    <div className="flex-1 min-w-0 text-left">
-                      {activeProspect ? (
-                        <span className="text-[10px] font-black text-white uppercase tracking-tight truncate block">{activeProspect.name}</span>
-                      ) : (
-                        <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Escolher lead</span>
-                      )}
-                    </div>
-
-                    {/* Chevron */}
-                    <motion.div
-                      animate={{ rotate: leadsOpen ? 180 : 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="shrink-0"
-                    >
-                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="text-zinc-600">
-                        <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </motion.div>
-                  </button>
-
-                  {/* Dropdown com lista de leads */}
-                  <AnimatePresence initial={false}>
-                    {leadsOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.18, ease: 'easeInOut' }}
-                        className="overflow-hidden"
-                      >
-                        <div className="px-1 pt-1 pb-1 space-y-0.5">
-                          {prospects.map(p => {
-                            const isActive = activeProspect && (activeProspect as any).id === (p as any).id;
-                            const stageColor: Record<string, string> = {
-                              novo: 'bg-zinc-500',
-                              agendado: 'bg-blue-400',
-                              proposta: 'bg-amber-400',
-                              ganho: 'bg-emerald-400',
-                              perdido: 'bg-red-500'
-                            };
-                            return (
-                              <button
-                                key={(p as any).id}
-                                onClick={() => {
-                                  setActiveProspect(p);
-                                  setLeadsOpen(false);
-                                  setSidebarOpen(false);
-                                  if (view !== 'list') setView('performance-dashboard');
-                                }}
-                                className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl transition-all cursor-pointer text-left ${
-                                  isActive
-                                    ? 'bg-zinc-800 border border-zinc-700'
-                                    : 'hover:bg-zinc-900/60 border border-transparent'
-                                }`}
-                                aria-pressed={!!isActive}
-                              >
-                                <div className="w-7 h-7 rounded-lg overflow-hidden flex items-center justify-center shrink-0 border border-zinc-800">
-                                  {p.logo ? (
-                                    <img src={p.logo} alt={p.name} className="w-full h-full object-cover" />
-                                  ) : (
-                                    <div className="w-full h-full bg-yellow-400 text-black flex items-center justify-center text-[10px] font-black">
-                                      {p.name.charAt(0).toUpperCase()}
-                                    </div>
-                                  )}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <div className={`text-[10px] font-black uppercase tracking-tight truncate ${isActive ? 'text-white' : 'text-zinc-300'}`}>
-                                    {p.name}
-                                  </div>
-                                  <div className="text-[8px] text-zinc-600 font-bold uppercase tracking-wide truncate">
-                                    {p.segment}
-                                  </div>
-                                </div>
-                                <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${stageColor[(p as any).status] ?? 'bg-zinc-500'}`} />
-                              </button>
-                            );
-                          })}
-                          {/* Limpar seleção */}
-                          {activeProspect && (
-                            <button
-                              onClick={() => { setActiveProspect(null); setLeadsOpen(false); setSidebarOpen(false); }}
-                              className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-zinc-600 hover:text-zinc-400 hover:bg-zinc-900/40 transition-all cursor-pointer text-left border border-transparent"
-                            >
-                              <X className="w-3.5 h-3.5 shrink-0" />
-                              <span className="text-[9px] font-bold uppercase tracking-widest">Limpar seleção</span>
-                            </button>
-                          )}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  {/* === FERRAMENTAS — inline, logo após o lead === */}
-                  {activeProspect && !leadsOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.15 }}
-                      className="mt-1 ml-3 pl-3 border-l-2 border-zinc-800 space-y-0.5"
-                    >
-                      <button
-                        onClick={() => { setView('performance-dashboard'); setSidebarOpen(false); }}
-                        className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl font-bold uppercase text-[9.5px] tracking-widest transition-all cursor-pointer ${
-                          view === 'performance-dashboard'
-                            ? 'bg-yellow-400 text-black'
-                            : 'text-zinc-400 hover:text-white hover:bg-zinc-900/60'
-                        }`}
-                      >
-                        <TrendingUp className="w-3 h-3 shrink-0" />
-                        <span>Métricas &amp; KPIs</span>
-                      </button>
-                      <button
-                        onClick={() => { setView('calculator'); setSidebarOpen(false); }}
-                        className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl font-bold uppercase text-[9.5px] tracking-widest transition-all cursor-pointer ${
-                          view === 'calculator'
-                            ? 'bg-yellow-400 text-black'
-                            : 'text-zinc-400 hover:text-white hover:bg-zinc-900/60'
-                        }`}
-                      >
-                        <Calculator className="w-3 h-3 shrink-0" />
-                        <span>Calculadora</span>
-                      </button>
-                      <button
-                        onClick={() => { setView('menu'); setSidebarOpen(false); }}
-                        className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl font-bold uppercase text-[9.5px] tracking-widest transition-all cursor-pointer ${
-                          view === 'menu'
-                            ? 'bg-yellow-400 text-black'
-                            : 'text-zinc-400 hover:text-white hover:bg-zinc-900/60'
-                        }`}
-                      >
-                        <Play className="w-3 h-3 shrink-0" />
-                        <span>Pitch Diagnóstico</span>
-                      </button>
-                    </motion.div>
-                  )}
-
-                </div>
-              )}
+              {/* Logout */}
+              <button
+                onClick={() => {
+                  sessionStorage.removeItem('loopflow_gestor_auth');
+                  setIsAuthenticated(false);
+                }}
+                className="w-12 h-12 flex items-center justify-center bg-zinc-900 hover:bg-rose-950/20 text-zinc-400 hover:text-rose-400 border border-zinc-800 hover:border-rose-900/30 rounded-2xl transition-colors cursor-pointer group relative"
+                aria-label="Sair da Central"
+              >
+                <LogOut className="w-4 h-4" />
+                <span className="absolute left-16 bg-zinc-900 text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-1.5 rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity border border-zinc-800 shadow-xl whitespace-nowrap z-50">
+                  Sair da Central
+                </span>
+              </button>
             </div>
-          </div>{/* end inner flex container */}
-
-          {/* Sidebar Footer */}
-          <div className="px-4 py-4 border-t border-zinc-900 shrink-0">
-            <div className="flex items-center justify-between px-1 mb-3">
-              <div className="flex items-center gap-2.5">
-                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true"></div>
-                <span className="text-[9px] text-zinc-500 font-black uppercase tracking-widest">Sessão Ativa</span>
-              </div>
-            </div>
-
-            {/* Alternador de Tema */}
-            <button
-              onClick={() => {
-                const newTheme = theme === 'light' ? 'dark' : 'light';
-                setTheme(newTheme);
-                localStorage.setItem('loopflow_theme', newTheme);
-              }}
-              className="w-full flex items-center justify-center gap-2 bg-zinc-900 hover:bg-zinc-850 text-zinc-400 hover:text-white border border-zinc-800 py-2.5 rounded-xl font-black uppercase text-[9px] tracking-widest transition-colors cursor-pointer text-center mb-2.5"
-              aria-label="Alternar tema claro/escuro"
-            >
-              {theme === 'light' ? (
-                <>
-                  <Moon className="w-3.5 h-3.5" />
-                  <span>Tema Escuro</span>
-                </>
-              ) : (
-                <>
-                  <Sun className="w-3.5 h-3.5" />
-                  <span>Tema Claro</span>
-                </>
-              )}
-            </button>
-
-            <button
-              onClick={() => {
-                sessionStorage.removeItem('loopflow_gestor_auth');
-                setIsAuthenticated(false);
-              }}
-              className="w-full bg-zinc-900 hover:bg-rose-950/20 text-zinc-400 hover:text-rose-400 border border-zinc-800 hover:border-rose-900/30 py-2.5 rounded-xl font-black uppercase text-[9px] tracking-widest transition-colors cursor-pointer text-center"
-              aria-label="Encerrar sessão e sair do painel"
-            >
-              Sair da Central
-            </button>
-          </div>
           </div>
         </>
       )}
@@ -646,6 +463,168 @@ const ProspectDashboard: React.FC = () => {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Desktop Top Navbar */}
+        {view !== 'presentation' && (
+          <header className={`hidden md:flex h-16 border-b shrink-0 items-center justify-between px-6 sticky top-0 z-30 transition-colors ${
+            theme === 'light' ? 'bg-white border-zinc-200' : 'bg-zinc-950 border-zinc-900'
+          }`}>
+            {/* Left side: Lead Dropdown Selector */}
+            <div className="relative">
+              <button
+                onClick={() => setLeadsOpen(prev => !prev)}
+                className={`flex items-center gap-2.5 px-3.5 py-2 rounded-xl transition-all cursor-pointer border ${
+                  theme === 'light' ? 'border-zinc-200 hover:bg-zinc-50 text-zinc-900' : 'border-zinc-900 hover:bg-zinc-900/60 text-white'
+                }`}
+              >
+                <div className={`w-6 h-6 rounded-lg overflow-hidden flex items-center justify-center shrink-0 border ${
+                  activeProspect ? 'border-yellow-400/60' : 'border-zinc-800'
+                }`}>
+                  {activeProspect ? (
+                    activeProspect.logo ? (
+                      <img src={activeProspect.logo} alt={activeProspect.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full bg-yellow-400 text-black flex items-center justify-center text-[10px] font-black">
+                        {activeProspect.name.charAt(0).toUpperCase()}
+                      </div>
+                    )
+                  ) : (
+                    <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-zinc-550">
+                        <circle cx="6" cy="4.5" r="2" stroke="currentColor" strokeWidth="1.2"/>
+                        <path d="M2 10c0-2.2 1.8-4 4-4s4 1.8 4 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+                      </svg>
+                    </div>
+                  )}
+                </div>
+                <div className="text-left">
+                  {activeProspect ? (
+                    <>
+                      <span className="text-[10px] font-black uppercase tracking-tight block leading-tight">{activeProspect.name}</span>
+                      <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-wider block leading-none mt-0.5">{activeProspect.segment}</span>
+                    </>
+                  ) : (
+                    <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Escolher Lead</span>
+                  )}
+                </div>
+                <ChevronDown className="w-3.5 h-3.5 text-zinc-500 shrink-0 ml-1.5" />
+              </button>
+
+              {/* Floating Dropdown List */}
+              <AnimatePresence>
+                {leadsOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40 bg-transparent" onClick={() => setLeadsOpen(false)} />
+                    <motion.div
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 5 }}
+                      transition={{ duration: 0.15 }}
+                      className={`absolute left-0 top-12 mt-1 w-64 rounded-2xl border shadow-2xl z-50 p-1.5 space-y-0.5 max-h-96 overflow-y-auto ${
+                        theme === 'light' ? 'bg-white border-zinc-200' : 'bg-zinc-950 border-zinc-900'
+                      }`}
+                    >
+                      {prospects.map(p => {
+                        const isActive = activeProspect && (activeProspect as any).id === (p as any).id;
+                        const stageColor: Record<string, string> = {
+                          novo: 'bg-zinc-500',
+                          agendado: 'bg-blue-400',
+                          proposta: 'bg-amber-400',
+                          ganho: 'bg-emerald-400',
+                          perdido: 'bg-red-500'
+                        };
+                        return (
+                          <button
+                            key={(p as any).id}
+                            onClick={() => {
+                              setActiveProspect(p);
+                              setLeadsOpen(false);
+                              if (view !== 'list') setView('performance-dashboard');
+                            }}
+                            className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl transition-all cursor-pointer text-left border ${
+                              isActive
+                                ? 'bg-zinc-100 border-zinc-200/60 dark:bg-zinc-900 dark:border-zinc-800'
+                                : 'hover:bg-zinc-50 dark:hover:bg-zinc-900/60 border-transparent'
+                            }`}
+                          >
+                            <div className="w-6 h-6 rounded-lg overflow-hidden flex items-center justify-center shrink-0 border border-zinc-800">
+                              {p.logo ? (
+                                <img src={p.logo} alt={p.name} className="w-full h-full object-cover" />
+                              ) : (
+                                <div className="w-full h-full bg-yellow-400 text-black flex items-center justify-center text-[10px] font-black">
+                                  {p.name.charAt(0).toUpperCase()}
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="text-[10px] font-black uppercase tracking-tight truncate">
+                                {p.name}
+                              </div>
+                              <div className="text-[8px] text-zinc-500 font-bold uppercase tracking-wide truncate">
+                                {p.segment}
+                              </div>
+                            </div>
+                            <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${stageColor[(p as any).status] ?? 'bg-zinc-500'}`} />
+                          </button>
+                        );
+                      })}
+                      {activeProspect && (
+                        <button
+                          onClick={() => { setActiveProspect(null); setLeadsOpen(false); setView('list'); }}
+                          className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 transition-all cursor-pointer text-left border border-transparent"
+                        >
+                          <X className="w-3.5 h-3.5 shrink-0" />
+                          <span className="text-[8px] font-black uppercase tracking-widest">Limpar Seleção</span>
+                        </button>
+                      )}
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Right side: Lead navigation tabs */}
+            {activeProspect && (
+              <nav className={`flex items-center gap-1 p-1 rounded-xl border ${
+                theme === 'light' ? 'bg-zinc-100 border-zinc-200/60' : 'bg-zinc-900/60 border-zinc-900'
+              }`}>
+                <button
+                  onClick={() => setView('performance-dashboard')}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[9.5px] font-black uppercase tracking-wider transition-all cursor-pointer ${
+                    view === 'performance-dashboard'
+                      ? 'bg-yellow-400 text-black shadow-sm'
+                      : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+                  }`}
+                >
+                  <TrendingUp className="w-3.5 h-3.5 shrink-0" />
+                  <span>Métricas</span>
+                </button>
+                <button
+                  onClick={() => setView('calculator')}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[9.5px] font-black uppercase tracking-wider transition-all cursor-pointer ${
+                    view === 'calculator'
+                      ? 'bg-yellow-400 text-black shadow-sm'
+                      : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+                  }`}
+                >
+                  <Calculator className="w-3.5 h-3.5 shrink-0" />
+                  <span>Calculadora</span>
+                </button>
+                <button
+                  onClick={() => setView('menu')}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[9.5px] font-black uppercase tracking-wider transition-all cursor-pointer ${
+                    view === 'menu' || view === 'pitch-editor'
+                      ? 'bg-yellow-400 text-black shadow-sm'
+                      : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+                  }`}
+                >
+                  <Play className="w-3.5 h-3.5 shrink-0" />
+                  <span>Pitch</span>
+                </button>
+              </nav>
+            )}
+          </header>
         )}
 
         {view === 'list' && (

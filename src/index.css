@@ -151,8 +151,17 @@ html, body {
 .theme-light .bg-\[\#0B0B0B\] {
   background-color: #ffffff !important;
 }
+.theme-light .bg-\[\#0B0B0C\] {
+  background-color: #f4f4f5 !important;
+  border-color: #e4e4e7 !important;
+}
+.theme-light .bg-\[\#121214\],
 .theme-light .bg-\[\#121214\]\/60 {
   background-color: #ffffff !important;
+  border-color: #e4e4e7 !important;
+}
+.theme-light .bg-\[\#0D0D0F\] {
+  background-color: #f4f4f5 !important;
   border-color: #e4e4e7 !important;
 }
 
@@ -193,6 +202,21 @@ html, body {
 /* Text Colors */
 .theme-light .text-white {
   color: #18181b !important;
+}
+.theme-light .text-zinc-100 {
+  color: #18181b !important;
+}
+.theme-light .text-zinc-200 {
+  color: #27272a !important;
+}
+.theme-light .text-zinc-250 {
+  color: #27272a !important;
+}
+.theme-light .text-zinc-700 {
+  color: #71717a !important;
+}
+.theme-light .text-zinc-800 {
+  color: #3f3f3f !important;
 }
 .theme-light .text-zinc-300 {
   color: #27272a !important;

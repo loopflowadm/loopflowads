@@ -927,24 +927,24 @@ const BudgetCalculator: React.FC<BudgetCalculatorProps> = ({ prospect, onBack })
                 </div>
               </div>
 
-              <div className="bg-yellow-400 p-8 rounded-3xl shadow-[0_20px_40px_rgba(250,204,21,0.15)] transform hover:scale-[1.02] transition-transform text-black">
-                <div className="flex justify-between items-start w-full">
-                  <div>
-                    <div className="text-[10px] font-black text-black/60 uppercase tracking-[0.2em] mb-1">Lucro Líquido Extra</div>
-                    <div className="text-4xl font-black italic text-black leading-none">
-                      {formatCurrency(metrics.lucroExtraEstimado > 0 ? metrics.lucroExtraEstimado : 0)}
-                    </div>
+              <div className="bg-yellow-400 p-8 rounded-3xl shadow-[0_20px_40px_rgba(250,204,21,0.15)] transform hover:scale-[1.02] transition-transform text-black space-y-4">
+                <div>
+                  <div className="text-[10px] font-black text-black/60 uppercase tracking-[0.2em] mb-1">Lucro Líquido Extra</div>
+                  <div className="text-4xl font-black italic text-black leading-none">
+                    {formatCurrency(metrics.lucroExtraEstimado > 0 ? metrics.lucroExtraEstimado : 0)}
                   </div>
-                  {metrics.totalRecorrenteMensal > 0 && metrics.lucroExtraEstimado > 0 && (
-                    <div className="text-right">
-                      <div className="text-[10px] font-black text-black/60 uppercase tracking-[0.2em] mb-1">ROI Mensal</div>
-                      <div className="text-3xl font-black italic text-black leading-none">
-                        +{((metrics.lucroExtraEstimado / metrics.totalRecorrenteMensal) * 100).toFixed(0)}%
-                      </div>
-                    </div>
-                  )}
                 </div>
-                <div className="mt-4 text-[8px] font-black text-black/45 uppercase tracking-widest">Projeção conservadora baseada em benchmarks</div>
+                {metrics.totalRecorrenteMensal > 0 && metrics.lucroExtraEstimado > 0 && (
+                  <div className="border-t border-black/15 pt-3 flex justify-between items-center w-full">
+                    <span className="text-[10px] font-black text-black/60 uppercase tracking-[0.2em]">ROI Mensal</span>
+                    <span className="text-2xl font-black italic text-black leading-none">
+                      +{((metrics.lucroExtraEstimado / metrics.totalRecorrenteMensal) * 100).toFixed(0)}%
+                    </span>
+                  </div>
+                )}
+                <div className="text-[7.5px] font-black text-black/45 uppercase tracking-widest">
+                  Projeção conservadora baseada em benchmarks
+                </div>
               </div>
             </div>
 

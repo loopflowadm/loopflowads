@@ -48,6 +48,13 @@ html, body {
   color: #0A0A0A;
 }
 
+/* Focus visible global — acessibilidade */
+:focus-visible {
+  outline: 2px solid #FFCC00;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
 /* Glassmorphism Apple macOS Estilo Premium */
 .glass {
   background: rgba(23, 23, 23, 0.6);
@@ -84,4 +91,19 @@ html, body {
 /* Animação do Cursor Piscante do Typewriter */
 @keyframes blink {
   50% { border-color: transparent }
+}
+
+/* Animação do Marquee contínuo */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-33.333%); }
+}
+
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+  width: max-content;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
 }

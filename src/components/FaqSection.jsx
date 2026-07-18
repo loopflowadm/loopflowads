@@ -52,7 +52,7 @@ export default function FaqSection() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       
-      <div className="max-w-4xl mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-6">
         
         {/* Título de Seção */}
         <div className="text-center mb-16">
@@ -74,7 +74,9 @@ export default function FaqSection() {
                 <button
                   type="button"
                   onClick={() => toggleFaq(index)}
-                  className="w-full flex items-center justify-between py-5 px-6 text-left cursor-pointer transition-colors duration-200"
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${index}`}
+                  className="w-full flex items-center justify-between py-5 px-6 text-left cursor-pointer transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark rounded-2xl"
                 >
                   <div className="flex items-center gap-4">
                     <HelpCircle className={`w-5 h-5 shrink-0 transition-colors duration-300 ${isOpen ? 'text-brand-yellow' : 'text-neutral-500'}`} />
@@ -92,10 +94,12 @@ export default function FaqSection() {
                 <AnimatePresence initial={false}>
                   {isOpen && (
                     <motion.div
+                      id={`faq-answer-${index}`}
+                      role="region"
                       initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
+                      animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      transition={{ duration: 0.3, ease: 'easeInOut' }}
                     >
                       <div className="px-6 pb-6 pt-2 text-xs sm:text-sm text-brand-gray leading-relaxed font-semibold bg-white/[0.01]">
                         {faq.answer}

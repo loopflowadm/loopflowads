@@ -53,7 +53,7 @@ export default function BenefitsSection() {
         }}
       />
       
-      <div className="max-w-5xl mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-6">
         
         {/* Título de Seção (Clareza total sobre onde seu dinheiro está indo) */}
         <div className="text-center max-w-3xl mx-auto mb-16">

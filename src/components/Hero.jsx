@@ -113,7 +113,7 @@ export default function Hero({ onOpenModal }) {
         <motion.h1
           initial={{ opacity: 0, filter: 'blur(10px)', y: 25 }}
           animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-          transition={{ duration: 0.8, delay: 1.5, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="text-4xl sm:text-[3.2rem] md:text-[3.65rem] tracking-tight leading-[1.08] text-brand-black max-w-3xl mb-8 font-normal"
         >
           <span className="font-semibold text-neutral-900/90 block sm:inline">Coloque sua empresa em</span>{' '}
@@ -141,7 +141,7 @@ export default function Hero({ onOpenModal }) {
         <motion.p
           initial={{ opacity: 0, filter: 'blur(10px)', y: 25 }}
           animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-          transition={{ duration: 0.8, delay: 1.65, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
           className="text-sm sm:text-base md:text-lg text-neutral-800/80 font-medium leading-relaxed max-w-3xl mb-8"
         >
           Diagnóstico, estratégia, execução e acompanhamento de indicadores. Tudo em um só lugar,<br className="hidden sm:inline" />
@@ -152,7 +152,7 @@ export default function Hero({ onOpenModal }) {
         <motion.div
           initial={{ opacity: 0, filter: 'blur(8px)', y: 20 }}
           animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-          transition={{ duration: 0.8, delay: 1.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col items-center gap-3.5 mb-6 w-full"
         >
           <button
@@ -172,7 +172,7 @@ export default function Hero({ onOpenModal }) {
         <motion.p
           initial={{ opacity: 0, filter: 'blur(10px)', y: 25 }}
           animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-          transition={{ duration: 0.8, delay: 1.9, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="text-sm sm:text-base text-neutral-800/80 font-bold max-w-2xl leading-relaxed mt-2"
         >
           Agende uma call de diagnóstico gratuita e descubra,<br className="hidden sm:inline" /> em 30 minutos, onde seu marketing está travando.
@@ -180,7 +180,11 @@ export default function Hero({ onOpenModal }) {
       </div>
 
       {/* Indicador de scroll */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-60 hover:opacity-100 transition-opacity pointer-events-none">
+      <a
+        href="#dores"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-60 hover:opacity-100 transition-opacity"
+        aria-label="Rolar para próxima seção"
+      >
         <span className="text-[10px] uppercase tracking-widest text-brand-black font-bold">Deslize</span>
         <motion.div 
           animate={{ y: [0, 6, 0] }}
@@ -188,7 +192,7 @@ export default function Hero({ onOpenModal }) {
         >
           <ChevronDown className="w-4 h-4 text-brand-black" />
         </motion.div>
-      </div>
+      </a>
     </section>
   );
 }

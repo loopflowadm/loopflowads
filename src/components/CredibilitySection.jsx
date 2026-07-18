@@ -53,23 +53,23 @@ export default function CredibilitySection({ onOpenModal }) {
               {/* Selos / Badges em formato de imagem oficial (Grid responsivo cobrindo todo o espaço com maior preenchimento) */}
               <div className="grid grid-cols-4 gap-3 sm:gap-4 w-full mt-6">
                 {/* Meta Media Buying */}
-                <div className="aspect-square bg-white rounded-3xl flex items-center justify-center shadow-md border border-neutral-200/50 hover:scale-105 transition-transform duration-300 select-none overflow-hidden p-0">
-                  <img src="/badge_1.png" alt="Meta Certified Media Buying Professional" className="w-full h-full object-contain scale-[1.15]" />
+                <div className="aspect-square bg-white rounded-3xl flex items-center justify-center shadow-md border border-neutral-200/50 hover:scale-105 transition-transform duration-300 select-none overflow-hidden p-3">
+                  <img src="/badge_1.png" alt="Meta Certified Media Buying Professional" className="w-full h-full object-contain" />
                 </div>
 
                 {/* Meta Digital Marketing */}
-                <div className="aspect-square bg-white rounded-3xl flex items-center justify-center shadow-md border border-neutral-200/50 hover:scale-105 transition-transform duration-300 select-none overflow-hidden p-0">
-                  <img src="/badge_2.png" alt="Meta Certified Digital Marketing Associate" className="w-full h-full object-contain scale-[1.15]" />
+                <div className="aspect-square bg-white rounded-3xl flex items-center justify-center shadow-md border border-neutral-200/50 hover:scale-105 transition-transform duration-300 select-none overflow-hidden p-3">
+                  <img src="/badge_2.png" alt="Meta Certified Digital Marketing Associate" className="w-full h-full object-contain" />
                 </div>
 
                 {/* Meta Media Measurement */}
-                <div className="aspect-square bg-white rounded-3xl flex items-center justify-center shadow-md border border-neutral-200/50 hover:scale-105 transition-transform duration-300 select-none overflow-hidden p-0">
-                  <img src="/badge_3.png" alt="Meta Certified Media Measurement Specialist" className="w-full h-full object-contain scale-[1.15]" />
+                <div className="aspect-square bg-white rounded-3xl flex items-center justify-center shadow-md border border-neutral-200/50 hover:scale-105 transition-transform duration-300 select-none overflow-hidden p-3">
+                  <img src="/badge_3.png" alt="Meta Certified Media Measurement Specialist" className="w-full h-full object-contain" />
                 </div>
 
                 {/* Google Ads */}
-                <div className="aspect-square bg-white rounded-3xl flex items-center justify-center shadow-md border border-neutral-200/50 hover:scale-105 transition-transform duration-300 select-none overflow-hidden p-0">
-                  <img src="/badge_4.png" alt="Google Ads Search Certified" className="w-full h-full object-contain scale-[1.15]" />
+                <div className="aspect-square bg-white rounded-3xl flex items-center justify-center shadow-md border border-neutral-200/50 hover:scale-105 transition-transform duration-300 select-none overflow-hidden p-3">
+                  <img src="/badge_4.png" alt="Google Ads Search Certified" className="w-full h-full object-contain" />
                 </div>
               </div>
             </div>

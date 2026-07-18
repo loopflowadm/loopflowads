@@ -60,17 +60,17 @@ export default function PainSection() {
       
       <div className="max-w-6xl mx-auto px-6">
         
-        {/* Layout em Grid Estático de 3 colunas */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Layout em Grid responsivo — título largo + 5 cards de dores */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           
-          {/* Card de Título (Sem borda, texto branco) */}
+          {/* Card de Título — ocupa coluna completa em sm, 1/3 em lg */}
           <motion.div
             custom={0}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.15 }}
             variants={cardVariants}
-            className="bg-transparent rounded-[32px] p-6 md:p-10 flex flex-col justify-center min-h-0 md:min-h-[360px] text-left"
+            className="sm:col-span-2 lg:col-span-1 bg-transparent rounded-3xl p-6 md:p-10 flex flex-col justify-center min-h-0 lg:min-h-[360px] text-left"
           >
             <h2 className="text-4xl sm:text-[2.8rem] lg:text-[3.2rem] font-black text-brand-yellow tracking-tight leading-[1.05]">
               Você reconhece algum desses sinais?
@@ -87,7 +87,7 @@ export default function PainSection() {
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.15 }}
                 variants={cardVariants}
-                className="bg-[#0e0e0e] border border-white/10 rounded-[32px] p-6 sm:p-8 md:p-10 text-left transition-all duration-500 shadow-[0_12px_40px_rgba(0,0,0,0.3)] hover:border-brand-yellow/40 hover:bg-[#121212] flex flex-col gap-6 min-h-0 md:min-h-[360px] group relative"
+                className="bg-[#0e0e0e] border border-white/10 rounded-3xl p-6 sm:p-8 md:p-10 text-left transition-all duration-500 shadow-[0_12px_40px_rgba(0,0,0,0.3)] hover:border-brand-yellow/40 hover:bg-[#121212] flex flex-col gap-6 min-h-0 lg:min-h-[360px] group relative"
               >
                 {/* Tag superior de numeração clássica de luxo */}
                 <div className="flex justify-between items-center w-full">

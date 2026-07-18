@@ -897,26 +897,26 @@ const ProspectDashboard: React.FC = () => {
         )}
 
         {view === 'menu' && activeProspect && (
-          <div className="p-4 md:p-8">
+          <div className="w-full">
             <PathSelector
               prospect={activeProspect}
               onSelect={handlePathSelect}
+              onReset={() => {}}
             />
-
           </div>
         )}
-
+        
         {view === 'calculator' && activeProspect && (
-          <div className="p-4 md:p-8 w-full">
+          <div className="w-full">
             <BudgetCalculator
               prospect={activeProspect}
               onBack={() => setView('list')}
             />
           </div>
         )}
-
+        
         {view === 'pitch-editor' && activeProspect && selectedPath && (
-          <div className="p-4 md:p-8 w-full animate-fade-in">
+          <div className="w-full animate-fade-in">
             <PitchEditor
               prospect={activeProspect}
               path={selectedPath}
@@ -926,7 +926,7 @@ const ProspectDashboard: React.FC = () => {
             />
           </div>
         )}
-
+        
         {view === 'presentation' && activeProspect && selectedPath && (
           <Presentation
             slides={customSlides}
@@ -934,9 +934,9 @@ const ProspectDashboard: React.FC = () => {
             onExit={handleExitToMenu}
           />
         )}
-
+        
         {view === 'performance-dashboard' && activeProspect && (
-          <div className="p-4 md:p-8 w-full">
+          <div className="w-full">
             <PerformanceDashboard
               prospect={activeProspect}
               onBack={() => setView('list')}

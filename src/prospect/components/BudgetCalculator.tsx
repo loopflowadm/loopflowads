@@ -46,7 +46,7 @@ const BudgetCalculator: React.FC<BudgetCalculatorProps> = ({ prospect, onBack })
 
   // 2. Dados Iniciais
   const [localidade, setLocalidade] = useState('');
-  const [canalPrincipal, setCanalPrincipal] = useState<'ifood' | 'proprio'>('proprio');
+  const [canalPrincipal, setCanalPrincipal] = useState<'marketplace' | 'pago' | 'organico' | 'outbound'>('pago');
   const [objetivo, setObjetivo] = useState<Objective>('escala_pedidos');
 
   // 3. Métricas de Operação
@@ -76,7 +76,7 @@ const BudgetCalculator: React.FC<BudgetCalculatorProps> = ({ prospect, onBack })
   // Inicialização de valores padrão baseados no nicho
   useEffect(() => {
     if (isFood) {
-      setCanalPrincipal('ifood');
+      setCanalPrincipal('marketplace');
       setObjetivo('sair_ifood');
       setTicketMedio(65);
       setPedidosAtuais(300);
@@ -84,7 +84,7 @@ const BudgetCalculator: React.FC<BudgetCalculatorProps> = ({ prospect, onBack })
       setTaxaMarketplace(27);
       setMargemProduto(35);
     } else if (isEcom) {
-      setCanalPrincipal('proprio');
+      setCanalPrincipal('pago');
       setObjetivo('escala_pedidos');
       setTicketMedio(180);
       setPedidosAtuais(150);
@@ -92,7 +92,7 @@ const BudgetCalculator: React.FC<BudgetCalculatorProps> = ({ prospect, onBack })
       setTaxaMarketplace(5);
       setMargemProduto(50);
     } else if (isLocal) {
-      setCanalPrincipal('proprio');
+      setCanalPrincipal('organico');
       setObjetivo('previsibilidade');
       setTicketMedio(250);
       setPedidosAtuais(30);
@@ -100,7 +100,7 @@ const BudgetCalculator: React.FC<BudgetCalculatorProps> = ({ prospect, onBack })
       setTaxaMarketplace(0);
       setMargemProduto(70);
     } else {
-      setCanalPrincipal('proprio');
+      setCanalPrincipal('outbound');
       setObjetivo('previsibilidade');
       setTicketMedio(1500);
       setPedidosAtuais(3);
@@ -108,7 +108,7 @@ const BudgetCalculator: React.FC<BudgetCalculatorProps> = ({ prospect, onBack })
       setTaxaMarketplace(0);
       setMargemProduto(60);
     }
-  }, [prospect.segment]);
+  }, [isFood, isEcom, isLocal, prospect.segment]);
 
   // Atualiza Ad Spend com base no cenário (Preset)
   const handleScenarioChange = (s: Scenario) => {
@@ -158,7 +158,7 @@ const BudgetCalculator: React.FC<BudgetCalculatorProps> = ({ prospect, onBack })
     if (isFood || isEcom) {
       estPedidos = avgCac > 0 ? Math.floor(adSpend / avgCac) : 0;
       estFaturamento = estPedidos * ticketMedio;
-      const economiaPorPedido = canalPrincipal === 'ifood' ? (ticketMedio * (taxaMarketplace / 100 - 0.05)) : (isEcom ? (ticketMedio * 0.02) : 0);
+      const economiaPorPedido = canalPrincipal === 'marketplace' ? Math.max(0, ticketMedio * (taxaMarketplace / 100 - 0.05)) : 0;
       economiaTotal = estPedidos * economiaPorPedido;
     } else if (isLocal) {
       // Local/Serviço: avgCac é CPL. O adSpend / avgCac gera LEADS.
@@ -342,11 +342,11 @@ const BudgetCalculator: React.FC<BudgetCalculatorProps> = ({ prospect, onBack })
                   <div className="grid grid-cols-3 gap-6">
                     {[
                       { label: 'Localidade / Raio', value: localidade || 'Análise Regional' },
-                      { label: 'Operação Atual', value: isFood ? (canalPrincipal === 'ifood' ? 'Foco em Apps' : 'Canais Próprios') : 'Tráfego Pago' },
+                      { label: 'Operação Atual', value: canalPrincipal === 'marketplace' ? 'Marketplaces' : canalPrincipal === 'pago' ? 'Tráfego Pago' : canalPrincipal === 'organico' ? 'Orgânico / Indicação' : 'Outbound' },
                       { label: orderLabel, value: pedidosAtuais > 0 ? `${pedidosAtuais} /mês` : 'Não Informado' },
                       { label: ticketLabel, value: formatCurrency(ticketMedio) },
                       { label: marginLabel, value: `${margemProduto}%` },
-                      { label: 'Taxa / Gatway', value: (isFood || isEcom) ? `${taxaMarketplace}%` : '0%' }
+                      { label: 'Taxa / Gatway', value: canalPrincipal === 'marketplace' ? `${taxaMarketplace}%` : '0%' }
                     ].map((item, i) => (
                       <div key={i} className="bg-zinc-50/80 p-5 rounded-[20px] border border-zinc-100 flex flex-col justify-center items-center text-center">
                         <span className="text-zinc-400 font-bold uppercase text-[8px] tracking-[0.2em] mb-2">{item.label}</span>
@@ -474,10 +474,10 @@ const BudgetCalculator: React.FC<BudgetCalculatorProps> = ({ prospect, onBack })
 
                     <div className="bg-green-50/50 p-4 rounded-xl border border-green-100 flex flex-col justify-center items-center text-center">
                       <div className="text-[8px] font-bold text-green-600/60 uppercase tracking-widest mb-2">
-                        {isFood ? "Economia iFood" : isEcom ? "Economia Gateway" : isLocal ? "Leads Gerados Est." : "Reuniões Geradas Est."}
+                        {canalPrincipal === 'marketplace' ? "Economia de Comissões" : isFood ? "Economia iFood" : isEcom ? "Economia Gateway" : isLocal ? "Leads Gerados Est." : "Reuniões Geradas Est."}
                       </div>
                       <div className="text-2xl font-black italic text-green-700 tracking-tighter">
-                        {isFood || isEcom ? `+${formatCurrency(metrics.economiaMarketplace)}` : `+${metrics.economiaMarketplace}`}
+                        {canalPrincipal === 'marketplace' || isFood || isEcom ? `+${formatCurrency(metrics.economiaMarketplace)}` : `+${metrics.economiaMarketplace}`}
                       </div>
                     </div>
                     
@@ -488,7 +488,7 @@ const BudgetCalculator: React.FC<BudgetCalculatorProps> = ({ prospect, onBack })
                       <div className="text-2xl font-black italic text-blue-700 tracking-tighter leading-none">
                         {isFood || isEcom 
                           ? `+${((metrics.faturamentoProjetado / (metrics.faturamentoProjetado + (pedidosAtuais * ticketMedio))) * 100).toFixed(1)}%`
-                          : `+${((metrics.pedidosEstimados / capacidadeOperacional) * 100).toFixed(1)}%`}
+                          : `+${((metrics.pedidosEstimados / (capacidadeOperacional || 1)) * 100).toFixed(1)}%`}
                       </div>
                     </div>
 
@@ -694,36 +694,73 @@ const BudgetCalculator: React.FC<BudgetCalculatorProps> = ({ prospect, onBack })
           <section className="space-y-6">
             <h3 className="text-zinc-500 font-black text-[10px] uppercase tracking-[0.3em] border-l-2 border-yellow-400 pl-4">01. Dados da Operação</h3>
 
-            {/* Canal Principal - Apenas para Delivery ou E-commerce */}
-            {(isFood || isEcom) && (
-              <div className="space-y-3">
-                <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">
-                  {isFood ? "Canal Principal Atual" : "Plataforma Principal"}
-                </label>
-                <div className="flex gap-4">
-                  <button
-                    onClick={() => setCanalPrincipal('ifood')}
-                    className={`flex-1 p-4 rounded-2xl border-2 transition-all font-bold text-sm flex items-center justify-center gap-2 ${canalPrincipal === 'ifood'
-                      ? 'border-yellow-400 bg-yellow-400/10 text-yellow-400'
-                      : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700'
-                      }`}
-                  >
-                    <Smartphone className="w-4 h-4" />
-                    {isFood ? "Apps (iFood/Rappi)" : "Marketplaces"}
-                  </button>
-                  <button
-                    onClick={() => setCanalPrincipal('proprio')}
-                    className={`flex-1 p-4 rounded-2xl border-2 transition-all font-bold text-sm flex items-center justify-center gap-2 ${canalPrincipal === 'proprio'
-                      ? 'border-yellow-400 bg-yellow-400/10 text-yellow-400'
-                      : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700'
-                      }`}
-                  >
-                    <Store className="w-4 h-4" />
-                    {isFood ? "Canais Próprios" : "Site Próprio"}
-                  </button>
-                </div>
+            {/* Canal Principal de Vendas / Captação */}
+            <div className="space-y-3">
+              <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1">
+                Canal Principal de Captação / Vendas Atual
+              </label>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCanalPrincipal('marketplace');
+                    if (taxaMarketplace === 0) setTaxaMarketplace(20);
+                  }}
+                  className={`p-3.5 rounded-2xl border-2 transition-all font-bold text-[11px] uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer ${canalPrincipal === 'marketplace'
+                    ? 'border-yellow-400 bg-yellow-400/10 text-yellow-400'
+                    : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700'
+                    }`}
+                >
+                  <Smartphone className="w-4 h-4 shrink-0" />
+                  <span>Marketplaces / Apps</span>
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCanalPrincipal('pago');
+                    setTaxaMarketplace(0);
+                  }}
+                  className={`p-3.5 rounded-2xl border-2 transition-all font-bold text-[11px] uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer ${canalPrincipal === 'pago'
+                    ? 'border-yellow-400 bg-yellow-400/10 text-yellow-400'
+                    : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700'
+                    }`}
+                >
+                  <Target className="w-4 h-4 shrink-0" />
+                  <span>Tráfego Pago</span>
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCanalPrincipal('organico');
+                    setTaxaMarketplace(0);
+                  }}
+                  className={`p-3.5 rounded-2xl border-2 transition-all font-bold text-[11px] uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer ${canalPrincipal === 'organico'
+                    ? 'border-yellow-400 bg-yellow-400/10 text-yellow-400'
+                    : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700'
+                    }`}
+                >
+                  <TrendingUp className="w-4 h-4 shrink-0" />
+                  <span>Orgânico / Indicação</span>
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCanalPrincipal('outbound');
+                    setTaxaMarketplace(0);
+                  }}
+                  className={`p-3.5 rounded-2xl border-2 transition-all font-bold text-[11px] uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer ${canalPrincipal === 'outbound'
+                    ? 'border-yellow-400 bg-yellow-400/10 text-yellow-400'
+                    : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700'
+                    }`}
+                >
+                  <Zap className="w-4 h-4 shrink-0" />
+                  <span>Outbound / Comercial</span>
+                </button>
               </div>
-            )}
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
@@ -787,11 +824,11 @@ const BudgetCalculator: React.FC<BudgetCalculatorProps> = ({ prospect, onBack })
                   className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-4 text-white font-bold focus:border-yellow-400 outline-none transition-all"
                 />
               </div>
-              {(isFood || isEcom) && (
+              {canalPrincipal === 'marketplace' && (
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest ml-1 flex items-center gap-2">
                     <Percent className="w-3 h-3 text-yellow-400" />
-                    {isFood ? "Taxa Marketplace (%)" : "Taxa Gateway/Plataforma (%)"}
+                    Taxa Marketplace / Intermediação (%)
                   </label>
                   <input
                     type="number"

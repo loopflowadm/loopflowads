@@ -2,9 +2,30 @@ import React from 'react';
 
 interface LogoProps {
   className?: string;
+  symbolOnly?: boolean;
 }
 
-const Logo: React.FC<LogoProps> = ({ className = "w-full h-full" }) => {
+const Logo: React.FC<LogoProps> = ({ className = "w-full h-full", symbolOnly = false }) => {
+  if (symbolOnly) {
+    return (
+      <svg 
+        viewBox="1800 0 7200 5310" 
+        className={className}
+        xmlns="http://www.w3.org/2000/svg" 
+        xmlSpace="preserve" 
+        fillRule="evenodd" 
+        clipRule="evenodd" 
+        imageRendering="optimizeQuality" 
+        shapeRendering="geometricPrecision" 
+        textRendering="geometricPrecision"
+      >
+        <g fill="#fc0" fillRule="nonzero">
+          <path d="M4690 1510c-40-420-400-750-840-750-460 0-840 380-840 840 0 420 320 780 740 830-190 190-330 420-420 680-630-220-1070-810-1070-1510C2260 720 2970 0 3850 0c860 0 1550 670 1600 1510 0 90 0 160 20 250 70 400 420 680 820 680 460 0 840-380 840-840 0-800-1020-1140-1510-510-70-260-200-500-380-700 1030-890 2650-170 2650 1210 0 1270-1400 1970-2380 1390-590-340-1280 80-1280 720 0 460 380 840 840 840 600 0 1000-620 770-1160 260 60 540 70 800 20 190 980-560 1900-1570 1900-1110 0-1870-1110-1500-2140 130-390 380-650 720-860 270-160 430-470 400-800"/>
+        </g>
+      </svg>
+    );
+  }
+
   return (
     <svg 
       viewBox="0 0 10160 5310" 

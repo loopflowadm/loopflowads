@@ -371,8 +371,8 @@ const ProspectDashboard: React.FC = () => {
               
               {/* Logo */}
               <div className="mb-8 shrink-0">
-                <div className="w-12 h-6">
-                  <Logo className="w-full h-full text-yellow-400" />
+                <div className="w-10 h-10 flex items-center justify-center">
+                  <Logo className="w-8 h-8 text-yellow-400" symbolOnly />
                 </div>
               </div>
 
@@ -458,8 +458,8 @@ const ProspectDashboard: React.FC = () => {
               {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
             <div className="flex-1 flex items-center justify-center">
-              <div className="w-16 h-7">
-                <Logo className="w-full h-full" />
+              <div className="w-8 h-8 flex items-center justify-center">
+                <Logo className="w-7 h-7 text-yellow-400" symbolOnly />
               </div>
             </div>
           </div>
@@ -993,7 +993,7 @@ const ProspectLogin: React.FC<{ onLoginSuccess: () => void }> = ({ onLoginSucces
         <div className="absolute -top-24 -left-24 w-48 h-48 bg-yellow-400/10 rounded-full blur-[80px] pointer-events-none"></div>
         
         <div className="text-center space-y-4">
-          <div className="w-28 h-11 mx-auto"><Logo className="w-full h-full" /></div>
+          <div className="w-12 h-12 mx-auto"><Logo className="w-full h-full text-yellow-400" symbolOnly /></div>
           <div className="space-y-1">
             <h2 className="text-xl font-black italic uppercase tracking-tighter text-white">Central de Prospecção</h2>
             <p className="text-zinc-500 font-bold text-[9px] uppercase tracking-widest leading-relaxed">Acesso restrito para gestores da Loop Flow</p>

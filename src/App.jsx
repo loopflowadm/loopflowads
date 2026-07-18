@@ -20,19 +20,29 @@ const scrollToTop = () => {
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [hash, setHash] = useState(window.location.hash || '#/');
+  const [currentPath, setCurrentPath] = useState({
+    pathname: window.location.pathname,
+    hash: window.location.hash
+  });
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  // Monitora mudanças de hash na URL
+  // Monitora mudanças de hash e de histórico na URL
   useEffect(() => {
-    const handleHashChange = () => {
-      setHash(window.location.hash || '#/');
+    const handleLocationChange = () => {
+      setCurrentPath({
+        pathname: window.location.pathname,
+        hash: window.location.hash
+      });
     };
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('hashchange', handleLocationChange);
+    window.addEventListener('popstate', handleLocationChange);
+    return () => {
+      window.removeEventListener('hashchange', handleLocationChange);
+      window.removeEventListener('popstate', handleLocationChange);
+    };
   }, []);
 
   // Splash Screen de entrada (1.5s)
@@ -52,13 +62,21 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Renderiza o Dashboard de Prospecção se a rota for #/prospeccao
-  if (hash.startsWith('#/prospeccao')) {
+  // Verifica se a rota condiz com prospecção (com ou sem hash)
+  const isProspect = currentPath.pathname === '/prospeccao' || 
+                    currentPath.pathname.startsWith('/prospeccao/') || 
+                    currentPath.hash.startsWith('#/prospeccao');
+
+  // Verifica se a rota condiz com performance (com ou sem hash)
+  const isPerformance = currentPath.pathname === '/performance' || 
+                       currentPath.pathname.startsWith('/performance/') || 
+                       currentPath.hash.startsWith('#/performance');
+
+  if (isProspect) {
     return <ProspectDashboard />;
   }
 
-  // Renderiza o Dashboard de Desempenho do Cliente
-  if (hash.startsWith('#/performance')) {
+  if (isPerformance) {
     return <ClientPerformanceView />;
   }
 

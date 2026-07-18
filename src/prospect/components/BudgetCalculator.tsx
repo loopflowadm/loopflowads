@@ -483,11 +483,11 @@ const BudgetCalculator: React.FC<BudgetCalculatorProps> = ({ prospect, onBack })
                     
                     <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-100 flex flex-col justify-center overflow-hidden items-center text-center">
                       <div className="text-[8px] font-bold text-blue-500/60 uppercase tracking-widest mb-2">
-                        {isFood || isEcom ? "Market Share" : isLocal ? "Ocupação Agenda" : "Aproveitamento Op."}
+                        {isFood || isEcom ? "Crescimento Estimado" : isLocal ? "Ocupação Agenda" : "Aproveitamento Op."}
                       </div>
                       <div className="text-2xl font-black italic text-blue-700 tracking-tighter leading-none">
                         {isFood || isEcom 
-                          ? `+${((metrics.faturamentoProjetado / (metrics.faturamentoProjetado + (pedidosAtuais * ticketMedio))) * 100).toFixed(1)}%`
+                          ? (pedidosAtuais > 0 ? `+${((metrics.faturamentoProjetado / (pedidosAtuais * ticketMedio)) * 100).toFixed(0)}%` : '+100%')
                           : `+${((metrics.pedidosEstimados / (capacidadeOperacional || 1)) * 100).toFixed(1)}%`}
                       </div>
                     </div>

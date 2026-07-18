@@ -70,16 +70,16 @@ const ProspectDashboard: React.FC = () => {
     setProspects(updatedList);
     localStorage.setItem('loopflow_prospects:v1', JSON.stringify(updatedList));
 
-    try {
-      await supabase.from('prospects')
-        .update({
-          google_sheets_url: editGoogleSheetsUrl || null,
-          meta_ad_account_id: editMetaAdAccountId || null,
-          meta_access_token: editMetaAccessToken || null
-        })
-        .eq('id', id);
-    } catch {
-      // Silently fail — data already saved locally
+    const { error } = await supabase.from('prospects')
+      .update({
+        google_sheets_url: editGoogleSheetsUrl || null,
+        meta_ad_account_id: editMetaAdAccountId || null,
+        meta_access_token: editMetaAccessToken || null
+      })
+      .eq('id', id);
+
+    if (error) {
+      console.warn("Erro ao sincronizar integrações com o Supabase:", error.message);
     }
 
     setEditingIntegrationsProspect(null);
@@ -102,8 +102,11 @@ const ProspectDashboard: React.FC = () => {
     supabase.from('prospects')
       .update({ status: newStatus })
       .eq('id', id)
-      .then(() => {})
-      .catch(() => {});
+      .then(({ error }) => {
+        if (error) {
+          console.warn("Erro ao atualizar status no Supabase:", error.message);
+        }
+      });
   };
 
   const [draggedOverStageId, setDraggedOverStageId] = useState<string | null>(null);
@@ -170,7 +173,7 @@ const ProspectDashboard: React.FC = () => {
     }
   };
 
-  // Carrega os prospects do Supabase (com fallback para localStorage)
+  // Carrega os prospects do Supabase (com fallback para localStorage e mesclagem)
   const loadProspects = async () => {
     try {
       const { data, error } = await supabase
@@ -180,19 +183,26 @@ const ProspectDashboard: React.FC = () => {
 
       if (error) throw error;
 
-        const mapped = data.map((p: any) => ({
+      // Recupera backup para mesclar dados locais que possam não estar na nuvem
+      const backup = JSON.parse(localStorage.getItem('loopflow_prospects:v1') || '[]');
+      const backupMap = new Map(backup.map((p: any) => [p.id, p]));
+
+      const mapped = data.map((p: any) => {
+        const local = backupMap.get(p.id);
+        return {
           id: p.id,
           name: p.name,
           segment: p.segment,
           logo: p.logo || '',
           googleSheetsUrl: p.google_sheets_url || '',
-          status: p.status || 'novo',
-          metaAdAccountId: p.meta_ad_account_id || '',
-          metaAccessToken: p.meta_access_token || '',
+          status: (p.status !== undefined && p.status !== null) ? p.status : (local?.status || 'novo'),
+          metaAdAccountId: (p.meta_ad_account_id !== undefined && p.meta_ad_account_id !== null) ? p.meta_ad_account_id : (local?.metaAdAccountId || ''),
+          metaAccessToken: (p.meta_access_token !== undefined && p.meta_access_token !== null) ? p.meta_access_token : (local?.metaAccessToken || ''),
           date: p.created_at
-        }));
-        setProspects(mapped);
-        localStorage.setItem('loopflow_prospects:v1', JSON.stringify(mapped));
+        };
+      });
+      setProspects(mapped);
+      localStorage.setItem('loopflow_prospects:v1', JSON.stringify(mapped));
     } catch {
       const backup = JSON.parse(localStorage.getItem('loopflow_prospects:v1') || '[]');
       setProspects(backup);
@@ -218,21 +228,21 @@ const ProspectDashboard: React.FC = () => {
     };
 
     // Salva no Supabase (Nuvem)
-    try {
-      await supabase.from('prospects').insert([
-        {
-          id: id,
-          name: data.name,
-          segment: data.segment,
-          logo: data.logo || null,
-          google_sheets_url: data.googleSheetsUrl || null,
-          status: 'novo',
-          meta_ad_account_id: data.metaAdAccountId || null,
-          meta_access_token: data.metaAccessToken || null
-        }
-      ]);
-    } catch {
-      // Silently fail — data saved locally
+    const { error } = await supabase.from('prospects').insert([
+      {
+        id: id,
+        name: data.name,
+        segment: data.segment,
+        logo: data.logo || null,
+        google_sheets_url: data.googleSheetsUrl || null,
+        status: 'novo',
+        meta_ad_account_id: data.metaAdAccountId || null,
+        meta_access_token: data.metaAccessToken || null
+      }
+    ]);
+
+    if (error) {
+      console.warn("Erro ao inserir novo lead no Supabase:", error.message);
     }
 
     // Salva no localStorage como redundância/backup
@@ -286,8 +296,11 @@ const ProspectDashboard: React.FC = () => {
     supabase.from('prospects')
       .delete()
       .eq('id', id)
-      .then(() => {})
-      .catch(() => {});
+      .then(({ error }) => {
+        if (error) {
+          console.warn("Erro ao deletar lead no Supabase:", error.message);
+        }
+      });
   };
 
   const startPitch = (p: ProspectWithId) => {

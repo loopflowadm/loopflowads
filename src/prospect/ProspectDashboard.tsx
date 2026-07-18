@@ -605,7 +605,7 @@ const ProspectDashboard: React.FC = () => {
         )}
 
         {view === 'list' && (
-          <div className="max-w-7xl w-full mx-auto px-8 py-8 flex-1 flex flex-col">
+          <div className="max-w-7xl w-full mx-auto px-4 md:px-8 py-6 md:py-8 flex-1 flex flex-col">
             {/* Page Header — padrão unificado */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8 pb-6 border-b border-zinc-900">
               <div>
@@ -820,13 +820,13 @@ const ProspectDashboard: React.FC = () => {
         )}
 
         {view === 'setup' && (
-          <div className="p-8 flex-1 flex items-center justify-center">
+          <div className="p-4 md:p-8 flex-1 flex items-center justify-center">
             <ProspectSetup onComplete={handleSetupComplete} />
           </div>
         )}
 
         {view === 'menu' && activeProspect && (
-          <div className="p-8">
+          <div className="p-4 md:p-8">
             <PathSelector
               prospect={activeProspect}
               onSelect={handlePathSelect}
@@ -836,7 +836,7 @@ const ProspectDashboard: React.FC = () => {
         )}
 
         {view === 'calculator' && activeProspect && (
-          <div className="p-8 w-full">
+          <div className="p-4 md:p-8 w-full">
             <BudgetCalculator
               prospect={activeProspect}
               onBack={() => setView('list')}
@@ -845,7 +845,7 @@ const ProspectDashboard: React.FC = () => {
         )}
 
         {view === 'pitch-editor' && activeProspect && selectedPath && (
-          <div className="p-8 w-full animate-fade-in">
+          <div className="p-4 md:p-8 w-full animate-fade-in">
             <PitchEditor
               prospect={activeProspect}
               path={selectedPath}
@@ -865,7 +865,7 @@ const ProspectDashboard: React.FC = () => {
         )}
 
         {view === 'performance-dashboard' && activeProspect && (
-          <div className="p-8 w-full">
+          <div className="p-4 md:p-8 w-full">
             <PerformanceDashboard
               prospect={activeProspect}
               onBack={() => setView('list')}
@@ -875,7 +875,7 @@ const ProspectDashboard: React.FC = () => {
 
         {editingIntegrationsProspect && (
           <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-6 animate-fade-in">
-            <div className="max-w-md w-full bg-zinc-900 border border-zinc-800 p-8 rounded-[32px] shadow-2xl space-y-6 text-left relative">
+            <div className="max-w-md w-full bg-zinc-900 border border-zinc-800 p-6 md:p-8 rounded-[32px] shadow-2xl space-y-6 text-left relative">
               <div>
                 <span className="text-[10px] font-black text-yellow-400 uppercase tracking-widest bg-yellow-400/10 px-2.5 py-1 rounded border border-yellow-400/20">
                   {editingIntegrationsProspect.name}
@@ -966,7 +966,7 @@ const ProspectLogin: React.FC<{ onLoginSuccess: () => void }> = ({ onLoginSucces
 
   return (
     <div className="min-h-screen bg-[#0B0B0B] flex items-center justify-center p-6 text-left selection:bg-yellow-400 selection:text-black">
-      <div className="max-w-md w-full bg-zinc-900/40 border border-zinc-850 rounded-[32px] p-10 space-y-8 shadow-2xl relative overflow-hidden">
+      <div className="max-w-md w-full bg-zinc-900/40 border border-zinc-850 rounded-[32px] p-6 sm:p-10 space-y-8 shadow-2xl relative overflow-hidden">
         <div className="absolute -top-24 -left-24 w-48 h-48 bg-yellow-400/10 rounded-full blur-[80px] pointer-events-none"></div>
         
         <div className="text-center space-y-4">

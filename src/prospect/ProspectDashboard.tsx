@@ -9,7 +9,7 @@ import PerformanceDashboard from './components/PerformanceDashboard';
 import PitchEditor from './components/PitchEditor';
 import Logo from './components/Logo';
 import { supabase } from '../lib/supabase';
-import { Trash2, Play, Calendar, Plus, TrendingUp, GripVertical, Settings, Calculator, Menu, X, CheckCircle2, Sun, Moon, LayoutGrid, LogOut, ChevronDown } from 'lucide-react';
+import { Trash2, Play, Calendar, Plus, TrendingUp, GripVertical, Settings, Calculator, Menu, X, CheckCircle2, Sun, Moon, LayoutGrid, LogOut, ChevronDown, Briefcase } from 'lucide-react';
 
 // Toast notification system
 type Toast = { id: string; message: string; type: 'success' | 'error' };
@@ -394,32 +394,41 @@ const ProspectDashboard: React.FC = () => {
                   </span>
                 </button>
 
-                {/* Active Lead Workspace Button */}
-                {activeProspect && (
-                  <button
-                    onClick={() => {
+                {/* Active Lead Workspace Button - ALWAYS FIXED/VISIBLE */}
+                <button
+                  onClick={() => {
+                    if (activeProspect) {
                       setView('performance-dashboard');
-                      setSidebarOpen(false);
-                    }}
-                    className={`w-12 h-12 flex items-center justify-center rounded-2xl transition-all cursor-pointer group relative border ${
-                      view !== 'list'
-                        ? 'bg-yellow-400 text-black border-transparent shadow-lg shadow-yellow-400/10'
-                        : 'text-zinc-400 hover:text-white hover:bg-zinc-900/60 border-zinc-900'
-                    }`}
-                    aria-label={`Abrir workspace de ${activeProspect.name}`}
-                  >
-                    {activeProspect.logo ? (
+                    } else if (prospects.length > 0) {
+                      setActiveProspect(prospects[0]);
+                      setView('performance-dashboard');
+                    } else {
+                      showToast("Nenhum lead cadastrado. Cadastre um lead primeiro!", "error");
+                    }
+                    setSidebarOpen(false);
+                  }}
+                  className={`w-12 h-12 flex items-center justify-center rounded-2xl transition-all cursor-pointer group relative border ${
+                    view !== 'list'
+                      ? 'bg-yellow-400 text-black border-transparent shadow-lg shadow-yellow-400/10'
+                      : 'text-zinc-400 hover:text-white hover:bg-zinc-900/60 border-zinc-900'
+                  }`}
+                  aria-label="Workspace do Lead"
+                >
+                  {activeProspect ? (
+                    activeProspect.logo ? (
                       <img src={activeProspect.logo} alt={activeProspect.name} className="w-6 h-6 rounded object-cover" />
                     ) : (
-                      <span className="text-[10px] font-black uppercase">
+                      <span className="text-[10px] font-black uppercase text-inherit">
                         {activeProspect.name.charAt(0)}
                       </span>
-                    )}
-                    <span className="absolute left-16 bg-zinc-900 text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-1.5 rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity border border-zinc-800 shadow-xl whitespace-nowrap z-50">
-                      Workspace: {activeProspect.name}
-                    </span>
-                  </button>
-                )}
+                    )
+                  ) : (
+                    <Briefcase className="w-5 h-5 shrink-0" />
+                  )}
+                  <span className="absolute left-16 bg-zinc-900 text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-1.5 rounded-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity border border-zinc-800 shadow-xl whitespace-nowrap z-50">
+                    {activeProspect ? `Workspace: ${activeProspect.name}` : 'Área do Lead'}
+                  </span>
+                </button>
               </div>
 
             </div>
@@ -616,50 +625,46 @@ const ProspectDashboard: React.FC = () => {
                 </div>
               </div>
     
-              {/* Center Column: Lead navigation tabs OR CRM Title */}
+              {/* Center Column: Lead navigation tabs */}
               <div className="w-1/3 flex justify-center">
-                {view === 'list' ? (
-                  <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Painel CRM</span>
-                ) : (
-                  activeProspect && (
-                    <nav className={`flex items-center gap-1 p-1 rounded-xl border ${
-                      theme === 'light' ? 'bg-zinc-100 border-zinc-200/60' : 'bg-zinc-900/60 border-zinc-900'
-                    }`}>
-                      <button
-                        onClick={() => setView('performance-dashboard')}
-                        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[9.5px] font-black uppercase tracking-wider transition-all cursor-pointer ${
-                          view === 'performance-dashboard'
-                            ? 'bg-yellow-400 text-black shadow-sm'
-                            : 'text-zinc-550 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
-                        }`}
-                      >
-                        <TrendingUp className="w-3.5 h-3.5 shrink-0" />
-                        <span>Métricas</span>
-                      </button>
-                      <button
-                        onClick={() => setView('calculator')}
-                        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[9.5px] font-black uppercase tracking-wider transition-all cursor-pointer ${
-                          view === 'calculator'
-                            ? 'bg-yellow-400 text-black shadow-sm'
-                            : 'text-zinc-550 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
-                        }`}
-                      >
-                        <Calculator className="w-3.5 h-3.5 shrink-0" />
-                        <span>Calculadora</span>
-                      </button>
-                      <button
-                        onClick={() => setView('menu')}
-                        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[9.5px] font-black uppercase tracking-wider transition-all cursor-pointer ${
-                          view === 'menu' || view === 'pitch-editor'
-                            ? 'bg-yellow-400 text-black shadow-sm'
-                            : 'text-zinc-555 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
-                        }`}
-                      >
-                        <Play className="w-3.5 h-3.5 shrink-0" />
-                        <span>Pitch</span>
-                      </button>
-                    </nav>
-                  )
+                {view !== 'list' && activeProspect && (
+                  <nav className={`flex items-center gap-1 p-1 rounded-xl border ${
+                    theme === 'light' ? 'bg-zinc-100 border-zinc-200/60' : 'bg-zinc-900/60 border-zinc-900'
+                  }`}>
+                    <button
+                      onClick={() => setView('performance-dashboard')}
+                      className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[9.5px] font-black uppercase tracking-wider transition-all cursor-pointer ${
+                        view === 'performance-dashboard'
+                          ? 'bg-yellow-400 text-black shadow-sm'
+                          : 'text-zinc-550 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+                      }`}
+                    >
+                      <TrendingUp className="w-3.5 h-3.5 shrink-0" />
+                      <span>Métricas</span>
+                    </button>
+                    <button
+                      onClick={() => setView('calculator')}
+                      className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[9.5px] font-black uppercase tracking-wider transition-all cursor-pointer ${
+                        view === 'calculator'
+                          ? 'bg-yellow-400 text-black shadow-sm'
+                          : 'text-zinc-550 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+                      }`}
+                    >
+                      <Calculator className="w-3.5 h-3.5 shrink-0" />
+                      <span>Calculadora</span>
+                    </button>
+                    <button
+                      onClick={() => setView('menu')}
+                      className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[9.5px] font-black uppercase tracking-wider transition-all cursor-pointer ${
+                        view === 'menu' || view === 'pitch-editor'
+                          ? 'bg-yellow-400 text-black shadow-sm'
+                          : 'text-zinc-555 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+                      }`}
+                    >
+                      <Play className="w-3.5 h-3.5 shrink-0" />
+                      <span>Pitch</span>
+                    </button>
+                  </nav>
                 )}
               </div>
     

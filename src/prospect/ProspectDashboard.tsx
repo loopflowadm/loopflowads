@@ -354,9 +354,10 @@ const ProspectDashboard: React.FC = () => {
             w-72 bg-zinc-950 border-r border-zinc-900
             flex flex-col justify-between h-screen shrink-0 select-none
             transition-transform duration-300 ease-in-out
+            ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
           `}>
           {/* Sidebar inner — flex col h-full */}
-          <div className={`flex flex-col h-full overflow-hidden transition-transform duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+          <div className="flex flex-col h-full overflow-hidden">
 
             <div className="px-5 pt-6 pb-5 border-b border-zinc-900 shrink-0">
               <div className="w-20 h-9">
@@ -369,7 +370,7 @@ const ProspectDashboard: React.FC = () => {
 
               {/* Nav */}
               <button
-                onClick={() => { setView('list'); }}
+                onClick={() => { setView('list'); setSidebarOpen(false); }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold uppercase text-[10px] tracking-widest transition-all cursor-pointer ${
                   view === 'list'
                     ? 'bg-yellow-400 text-black shadow-lg shadow-yellow-400/10'
@@ -470,6 +471,7 @@ const ProspectDashboard: React.FC = () => {
                                 onClick={() => {
                                   setActiveProspect(p);
                                   setLeadsOpen(false);
+                                  setSidebarOpen(false);
                                   if (view !== 'list') setView('performance-dashboard');
                                 }}
                                 className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl transition-all cursor-pointer text-left ${
@@ -503,7 +505,7 @@ const ProspectDashboard: React.FC = () => {
                           {/* Limpar seleção */}
                           {activeProspect && (
                             <button
-                              onClick={() => { setActiveProspect(null); setLeadsOpen(false); }}
+                              onClick={() => { setActiveProspect(null); setLeadsOpen(false); setSidebarOpen(false); }}
                               className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-zinc-600 hover:text-zinc-400 hover:bg-zinc-900/40 transition-all cursor-pointer text-left border border-transparent"
                             >
                               <X className="w-3.5 h-3.5 shrink-0" />
@@ -525,7 +527,7 @@ const ProspectDashboard: React.FC = () => {
                       className="mt-1 ml-3 pl-3 border-l-2 border-zinc-800 space-y-0.5"
                     >
                       <button
-                        onClick={() => { setView('performance-dashboard'); }}
+                        onClick={() => { setView('performance-dashboard'); setSidebarOpen(false); }}
                         className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl font-bold uppercase text-[9.5px] tracking-widest transition-all cursor-pointer ${
                           view === 'performance-dashboard'
                             ? 'bg-yellow-400 text-black'
@@ -536,7 +538,7 @@ const ProspectDashboard: React.FC = () => {
                         <span>Métricas &amp; KPIs</span>
                       </button>
                       <button
-                        onClick={() => { setView('calculator'); }}
+                        onClick={() => { setView('calculator'); setSidebarOpen(false); }}
                         className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl font-bold uppercase text-[9.5px] tracking-widest transition-all cursor-pointer ${
                           view === 'calculator'
                             ? 'bg-yellow-400 text-black'
@@ -547,7 +549,7 @@ const ProspectDashboard: React.FC = () => {
                         <span>Calculadora</span>
                       </button>
                       <button
-                        onClick={() => { setView('menu'); }}
+                        onClick={() => { setView('menu'); setSidebarOpen(false); }}
                         className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl font-bold uppercase text-[9.5px] tracking-widest transition-all cursor-pointer ${
                           view === 'menu'
                             ? 'bg-yellow-400 text-black'

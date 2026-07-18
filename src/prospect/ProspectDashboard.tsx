@@ -349,15 +349,9 @@ const ProspectDashboard: React.FC = () => {
           )}
 
           {/* Sidebar panel */}
-          <div className={`
-            fixed md:sticky top-0 z-40 md:z-auto
-            w-72 bg-zinc-950 border-r border-zinc-900
-            flex flex-col justify-between h-screen shrink-0 select-none
-            transition-transform duration-300 ease-in-out
-            ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-          `}>
-          {/* Sidebar inner — flex col h-full */}
-          <div className="flex flex-col h-full overflow-hidden">
+          <div className={`fixed md:sticky top-0 left-0 z-40 md:z-auto w-72 bg-zinc-950 border-r border-zinc-900 flex flex-col justify-between h-screen shrink-0 select-none transition-transform duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+          {/* Sidebar inner — flex col flex-1 min-h-0 */}
+          <div className="flex flex-col flex-1 min-h-0">
 
             <div className="px-5 pt-6 pb-5 border-b border-zinc-900 shrink-0">
               <div className="w-20 h-9">

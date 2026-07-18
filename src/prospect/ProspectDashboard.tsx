@@ -669,8 +669,24 @@ const ProspectDashboard: React.FC = () => {
                 )}
               </div>
     
-              {/* Right Column: Spacer to ensure absolute centering */}
-              <div className="w-1/3 flex justify-end" />
+              {/* Right Column: Lead settings button or Spacer to ensure absolute centering */}
+              <div className="w-1/3 flex justify-end">
+                {view !== 'list' && activeProspect && (
+                  <button
+                    type="button"
+                    onClick={() => setEditingIntegrationsProspect(activeProspect as ProspectWithId)}
+                    className={`flex items-center gap-2 px-3.5 py-2 rounded-xl border transition-all cursor-pointer text-[10px] font-black uppercase tracking-wider ${
+                      theme === 'light'
+                        ? 'border-zinc-200 hover:bg-zinc-50 text-zinc-600 hover:text-zinc-900 bg-white shadow-sm'
+                        : 'border-zinc-900 hover:bg-zinc-900/60 text-zinc-400 hover:text-white bg-zinc-950'
+                    }`}
+                    title="Configurações e Integrações do Lead"
+                  >
+                    <Settings className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Configurar Lead</span>
+                  </button>
+                )}
+              </div>
             </div>
           </header>
         )}

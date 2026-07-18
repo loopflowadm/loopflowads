@@ -23,23 +23,6 @@ const PathSelector: React.FC<PathSelectorProps> = ({ prospect, onSelect }) => {
             Escolha o modelo de apresentação para {prospect.name}
           </p>
         </div>
-
-        {/* Cliente info compacto */}
-        <div className="flex items-center gap-3 bg-zinc-900/50 px-4 py-2.5 rounded-xl border border-zinc-800 shrink-0">
-          {prospect.logo ? (
-            <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0">
-              <img src={prospect.logo} alt={prospect.name} className="w-full h-full object-cover" />
-            </div>
-          ) : (
-            <div className="w-8 h-8 bg-yellow-400 text-black rounded-lg flex items-center justify-center text-sm font-black italic shrink-0">
-              {prospect.name.charAt(0).toUpperCase()}
-            </div>
-          )}
-          <div>
-            <div className="text-white font-black text-xs uppercase tracking-tight">{prospect.name}</div>
-            <div className="text-yellow-400 font-bold text-[9px] uppercase tracking-widest">{prospect.segment}</div>
-          </div>
-        </div>
       </div>
 
       {/* Divider label */}

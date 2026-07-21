@@ -45,31 +45,31 @@ export default function CredibilitySection({ onOpenModal }) {
 
             {/* Certificação Card com badges circulares */}
             <div className="p-6 sm:p-8 text-left bg-white border border-neutral-200/70 rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.03)] flex flex-col justify-center">
-              <div className="flex items-center gap-2.5 text-brand-black font-bold text-base tracking-tight mb-6">
+              <div className="flex items-center gap-2.5 text-brand-black font-bold text-base tracking-tight mb-4 sm:mb-6">
                 <Award className="w-5 h-5 text-[#0064e0] shrink-0" />
                 <span>Certificado pelas próprias plataformas que operamos</span>
               </div>
 
-              {/* Selos / Badges em formato de imagem oficial (Grid responsivo cobrindo todo o espaço com maior preenchimento) */}
-              <div className="grid grid-cols-4 gap-3 sm:gap-4 w-full mt-6">
-                {/* Meta Media Buying */}
-                <div className="aspect-square bg-white rounded-3xl flex items-center justify-center shadow-md border border-neutral-200/50 hover:scale-105 transition-transform duration-300 select-none overflow-hidden p-3">
-                  <img src="/badge_1.png" alt="Meta Certified Media Buying Professional" className="w-full h-full object-contain" />
+              {/* Selos / Badges sem os cards brancos da imagem, exibindo somente as logos com contornos 100% integrados */}
+              <div className="grid grid-cols-4 gap-2 sm:gap-6 w-full mt-4 sm:mt-6 items-center justify-items-center">
+                {/* Meta Media Buying - Redondo */}
+                <div className="aspect-square w-full max-w-[115px] sm:max-w-[150px] flex items-center justify-center overflow-hidden rounded-full hover:scale-105 transition-transform duration-300 select-none">
+                  <img src="/badge_1.png" alt="Meta Certified Media Buying Professional" className="w-full h-full object-cover scale-[1.30]" />
                 </div>
 
-                {/* Meta Digital Marketing */}
-                <div className="aspect-square bg-white rounded-3xl flex items-center justify-center shadow-md border border-neutral-200/50 hover:scale-105 transition-transform duration-300 select-none overflow-hidden p-3">
-                  <img src="/badge_2.png" alt="Meta Certified Digital Marketing Associate" className="w-full h-full object-contain" />
+                {/* Meta Digital Marketing - Redondo */}
+                <div className="aspect-square w-full max-w-[115px] sm:max-w-[150px] flex items-center justify-center overflow-hidden rounded-full hover:scale-105 transition-transform duration-300 select-none">
+                  <img src="/badge_2.png" alt="Meta Certified Digital Marketing Associate" className="w-full h-full object-cover scale-[1.30]" />
                 </div>
 
-                {/* Meta Media Measurement */}
-                <div className="aspect-square bg-white rounded-3xl flex items-center justify-center shadow-md border border-neutral-200/50 hover:scale-105 transition-transform duration-300 select-none overflow-hidden p-3">
-                  <img src="/badge_3.png" alt="Meta Certified Media Measurement Specialist" className="w-full h-full object-contain" />
+                {/* Meta Media Measurement - Quadrado Arredondado */}
+                <div className="aspect-square w-full max-w-[115px] sm:max-w-[150px] flex items-center justify-center overflow-hidden rounded-[18%] hover:scale-105 transition-transform duration-300 select-none">
+                  <img src="/badge_3.png" alt="Meta Certified Media Measurement Specialist" className="w-full h-full object-cover scale-[1.26]" />
                 </div>
 
-                {/* Google Ads */}
-                <div className="aspect-square bg-white rounded-3xl flex items-center justify-center shadow-md border border-neutral-200/50 hover:scale-105 transition-transform duration-300 select-none overflow-hidden p-3">
-                  <img src="/badge_4.png" alt="Google Ads Search Certified" className="w-full h-full object-contain" />
+                {/* Google Ads - Redondo (Escala ajustada sem cortar o anel colorido) */}
+                <div className="aspect-square w-full max-w-[115px] sm:max-w-[150px] flex items-center justify-center overflow-hidden rounded-full hover:scale-105 transition-transform duration-300 select-none">
+                  <img src="/badge_4.png" alt="Google Ads Search Certified" className="w-full h-full object-cover scale-[1.18]" />
                 </div>
               </div>
             </div>

@@ -6,7 +6,6 @@ import ProspectSetup from './components/ProspectSetup';
 import PathSelector from './components/PathSelector';
 import BudgetCalculator from './components/BudgetCalculator';
 import PerformanceDashboard from './components/PerformanceDashboard';
-import PitchEditor from './components/PitchEditor';
 import Logo from './components/Logo';
 import { supabase } from '../lib/supabase';
 import { Trash2, Play, Calendar, Plus, TrendingUp, GripVertical, Settings, Calculator, Menu, X, CheckCircle2, Sun, Moon, LayoutGrid, LogOut, ChevronDown, Briefcase } from 'lucide-react';
@@ -312,7 +311,19 @@ const ProspectDashboard: React.FC = () => {
 
   const handlePathSelect = (path: Path) => {
     setSelectedPath(path);
-    setView('pitch-editor');
+    if (activeProspect) {
+      setCustomSlides(getPitchFlowBySegment(activeProspect.segment, path.id, activeProspect));
+    }
+    setView('presentation');
+  };
+
+  const handleUpdateProspect = (updated: ProspectData) => {
+    setActiveProspect(updated);
+    if ((updated as any).id) {
+      const list = prospects.map(p => p.id === (updated as any).id ? { ...p, ...updated } : p);
+      setProspects(list);
+      localStorage.setItem('loopflow_prospects:v1', JSON.stringify(list));
+    }
   };
 
   const handleStartPresentation = (slides: Slide[]) => {
@@ -729,15 +740,14 @@ const ProspectDashboard: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setEditingIntegrationsProspect(activeProspect as ProspectWithId)}
-                    className={`flex items-center gap-2 px-3.5 py-2 rounded-xl border transition-all cursor-pointer text-[10px] font-black uppercase tracking-wider ${
+                    className={`flex items-center justify-center p-2 rounded-xl border transition-all cursor-pointer ${
                       theme === 'light'
                         ? 'border-zinc-200 hover:bg-zinc-50 text-zinc-600 hover:text-zinc-900 bg-white shadow-sm'
                         : 'border-zinc-900 hover:bg-zinc-900/60 text-zinc-400 hover:text-white bg-zinc-950'
                     }`}
                     title="Configurações e Integrações do Lead"
                   >
-                    <Settings className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">Configurar Lead</span>
+                    <Settings className="w-4 h-4" />
                   </button>
                 )}
               </div>
@@ -985,23 +995,12 @@ const ProspectDashboard: React.FC = () => {
           </div>
         )}
         
-        {view === 'pitch-editor' && activeProspect && selectedPath && (
-          <div className="w-full animate-fade-in">
-            <PitchEditor
-              prospect={activeProspect}
-              path={selectedPath}
-              defaultSlides={getPitchFlowBySegment(activeProspect.segment, selectedPath.id)}
-              onBack={() => setView('menu')}
-              onStartPresentation={handleStartPresentation}
-            />
-          </div>
-        )}
-        
         {view === 'presentation' && activeProspect && selectedPath && (
           <Presentation
             slides={customSlides}
             prospect={activeProspect}
             onExit={handleExitToMenu}
+            onUpdateProspect={handleUpdateProspect}
           />
         )}
         

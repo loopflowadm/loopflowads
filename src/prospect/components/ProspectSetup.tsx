@@ -143,6 +143,143 @@ const ProspectSetup: React.FC<ProspectSetupProps> = ({ onComplete }) => {
             </div>
           </div>
 
+          {/* Seção 3: Dados da Proposta Comercial */}
+          <div className="space-y-6 pt-2">
+            <h3 className="text-zinc-500 font-black text-[9px] uppercase tracking-[0.25em] border-l-2 border-yellow-400 pl-3">03. Proposta Comercial & Diagnóstico (Opcional)</h3>
+            
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Situação de Marketing</label>
+                <input
+                  type="text"
+                  placeholder="Ex: Investimento de R$ 5.000/mês, CPA alto e falta de remarketing ativo"
+                  className="w-full bg-zinc-950 border border-zinc-880 rounded-xl px-5 py-3.5 text-white font-bold focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none transition-all placeholder:text-zinc-700"
+                  value={data.marketingSituation || ''}
+                  onChange={e => setData(prev => ({ ...prev, marketingSituation: e.target.value }))}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Achado 1 da Auditoria</label>
+                  <input
+                    type="text"
+                    placeholder="Ex: Campanhas sem rastreamento de WhatsApp"
+                    className="w-full bg-zinc-950 border border-zinc-880 rounded-xl px-5 py-3.5 text-white font-bold focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none transition-all placeholder:text-zinc-700"
+                    value={data.auditFinding1 || ''}
+                    onChange={e => setData(prev => ({ ...prev, auditFinding1: e.target.value }))}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Achado 2 da Auditoria</label>
+                  <input
+                    type="text"
+                    placeholder="Ex: Criativos sem teste A/B contínuo de oferta"
+                    className="w-full bg-zinc-950 border border-zinc-880 rounded-xl px-5 py-3.5 text-white font-bold focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none transition-all placeholder:text-zinc-700"
+                    value={data.auditFinding2 || ''}
+                    onChange={e => setData(prev => ({ ...prev, auditFinding2: e.target.value }))}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Onde Você Quer Chegar (Meta do Cliente)</label>
+                <input
+                  type="text"
+                  placeholder="Ex: Dobrar o faturamento mensal mantendo a margem de lucro em 6 meses"
+                  className="w-full bg-zinc-950 border border-zinc-880 rounded-xl px-5 py-3.5 text-white font-bold focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none transition-all placeholder:text-zinc-700"
+                  value={data.businessGoal || ''}
+                  onChange={e => setData(prev => ({ ...prev, businessGoal: e.target.value }))}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Frente 1 da Proposta</label>
+                  <input
+                    type="text"
+                    placeholder="Ex: Tráfego Pago & Aquisição Direta"
+                    className="w-full bg-zinc-950 border border-zinc-880 rounded-xl px-4 py-3 text-white font-bold text-xs focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none transition-all placeholder:text-zinc-700"
+                    value={data.front1 || ''}
+                    onChange={e => setData(prev => ({ ...prev, front1: e.target.value }))}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Frente 2 da Proposta</label>
+                  <input
+                    type="text"
+                    placeholder="Ex: Funil de Conversão & WhatsApp"
+                    className="w-full bg-zinc-950 border border-zinc-880 rounded-xl px-4 py-3 text-white font-bold text-xs focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none transition-all placeholder:text-zinc-700"
+                    value={data.front2 || ''}
+                    onChange={e => setData(prev => ({ ...prev, front2: e.target.value }))}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Frente 3 da Proposta</label>
+                  <input
+                    type="text"
+                    placeholder="Ex: Posicionamento & Recorrência"
+                    className="w-full bg-zinc-950 border border-zinc-880 rounded-xl px-4 py-3 text-white font-bold text-xs focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none transition-all placeholder:text-zinc-700"
+                    value={data.front3 || ''}
+                    onChange={e => setData(prev => ({ ...prev, front3: e.target.value }))}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Seção 4: Valores e Entregáveis da Proposta */}
+          <div className="space-y-6 pt-2">
+            <h3 className="text-zinc-500 font-black text-[9px] uppercase tracking-[0.25em] border-l-2 border-yellow-400 pl-3">04. Investimento & Prazos (Opcional)</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Valor Setup (Meses 1-2)</label>
+                <input
+                  type="text"
+                  placeholder="Ex: R$ 2.000"
+                  className="w-full bg-zinc-950 border border-zinc-880 rounded-xl px-5 py-3.5 text-white font-bold focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none transition-all placeholder:text-zinc-700"
+                  value={data.setupPrice || ''}
+                  onChange={e => setData(prev => ({ ...prev, setupPrice: e.target.value }))}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Valor Operação (Mês 3+)</label>
+                <input
+                  type="text"
+                  placeholder="Ex: R$ 3.000"
+                  className="w-full bg-zinc-950 border border-zinc-880 rounded-xl px-5 py-3.5 text-white font-bold focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none transition-all placeholder:text-zinc-700"
+                  value={data.operationPrice || ''}
+                  onChange={e => setData(prev => ({ ...prev, operationPrice: e.target.value }))}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Prazo Kickoff (Dias úteis)</label>
+                <input
+                  type="text"
+                  placeholder="Ex: 2"
+                  className="w-full bg-zinc-950 border border-zinc-880 rounded-xl px-5 py-3.5 text-white font-bold focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none transition-all placeholder:text-zinc-700"
+                  value={data.kickoffDays || ''}
+                  onChange={e => setData(prev => ({ ...prev, kickoffDays: e.target.value }))}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Prazo Primeiras Entregas (Dias úteis)</label>
+                <input
+                  type="text"
+                  placeholder="Ex: 5"
+                  className="w-full bg-zinc-950 border border-zinc-880 rounded-xl px-5 py-3.5 text-white font-bold focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 outline-none transition-all placeholder:text-zinc-700"
+                  value={data.deliveriesDays || ''}
+                  onChange={e => setData(prev => ({ ...prev, deliveriesDays: e.target.value }))}
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Seção 3: Logo */}
           <div className="space-y-2 pt-2">
             <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Identidade do Cliente</label>

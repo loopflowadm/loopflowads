@@ -8,7 +8,56 @@ import BudgetCalculator from './components/BudgetCalculator';
 import PerformanceDashboard from './components/PerformanceDashboard';
 import Logo from './components/Logo';
 import { supabase } from '../lib/supabase';
-import { Trash2, Play, Calendar, Plus, TrendingUp, GripVertical, Settings, Calculator, Menu, X, CheckCircle2, Sun, Moon, LayoutGrid, LogOut, ChevronDown, Briefcase } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import {
+  Delete01Icon,
+  PlayIcon,
+  Calendar01Icon,
+  PlusSignIcon,
+  AnalyticsUpIcon,
+  DragDropVerticalIcon,
+  Settings01Icon,
+  CalculatorIcon,
+  Menu01Icon,
+  Cancel01Icon,
+  CheckmarkCircle01Icon,
+  Sun01Icon,
+  Moon01Icon,
+  GridViewIcon,
+  Logout01Icon,
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  Briefcase01Icon,
+  Maximize01Icon,
+  Minimize01Icon
+} from '@hugeicons/core-free-icons';
+
+const createHugeIcon = (icon: any) => (props: any) => (
+  <HugeiconsIcon icon={icon} size={props.size || 20} className={props.className || ''} color={props.color || 'currentColor'} strokeWidth={props.strokeWidth || 1.5} />
+);
+
+const Trash2 = createHugeIcon(Delete01Icon);
+const Play = createHugeIcon(PlayIcon);
+const Calendar = createHugeIcon(Calendar01Icon);
+const Plus = createHugeIcon(PlusSignIcon);
+const TrendingUp = createHugeIcon(AnalyticsUpIcon);
+const GripVertical = createHugeIcon(DragDropVerticalIcon);
+const Settings = createHugeIcon(Settings01Icon);
+const Calculator = createHugeIcon(CalculatorIcon);
+const Menu = createHugeIcon(Menu01Icon);
+const X = createHugeIcon(Cancel01Icon);
+const CheckCircle2 = createHugeIcon(CheckmarkCircle01Icon);
+const Sun = createHugeIcon(Sun01Icon);
+const Moon = createHugeIcon(Moon01Icon);
+const LayoutGrid = createHugeIcon(GridViewIcon);
+const LogOut = createHugeIcon(Logout01Icon);
+const ChevronDown = createHugeIcon(ChevronDownIcon);
+const ChevronLeft = createHugeIcon(ChevronLeftIcon);
+const ChevronRight = createHugeIcon(ChevronRightIcon);
+const Briefcase = createHugeIcon(Briefcase01Icon);
+const Maximize2 = createHugeIcon(Maximize01Icon);
+const Minimize2 = createHugeIcon(Minimize01Icon);
 
 // Toast notification system
 type Toast = { id: string; message: string; type: 'success' | 'error' };
@@ -43,7 +92,32 @@ const ProspectDashboard: React.FC = () => {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [leadsOpen, setLeadsOpen] = useState(false);
+  const [windowStart, setWindowStart] = useState<number>(0);
   const { toasts, show: showToast } = useToast();
+
+  const focusStage = (stageIdx: number, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const maxStart = Math.max(0, STAGES.length - 3);
+    const windowEnd = windowStart + 2;
+
+    if (stageIdx < windowStart) {
+      // Clicou em uma etapa minimizada à esquerda -> abre ela e fecha 1 à direita
+      setWindowStart(Math.max(0, stageIdx));
+    } else if (stageIdx > windowEnd) {
+      // Clicou em uma etapa minimizada à direita -> abre ela e fecha 1 à esquerda
+      setWindowStart(Math.min(maxStart, stageIdx - 2));
+    }
+  };
+
+  const toggleStageCollapse = (stageIdx: number, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const maxStart = Math.max(0, STAGES.length - 3);
+    if (stageIdx === windowStart) {
+      setWindowStart(Math.min(maxStart, windowStart + 1));
+    } else {
+      setWindowStart(Math.max(0, windowStart - 1));
+    }
+  };
 
   const [editingIntegrationsProspect, setEditingIntegrationsProspect] = useState<ProspectWithId | null>(null);
   const [editGoogleSheetsUrl, setEditGoogleSheetsUrl] = useState('');
@@ -397,7 +471,7 @@ const ProspectDashboard: React.FC = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-zinc-950 text-white font-sans selection:bg-yellow-400 selection:text-black">
+    <div className="flex h-screen overflow-hidden bg-zinc-950 text-white font-sans selection:bg-yellow-400 selection:text-black">
 
       {/* Toast Notifications */}
       <div className="fixed top-4 right-4 z-[100] flex flex-col gap-2 pointer-events-none">
@@ -432,10 +506,10 @@ const ProspectDashboard: React.FC = () => {
           {/* Sidebar panel (Minimalist w-20 Icon-only) */}
           <div className={`fixed md:sticky top-0 left-0 z-40 md:z-auto w-20 bg-zinc-950 border-r border-zinc-900 flex flex-col justify-between h-screen shrink-0 select-none transition-transform duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
             {/* Sidebar inner */}
-            <div className="flex flex-col flex-1 min-h-0 items-center py-6">
+            <div className="flex flex-col flex-1 min-h-0 items-center">
               
-              {/* Logo */}
-              <div className="mb-8 shrink-0">
+              {/* Logo Header - alinhado com h-16 do header */}
+              <div className="h-16 w-full flex items-center justify-center shrink-0 mb-6 border-b border-zinc-900/60">
                 <div className="w-10 h-10 flex items-center justify-center">
                   <Logo className="w-8 h-8 text-yellow-400" symbolOnly />
                 </div>
@@ -544,12 +618,12 @@ const ProspectDashboard: React.FC = () => {
       )}
 
       {/* Main Workspace Frame */}
-      <div className={`flex-1 min-h-screen overflow-y-auto flex flex-col md:ml-0 transition-colors duration-300 ${
+      <div className={`flex-1 h-screen overflow-hidden flex flex-col md:ml-0 transition-colors duration-300 ${
         (theme === 'light' && view !== 'presentation') ? 'theme-light bg-zinc-50 text-zinc-900' : 'bg-zinc-950 text-white'
       }`}>
         {/* Mobile topbar */}
         {view !== 'presentation' && (
-          <div className="md:hidden flex items-center gap-4 px-4 py-3 border-b border-zinc-900 bg-zinc-950 sticky top-0 z-20">
+          <div className="md:hidden flex items-center gap-4 px-4 py-3 border-b border-zinc-900/80 bg-zinc-950/80 backdrop-blur-md sticky top-0 z-40">
             <button
               type="button"
               onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -569,8 +643,8 @@ const ProspectDashboard: React.FC = () => {
 
         {/* Desktop Top Navbar */}
         {view !== 'presentation' && (
-          <header className={`hidden md:flex h-16 border-b shrink-0 items-center sticky top-0 z-30 transition-colors ${
-            theme === 'light' ? 'bg-white border-zinc-200' : 'bg-zinc-950 border-zinc-900'
+          <header className={`hidden md:flex h-16 border-b shrink-0 items-center sticky top-0 z-40 backdrop-blur-md transition-colors ${
+            theme === 'light' ? 'bg-white/80 border-zinc-200/80' : 'bg-zinc-950/80 border-zinc-900/80'
           }`}>
             <div className="max-w-7xl w-full mx-auto px-6 md:px-8 flex items-center justify-between">
                  {/* Left Column: Lead Dropdown Selector */}
@@ -755,7 +829,9 @@ const ProspectDashboard: React.FC = () => {
           </header>
         )}
 
-        {view === 'list' && (
+        {/* Scrollable Content Container (Barra de rolagem por baixo da navbar) */}
+        <div className="flex-1 overflow-y-auto min-h-0 flex flex-col">
+          {view === 'list' && (
           <div className="max-w-7xl w-full mx-auto px-4 md:px-8 py-6 md:py-8 flex-1 flex flex-col">
             {/* Page Header — padrão unificado */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8 pb-6 border-b border-zinc-900">
@@ -795,21 +871,107 @@ const ProspectDashboard: React.FC = () => {
                   </button>
                 </div>
               ) : (
-                <div 
+                <motion.div 
+                  layout
                   ref={boardRef}
                   onMouseDown={handleMouseDown}
                   onMouseLeave={handleMouseLeave}
                   onMouseUp={handleMouseUp}
                   onMouseMove={handleMouseMove}
                   onDragStart={handleDragStartBoard}
-                  className="flex gap-6 overflow-x-auto pb-4 pt-1 select-none scrollbar-thin scrollbar-thumb-zinc-900 scrollbar-track-transparent cursor-grab active:cursor-grabbing max-w-full flex-1"
+                  className="flex gap-4 overflow-x-auto pb-4 pt-1 select-none scrollbar-thin scrollbar-thumb-zinc-900 scrollbar-track-transparent max-w-full flex-1"
                 >
-                  {STAGES.map(stage => {
+                  {STAGES.map((stage, idx) => {
                     const stageProspects = prospects.filter(p => p.status === stage.id);
                     const isDraggedOver = draggedOverStageId === stage.id;
                     
+                    const windowEnd = windowStart + 2;
+                    const isCollapsed = idx < windowStart || idx > windowEnd;
+                    const isLeft = idx < windowStart;
+                    
+                    if (isCollapsed) {
+                      return (
+                        <motion.div 
+                          layout
+                          transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                          key={stage.id} 
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            setDraggedOverStageId(stage.id);
+                          }}
+                          onDragLeave={() => setDraggedOverStageId(null)}
+                          onDrop={(e) => handleDrop(e, stage.id)}
+                          onClick={(e) => focusStage(idx, e)}
+                          className={`w-14 shrink-0 bg-zinc-900/30 hover:bg-zinc-900/70 border ${
+                            isDraggedOver 
+                              ? 'border-yellow-400/80 bg-yellow-400/10 shadow-lg shadow-yellow-400/20 scale-105' 
+                              : 'border-zinc-900/80 hover:border-yellow-400/30'
+                          } rounded-3xl p-3 flex flex-col items-center justify-between min-h-[480px] cursor-pointer group relative select-none shadow-sm`}
+                          title={`Clique para focar na etapa ${stage.label}`}
+                        >
+                          {/* Top: Stage indicator dot + Lead count badge + Arrow */}
+                          <div className="flex flex-col items-center gap-2 pt-1">
+                            <div className="flex items-center justify-center text-zinc-500 group-hover:text-yellow-400 transition-colors">
+                              {isLeft ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
+                            </div>
+                            <span className={`w-2.5 h-2.5 rounded-full ${
+                              stage.id === 'novo' ? 'bg-zinc-400' :
+                              stage.id === 'agendado' ? 'bg-blue-400' :
+                              stage.id === 'proposta' ? 'bg-yellow-400' :
+                              stage.id === 'ganho' ? 'bg-emerald-500' : 'bg-rose-500'
+                            }`}></span>
+                            <span className="text-[10px] bg-zinc-950 border border-zinc-800 text-zinc-300 font-black px-2 py-0.5 rounded-full">
+                              {stageProspects.length}
+                            </span>
+                          </div>
+
+                          {/* Center: Stage label written vertically */}
+                          <div className="flex-1 flex items-center justify-center py-4">
+                            <span 
+                              className="text-[10px] font-black uppercase tracking-[0.25em] text-zinc-400 group-hover:text-yellow-400 transition-colors whitespace-nowrap"
+                              style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+                            >
+                              {stage.label}
+                            </span>
+                          </div>
+
+                          {/* Mini Lead Avatars stack */}
+                          {stageProspects.length > 0 && (
+                            <div className="flex flex-col -space-y-1.5 my-2 items-center">
+                              {stageProspects.slice(0, 3).map(p => (
+                                <div key={p.id} className="w-6 h-6 rounded-lg bg-zinc-950 border border-zinc-800 overflow-hidden flex items-center justify-center shadow-sm">
+                                  {p.logo ? (
+                                    <img src={p.logo} alt={p.name} className="w-full h-full object-cover" />
+                                  ) : (
+                                    <span className="text-[8px] font-black text-yellow-400 uppercase">{p.name.charAt(0)}</span>
+                                  )}
+                                </div>
+                              ))}
+                              {stageProspects.length > 3 && (
+                                <span className="text-[8px] font-bold text-zinc-500 pt-0.5">+{stageProspects.length - 3}</span>
+                              )}
+                            </div>
+                          )}
+
+                          {/* Bottom: Expand Icon */}
+                          <div className="pb-1">
+                            <button
+                              onClick={(e) => focusStage(idx, e)}
+                              className="w-8 h-8 rounded-xl bg-zinc-950 border border-zinc-800 group-hover:border-yellow-400/50 flex items-center justify-center text-zinc-400 group-hover:text-yellow-400 transition-all shadow"
+                              title="Expandir etapa"
+                              aria-label={`Expandir etapa ${stage.label}`}
+                            >
+                              {isLeft ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+                            </button>
+                          </div>
+                        </motion.div>
+                      );
+                    }
+                    
                     return (
-                      <div 
+                      <motion.div 
+                        layout
+                        transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                         key={stage.id} 
                         onDragOver={(e) => {
                           e.preventDefault();
@@ -817,11 +979,11 @@ const ProspectDashboard: React.FC = () => {
                         }}
                         onDragLeave={() => setDraggedOverStageId(null)}
                         onDrop={(e) => handleDrop(e, stage.id)}
-                        className={`w-80 shrink-0 bg-zinc-900/10 border ${
+                        className={`flex-1 min-w-[280px] bg-zinc-900/10 border ${
                           isDraggedOver 
                             ? 'border-yellow-400/50 bg-[#FFD400]/[0.02]' 
                             : 'border-zinc-900/60'
-                        } rounded-3xl p-5 flex flex-col min-h-[480px] transition-all`}
+                        } rounded-3xl p-5 flex flex-col min-h-[480px]`}
                       >
                         {/* Stage Title */}
                         <div className="flex items-center justify-between mb-5 select-none">
@@ -834,9 +996,19 @@ const ProspectDashboard: React.FC = () => {
                             }`}></span>
                             <h3 className="text-[11px] font-black uppercase tracking-widest text-zinc-300">{stage.label}</h3>
                           </div>
-                          <span className="text-[10px] bg-zinc-950 border border-zinc-900 text-zinc-400 font-black px-2.5 py-0.5 rounded">
-                            {stageProspects.length}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] bg-zinc-950 border border-zinc-900 text-zinc-400 font-black px-2.5 py-0.5 rounded">
+                              {stageProspects.length}
+                            </span>
+                            <button
+                              onClick={(e) => toggleStageCollapse(idx, e)}
+                              className="p-1 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/60 transition-colors cursor-pointer"
+                              title="Minimizar coluna na vertical"
+                              aria-label={`Minimizar etapa ${stage.label}`}
+                            >
+                              <ChevronLeft className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
                         </div>
 
                         {/* Stage Lead Cards */}
@@ -961,10 +1133,10 @@ const ProspectDashboard: React.FC = () => {
                             ))
                           )}
                         </div>
-                      </div>
+                      </motion.div>
                     );
                   })}
-                </div>
+                </motion.div>
               )}
             </div>
           </div>
@@ -982,6 +1154,7 @@ const ProspectDashboard: React.FC = () => {
               prospect={activeProspect}
               onSelect={handlePathSelect}
               onReset={() => {}}
+              theme={theme}
             />
           </div>
         )}
@@ -1009,9 +1182,11 @@ const ProspectDashboard: React.FC = () => {
             <PerformanceDashboard
               prospect={activeProspect}
               onBack={() => setView('list')}
+              theme={theme}
             />
           </div>
         )}
+        </div>
 
         {editingIntegrationsProspect && (
           <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-6 animate-fade-in">

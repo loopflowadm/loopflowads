@@ -1,6 +1,16 @@
 import React from 'react';
 import { Path, Slide, ProspectData } from './types';
-import { TrendingUp } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { AnalyticsUpIcon } from '@hugeicons/core-free-icons';
+
+const TrendingUp = (props: any) =>
+  React.createElement(HugeiconsIcon, {
+    icon: AnalyticsUpIcon,
+    size: props.size || 20,
+    className: props.className || '',
+    color: props.color || 'currentColor',
+    strokeWidth: props.strokeWidth || 1.5,
+  });
 
 // Função para gerar os slides da Proposta Comercial dinamicamente com base nos dados do prospect
 export const getCommercialProposalSlides = (prospect?: ProspectData): Slide[] => {

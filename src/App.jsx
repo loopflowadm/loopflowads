@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Calendar } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Calendar01Icon } from '@hugeicons/core-free-icons';
+
+const Calendar = (props) => (
+  <HugeiconsIcon icon={Calendar01Icon} size={props.size || 20} className={props.className || ''} color={props.color || 'currentColor'} strokeWidth={props.strokeWidth || 1.5} />
+);
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import PainSection from './components/PainSection';

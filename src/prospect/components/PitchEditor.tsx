@@ -1,6 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { Slide, ProspectData, Path } from '../types';
-import { ArrowUp, ArrowDown, Eye, EyeOff, Edit3, Trash2, ArrowLeft, Play, RotateCcw, Check, Plus, AlertCircle } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import {
+  ArrowUp01Icon,
+  ArrowDown01Icon,
+  EyeIcon,
+  EyeOffIcon,
+  Edit01Icon,
+  Delete01Icon,
+  ArrowLeft01Icon,
+  PlayIcon,
+  RotateRightIcon,
+  CheckIcon,
+  PlusSignIcon,
+  AlertCircleIcon
+} from '@hugeicons/core-free-icons';
+
+const createHugeIcon = (icon: any) => (props: any) => (
+  <HugeiconsIcon icon={icon} size={props.size || 20} className={props.className || ''} color={props.color || 'currentColor'} strokeWidth={props.strokeWidth || 1.5} />
+);
+
+const ArrowUp = createHugeIcon(ArrowUp01Icon);
+const ArrowDown = createHugeIcon(ArrowDown01Icon);
+const Eye = createHugeIcon(EyeIcon);
+const EyeOff = createHugeIcon(EyeOffIcon);
+const Edit3 = createHugeIcon(Edit01Icon);
+const Trash2 = createHugeIcon(Delete01Icon);
+const ArrowLeft = createHugeIcon(ArrowLeft01Icon);
+const Play = createHugeIcon(PlayIcon);
+const RotateCcw = createHugeIcon(RotateRightIcon);
+const Check = createHugeIcon(CheckIcon);
+const Plus = createHugeIcon(PlusSignIcon);
+const AlertCircle = createHugeIcon(AlertCircleIcon);
 import Logo from './Logo';
 
 interface PitchEditorProps {
@@ -148,7 +179,7 @@ const PitchEditor: React.FC<PitchEditorProps> = ({
   return (
     <div className="max-w-5xl mx-auto px-6 py-8 selection:bg-yellow-400 selection:text-black">
       {/* Header Unificado */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10 pb-6 border-b border-zinc-900">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 pb-3 mb-6 border-b border-zinc-900">
         <div>
           <div className="flex items-center gap-3 text-zinc-500 mb-2 uppercase text-[9px] tracking-[0.3em] font-black">
             <button onClick={onBack} className="hover:text-white flex items-center gap-1 transition-colors uppercase">

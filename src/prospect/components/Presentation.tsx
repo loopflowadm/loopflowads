@@ -1,7 +1,62 @@
 import React, { useState, useEffect } from 'react';
 import { Slide, ProspectData } from '../types';
 import Logo from './Logo';
-import { ChevronLeft, ChevronRight, Check, HelpCircle, Zap, CheckCircle2, MessageCircle, Building2, AlertTriangle, BarChart3, Search, Palette, Brain, Wallet, Lightbulb, Target, TrendingUp, Star, Filter, Cog, ClipboardList, Rocket, CheckCheck, Edit3 } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  CheckIcon,
+  HelpCircleIcon,
+  FlashIcon,
+  CheckmarkCircle01Icon,
+  Comment01Icon,
+  Building01Icon,
+  Alert01Icon,
+  BarChartIcon,
+  Search01Icon,
+  PaintBoardIcon,
+  Brain01Icon,
+  Wallet01Icon,
+  Idea01Icon,
+  Target01Icon,
+  AnalyticsUpIcon,
+  StarIcon,
+  FilterIcon,
+  Settings01Icon,
+  ClipboardIcon,
+  RocketIcon,
+  CheckCheckIcon,
+  Edit01Icon
+} from '@hugeicons/core-free-icons';
+
+const createHugeIcon = (icon: any) => (props: any) => (
+  <HugeiconsIcon icon={icon} size={props.size || 20} className={props.className || ''} color={props.color || 'currentColor'} strokeWidth={props.strokeWidth || 1.5} />
+);
+
+const ChevronLeft = createHugeIcon(ChevronLeftIcon);
+const ChevronRight = createHugeIcon(ChevronRightIcon);
+const Check = createHugeIcon(CheckIcon);
+const HelpCircle = createHugeIcon(HelpCircleIcon);
+const Zap = createHugeIcon(FlashIcon);
+const CheckCircle2 = createHugeIcon(CheckmarkCircle01Icon);
+const MessageCircle = createHugeIcon(Comment01Icon);
+const Building2 = createHugeIcon(Building01Icon);
+const AlertTriangle = createHugeIcon(Alert01Icon);
+const BarChart3 = createHugeIcon(BarChartIcon);
+const Search = createHugeIcon(Search01Icon);
+const Palette = createHugeIcon(PaintBoardIcon);
+const Brain = createHugeIcon(Brain01Icon);
+const Wallet = createHugeIcon(Wallet01Icon);
+const Lightbulb = createHugeIcon(Idea01Icon);
+const Target = createHugeIcon(Target01Icon);
+const TrendingUp = createHugeIcon(AnalyticsUpIcon);
+const Star = createHugeIcon(StarIcon);
+const Filter = createHugeIcon(FilterIcon);
+const Cog = createHugeIcon(Settings01Icon);
+const ClipboardList = createHugeIcon(ClipboardIcon);
+const Rocket = createHugeIcon(RocketIcon);
+const CheckCheck = createHugeIcon(CheckCheckIcon);
+const Edit3 = createHugeIcon(Edit01Icon);
 
 interface PresentationProps {
   slides: Slide[];

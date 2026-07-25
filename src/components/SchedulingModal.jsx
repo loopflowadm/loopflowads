@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { LazyMotion, domAnimation, m, AnimatePresence } from 'framer-motion';
-import { X, Clock, Video, Upload, ArrowRight, AlertCircle } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Cancel01Icon, Clock01Icon, Video01Icon, Upload01Icon, ArrowRight01Icon, AlertCircleIcon } from '@hugeicons/core-free-icons';
+
+const createHugeIcon = (icon) => (props) => (
+  <HugeiconsIcon icon={icon} size={props.size || 20} className={props.className || ''} color={props.color || 'currentColor'} strokeWidth={props.strokeWidth || 1.5} />
+);
+
+const X = createHugeIcon(Cancel01Icon);
+const Clock = createHugeIcon(Clock01Icon);
+const Video = createHugeIcon(Video01Icon);
+const Upload = createHugeIcon(Upload01Icon);
+const ArrowRight = createHugeIcon(ArrowRight01Icon);
+const AlertCircle = createHugeIcon(AlertCircleIcon);
 import Logo from './Logo';
 import { supabase } from '../lib/supabase';
 

@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Menu, X } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { SparklesIcon, Menu01Icon, Cancel01Icon } from '@hugeicons/core-free-icons';
+
+const createHugeIcon = (icon) => (props) => (
+  <HugeiconsIcon icon={icon} size={props.size || 20} className={props.className || ''} color={props.color || 'currentColor'} strokeWidth={props.strokeWidth || 1.5} />
+);
+
+const Sparkles = createHugeIcon(SparklesIcon);
+const Menu = createHugeIcon(Menu01Icon);
+const X = createHugeIcon(Cancel01Icon);
 import Logo from './Logo';
 export default function Navbar({ onOpenModal }) {
   const [scrolled, setScrolled] = useState(false);

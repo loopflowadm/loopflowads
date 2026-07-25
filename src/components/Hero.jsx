@@ -1,6 +1,14 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, ChevronDown } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Calendar01Icon, ChevronDownIcon } from '@hugeicons/core-free-icons';
+
+const createHugeIcon = (icon) => (props) => (
+  <HugeiconsIcon icon={icon} size={props.size || 20} className={props.className || ''} color={props.color || 'currentColor'} strokeWidth={props.strokeWidth || 1.5} />
+);
+
+const Calendar = createHugeIcon(Calendar01Icon);
+const ChevronDown = createHugeIcon(ChevronDownIcon);
 import heroPoster from '../assets/hero.png';
 
 const words = ["leads", "vendas", "faturamento"];

@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, HelpCircle } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { PlusSignIcon, HelpCircleIcon } from '@hugeicons/core-free-icons';
+
+const createHugeIcon = (icon) => (props) => (
+  <HugeiconsIcon icon={icon} size={props.size || 20} className={props.className || ''} color={props.color || 'currentColor'} strokeWidth={props.strokeWidth || 1.5} />
+);
+
+const Plus = createHugeIcon(PlusSignIcon);
+const HelpCircle = createHugeIcon(HelpCircleIcon);
 
 const faqs = [
   {

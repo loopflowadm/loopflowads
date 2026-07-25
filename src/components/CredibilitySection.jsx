@@ -1,5 +1,14 @@
 import React from 'react';
-import { Award, ShieldCheck, Users } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Award01Icon, Shield01Icon, UserGroupIcon } from '@hugeicons/core-free-icons';
+
+const createHugeIcon = (icon) => (props) => (
+  <HugeiconsIcon icon={icon} size={props.size || 20} className={props.className || ''} color={props.color || 'currentColor'} strokeWidth={props.strokeWidth || 1.5} />
+);
+
+const Award = createHugeIcon(Award01Icon);
+const ShieldCheck = createHugeIcon(Shield01Icon);
+const Users = createHugeIcon(UserGroupIcon);
 
 export default function CredibilitySection({ onOpenModal }) {
   return (

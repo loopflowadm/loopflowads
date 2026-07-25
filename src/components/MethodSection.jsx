@@ -1,6 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Search, Filter, Settings, TrendingUp, Calendar } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Search01Icon, FilterIcon, Settings01Icon, AnalyticsUpIcon, Calendar01Icon } from '@hugeicons/core-free-icons';
+
+const createHugeIcon = (icon) => (props) => (
+  <HugeiconsIcon icon={icon} size={props.size || 20} className={props.className || ''} color={props.color || 'currentColor'} strokeWidth={props.strokeWidth || 1.5} />
+);
+
+const Search = createHugeIcon(Search01Icon);
+const Filter = createHugeIcon(FilterIcon);
+const Settings = createHugeIcon(Settings01Icon);
+const TrendingUp = createHugeIcon(AnalyticsUpIcon);
+const Calendar = createHugeIcon(Calendar01Icon);
 import Symbol from './Symbol';
 
 const steps = [

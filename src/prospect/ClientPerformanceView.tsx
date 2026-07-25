@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react';
 import PerformanceDashboard, { MonthData } from './components/PerformanceDashboard';
 import { ProspectData } from './types';
 import Logo from './components/Logo';
-import { Loader2 } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Loading01Icon } from '@hugeicons/core-free-icons';
+
+const Loader2 = (props: any) => (
+  <HugeiconsIcon icon={Loading01Icon} size={props.size || 20} className={`animate-spin ${props.className || ''}`} color={props.color || 'currentColor'} strokeWidth={props.strokeWidth || 1.5} />
+);
 
 const ClientPerformanceView: React.FC = () => {
   const [data, setData] = useState<{ p: ProspectData; m: MonthData[] } | null>(null);

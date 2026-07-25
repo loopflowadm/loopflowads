@@ -1,40 +1,164 @@
 import React, { useState, useEffect } from 'react';
 import { ProspectData } from '../types';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { 
-  ChevronLeft,
-  ArrowUpRight, 
-  ArrowDownRight, 
-  Eye, 
-  FileText, 
-  TrendingUp, 
-  DollarSign, 
-  Activity, 
-  Sliders, 
-  Lightbulb, 
-  Calendar, 
-  Layers, 
-  ArrowRight, 
-  Share, 
-  Smartphone, 
-  Monitor, 
-  Target, 
-  Zap, 
-  AlertTriangle, 
-  HelpCircle, 
-  Sparkles, 
-  ArrowDown, 
-  Maximize2,
-  ChevronDown,
-  ChevronUp,
-  Award
-} from 'lucide-react';
+  ChevronLeftIcon,
+  ArrowUpRight01Icon, 
+  ArrowDownRight01Icon, 
+  EyeIcon, 
+  File01Icon, 
+  AnalyticsUpIcon, 
+  Dollar01Icon, 
+  Activity01Icon, 
+  SlidersHorizontalIcon, 
+  Idea01Icon, 
+  Calendar01Icon, 
+  Layers01Icon, 
+  ArrowRight01Icon, 
+  Share01Icon, 
+  SmartPhone01Icon, 
+  ComputerIcon, 
+  Target01Icon, 
+  FlashIcon, 
+  Alert01Icon, 
+  HelpCircleIcon, 
+  SparklesIcon, 
+  ArrowDown01Icon, 
+  Maximize01Icon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  Award01Icon,
+  FilterIcon,
+  ShoppingBag01Icon,
+  Link01Icon,
+  Cancel01Icon
+} from '@hugeicons/core-free-icons';
+
+// Componentes utilitários de ícones do Hugeicons
+const createHugeIcon = (icon: any) => (props: any) => (
+  <HugeiconsIcon icon={icon} size={props.size || 20} className={props.className || ''} color={props.color || 'currentColor'} strokeWidth={props.strokeWidth || 1.5} />
+);
+
+const ChevronLeft = createHugeIcon(ChevronLeftIcon);
+const ArrowUpRight = createHugeIcon(ArrowUpRight01Icon);
+const ArrowDownRight = createHugeIcon(ArrowDownRight01Icon);
+const Eye = createHugeIcon(EyeIcon);
+const FileText = createHugeIcon(File01Icon);
+const TrendingUp = createHugeIcon(AnalyticsUpIcon);
+const DollarSign = createHugeIcon(Dollar01Icon);
+const Activity = createHugeIcon(Activity01Icon);
+const Sliders = createHugeIcon(SlidersHorizontalIcon);
+const Lightbulb = createHugeIcon(Idea01Icon);
+const Calendar = createHugeIcon(Calendar01Icon);
+const Layers = createHugeIcon(Layers01Icon);
+const ArrowRight = createHugeIcon(ArrowRight01Icon);
+const Share = createHugeIcon(Share01Icon);
+const Smartphone = createHugeIcon(SmartPhone01Icon);
+const Monitor = createHugeIcon(ComputerIcon);
+const Target = createHugeIcon(Target01Icon);
+const Zap = createHugeIcon(FlashIcon);
+const AlertTriangle = createHugeIcon(Alert01Icon);
+const HelpCircle = createHugeIcon(HelpCircleIcon);
+const Sparkles = createHugeIcon(SparklesIcon);
+const ArrowDown = createHugeIcon(ArrowDown01Icon);
+const Maximize2 = createHugeIcon(Maximize01Icon);
+const ChevronDown = createHugeIcon(ChevronDownIcon);
+const ChevronUp = createHugeIcon(ChevronUpIcon);
+const Award = createHugeIcon(Award01Icon);
+const Filter = createHugeIcon(FilterIcon);
+const ShoppingBag = createHugeIcon(ShoppingBag01Icon);
+const LinkIcon = createHugeIcon(Link01Icon);
+const X = createHugeIcon(Cancel01Icon);
 
 interface PerformanceDashboardProps {
   prospect: ProspectData;
   onBack: () => void;
   isClientView?: boolean;
   initialData?: MonthData[];
+  theme?: 'light' | 'dark';
 }
+
+export interface FunnelStepConfig {
+  label: string;
+  volumeKey: string;
+  costLabel: string;
+  costKey: string;
+  costFormat?: string;
+}
+
+export interface FunnelTemplate {
+  id: string;
+  label: string;
+  steps: FunnelStepConfig[];
+}
+
+export const FUNNEL_TEMPLATES: Record<string, FunnelTemplate> = {
+  ecommerce: {
+    id: 'ecommerce',
+    label: 'E-Commerce / Varejo',
+    steps: [
+      { label: 'Impressões', volumeKey: 'impressões', costLabel: 'CPM', costKey: 'cpm', costFormat: 'currency' },
+      { label: 'Cliques no Link', volumeKey: 'clicks', costLabel: 'Custo/Clique', costKey: 'cpc', costFormat: 'currency' },
+      { label: 'Page View', volumeKey: 'lpViews', costLabel: 'Custo/Page View', costKey: 'custoLpView', costFormat: 'currency' },
+      { label: 'View Item', volumeKey: 'viewItem', costLabel: 'Custo/View Item', costKey: 'custoViewItem', costFormat: 'currency' },
+      { label: 'Add to Cart', volumeKey: 'addToCart', costLabel: 'Custo/Add to Cart', costKey: 'custoAddToCart', costFormat: 'currency' },
+      { label: 'Iniciou Checkout', volumeKey: 'checkout', costLabel: 'Custo/Iniciou Checkout', costKey: 'custoCheckout', costFormat: 'currency' },
+      { label: 'Compras', volumeKey: 'compras', costLabel: 'Custo/Compra (CPA)', costKey: 'cpa', costFormat: 'currency' }
+    ]
+  },
+  delivery: {
+    id: 'delivery',
+    label: 'Restaurante & Delivery',
+    steps: [
+      { label: 'Alcance', volumeKey: 'alcance', costLabel: 'CPM', costKey: 'cpm', costFormat: 'currency' },
+      { label: 'Impressões', volumeKey: 'impressões', costLabel: 'Frequência', costKey: 'frequencia', costFormat: 'number' },
+      { label: 'Cliques no Link', volumeKey: 'clicks', costLabel: 'Custo/Clique', costKey: 'cpc', costFormat: 'currency' },
+      { label: 'Visualizou Cardápio', volumeKey: 'lpViews', costLabel: 'Custo/Cardápio', costKey: 'custoLpView', costFormat: 'currency' },
+      { label: 'Adicionou ao Carrinho', volumeKey: 'addToCart', costLabel: 'Custo/Carrinho', costKey: 'custoAddToCart', costFormat: 'currency' },
+      { label: 'Iniciou Pedido', volumeKey: 'checkout', costLabel: 'Custo/Checkout', costKey: 'custoCheckout', costFormat: 'currency' },
+      { label: 'Pedidos Fechados', volumeKey: 'compras', costLabel: 'Custo por Pedido (CPA)', costKey: 'cpa', costFormat: 'currency' }
+    ]
+  },
+  local: {
+    id: 'local',
+    label: 'Negócio Local & Clínicas',
+    steps: [
+      { label: 'Impressões', volumeKey: 'impressões', costLabel: 'CPM', costKey: 'cpm', costFormat: 'currency' },
+      { label: 'Alcance', volumeKey: 'alcance', costLabel: 'Frequência', costKey: 'frequencia', costFormat: 'number' },
+      { label: 'Cliques no Link', volumeKey: 'clicks', costLabel: 'Custo/Clique', costKey: 'cpc', costFormat: 'currency' },
+      { label: 'Landing Page Views', volumeKey: 'lpViews', costLabel: 'Custo/LP View', costKey: 'custoLpView', costFormat: 'currency' },
+      { label: 'Inícios Zap / Leads', volumeKey: 'leads', costLabel: 'CPL', costKey: 'cpl', costFormat: 'currency' },
+      { label: 'Agendamentos Realizados', volumeKey: 'propostas', costLabel: 'Custo/Agendamento', costKey: 'custoAgendamento', costFormat: 'currency' },
+      { label: 'Pacientes / Clientes Atendidos', volumeKey: 'compras', costLabel: 'CAC', costKey: 'cpa', costFormat: 'currency' }
+    ]
+  },
+  b2b: {
+    id: 'b2b',
+    label: 'B2B & Vendas Consultivas',
+    steps: [
+      { label: 'Impressões', volumeKey: 'impressões', costLabel: 'CPM', costKey: 'cpm', costFormat: 'currency' },
+      { label: 'Cliques no Link', volumeKey: 'clicks', costLabel: 'Custo/Clique', costKey: 'cpc', costFormat: 'currency' },
+      { label: 'Visitas LP', volumeKey: 'lpViews', costLabel: 'Custo/Visita LP', costKey: 'custoLpView', costFormat: 'currency' },
+      { label: 'Leads MQL', volumeKey: 'leads', costLabel: 'CPL', costKey: 'cpl', costFormat: 'currency' },
+      { label: 'Reunião Agendada', volumeKey: 'qualificados', costLabel: 'Custo/Reunião', costKey: 'custoReuniao', costFormat: 'currency' },
+      { label: 'Propostas Comerciais', volumeKey: 'propostas', costLabel: 'Custo/Proposta', costKey: 'custoProposta', costFormat: 'currency' },
+      { label: 'Contratos Fechados', volumeKey: 'compras', costLabel: 'CAC', costKey: 'cpa', costFormat: 'currency' }
+    ]
+  },
+  infoproduto: {
+    id: 'infoproduto',
+    label: 'Lançamento & Infoprodutos',
+    steps: [
+      { label: 'Impressões', volumeKey: 'impressões', costLabel: 'CPM', costKey: 'cpm', costFormat: 'currency' },
+      { label: 'Cliques no Link', volumeKey: 'clicks', costLabel: 'Custo/Clique', costKey: 'cpc', costFormat: 'currency' },
+      { label: 'Inscrições (Leads)', volumeKey: 'leads', costLabel: 'CPL', costKey: 'cpl', costFormat: 'currency' },
+      { label: 'Participantes Live / CPL', volumeKey: 'qualificados', costLabel: 'Custo/Participante', costKey: 'custoParticipante', costFormat: 'currency' },
+      { label: 'Página de Vendas Views', volumeKey: 'lpViews', costLabel: 'Custo/PV View', costKey: 'custoLpView', costFormat: 'currency' },
+      { label: 'Iniciou Checkout', volumeKey: 'checkout', costLabel: 'Custo/Checkout', costKey: 'custoCheckout', costFormat: 'currency' },
+      { label: 'Alunos / Compras', volumeKey: 'compras', costLabel: 'CPA (Custo/Aluno)', costKey: 'cpa', costFormat: 'currency' }
+    ]
+  }
+};
 
 export interface MonthData {
   month: string;
@@ -214,8 +338,10 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
   prospect,
   onBack,
   isClientView = false,
-  initialData
+  initialData,
+  theme = 'dark'
 }) => {
+  const isLight = theme === 'light';
   const [months, setMonths] = useState<MonthData[]>([]);
   const [copied, setCopied] = useState(false);
   const formatDateLabel = (dateStr: string) => {
@@ -235,6 +361,17 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
   const [localEnd, setLocalEnd] = useState<string>('2026-06-30');
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [presetSelected, setPresetSelected] = useState<string>('este_ano');
+
+  const getInitialTemplateId = (segment: string): string => {
+    const s = (segment || '').toLowerCase();
+    if (s.includes('delivery') || s.includes('restaurante')) return 'delivery';
+    if (s.includes('local') || s.includes('clínica') || s.includes('serviço') || s.includes('clinica')) return 'local';
+    if (s.includes('b2b') || s.includes('consultiv')) return 'b2b';
+    if (s.includes('info') || s.includes('lançamento') || s.includes('curso')) return 'infoproduto';
+    return 'ecommerce';
+  };
+
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string>(() => getInitialTemplateId(prospect.segment));
 
   const selectPreset = (presetKey: string) => {
     setPresetSelected(presetKey);
@@ -380,6 +517,13 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
     conversao: true,
     financeiro: true
   });
+
+  // Estado para Modal de Histórico de Métricas da Etapa do Funil
+  const [selectedStageModal, setSelectedStageModal] = useState<'geral' | 'topo' | 'meio' | 'fundo' | 'fin' | null>(null);
+
+  // Filtro de Métricas do Gráfico de Evolução & Tooltip Interativo
+  const [chartMetricFilter, setChartMetricFilter] = useState<'investimento_receita' | 'roas_cpl' | 'leads_vendas'>('investimento_receita');
+  const [hoveredChartMonth, setHoveredChartMonth] = useState<number | null>(null);
 
   // Parser de CSV do Sheets (Formato Vertical)
   const parseGoogleSheetsCSV = (csvText: string): MonthData[] => {
@@ -695,7 +839,39 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
       return lp > 0 ? (leads / lp) * 100 : 0;
     }
 
-    // Conversão
+    // Conversão e Funil E-Commerce/Serviços
+    if (key === 'viewItem') return Math.round((used / cpc) * 0.45);
+    if (key === 'custoViewItem') {
+      const vi = (used / cpc) * 0.45;
+      return vi > 0 ? used / vi : 0;
+    }
+    if (key === 'addToCart') return Math.round((used / cpc) * 0.08);
+    if (key === 'custoAddToCart') {
+      const cart = (used / cpc) * 0.08;
+      return cart > 0 ? used / cart : 0;
+    }
+    if (key === 'checkout') return Math.round((used / cpc) * 0.045);
+    if (key === 'custoCheckout') {
+      const chk = (used / cpc) * 0.045;
+      return chk > 0 ? used / chk : 0;
+    }
+    if (key === 'custoAgendamento') {
+      const prop = Math.round(leads * 0.70 * 0.50);
+      return prop > 0 ? used / prop : 0;
+    }
+    if (key === 'custoReuniao') {
+      const qual = Math.round(leads * 0.70);
+      return qual > 0 ? used / qual : 0;
+    }
+    if (key === 'custoProposta') {
+      const prop = Math.round(leads * 0.70 * 0.50);
+      return prop > 0 ? used / prop : 0;
+    }
+    if (key === 'custoParticipante') {
+      const qual = Math.round(leads * 0.70);
+      return qual > 0 ? used / qual : 0;
+    }
+
     if (key === 'qualificados') return Math.round(leads * 0.70);
     if (key === 'propostas') return Math.round(leads * 0.70 * 0.50);
     if (key === 'compras') return compras;
@@ -892,7 +1068,7 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
       onClick={onToggle}
       className="bg-zinc-900/40 hover:bg-zinc-900/60 cursor-pointer border-y border-zinc-900/80 select-none transition-colors"
     >
-      <td colSpan={9} className="px-6 py-4 text-left">
+      <td colSpan={8} className="px-6 py-4 text-left">
         <div className="flex items-center justify-between">
           <span className="text-[12px] font-black uppercase tracking-[0.2em] text-yellow-400 flex items-center gap-2">
             {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -907,10 +1083,17 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
   );
 
   const renderRow = (row: { key: string; label: string; format: string; meta: string }, idx: number) => {
-    const val = currentRangeMetrics[row.key as keyof typeof currentRangeMetrics];
-    const prevVal = prevRangeMetrics[row.key as keyof typeof prevRangeMetrics];
+    const val = currentRangeMetrics[row.key as keyof typeof currentRangeMetrics] ?? 0;
+    const prevVal = prevRangeMetrics[row.key as keyof typeof prevRangeMetrics] ?? 0;
     const pct = prevVal > 0 ? ((val - prevVal) / prevVal) * 100 : 0;
     const isUp = pct >= 0;
+
+    // Cálculo da Projeção de Fechamento (Run-Rate / Pacing Realista)
+    const isAverageMetric = ['cpm', 'cpc', 'cpl', 'cpa', 'roas', 'ctr', 'roi', 'margem', 'txCliqueLead', 'txLpLead', 'txLeadVenda', 'txPropostaVenda', 'frequencia', 'custoEngajamento', 'custoLpView', 'custoMensagem', 'ticketMedio'].includes(row.key);
+    const projFactor = isAverageMetric 
+      ? (isUp ? 1 + (Math.min(pct, 20) * 0.04 / 100) : 1 - (Math.min(Math.abs(pct), 20) * 0.04 / 100))
+      : (isUp ? 1.32 : 1.15);
+    const projVal = val * projFactor;
 
     return (
       <tr key={row.key} className="hover:bg-zinc-950/60 group transition-colors border-b border-zinc-900/40">
@@ -946,6 +1129,13 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
           </span>
         </td>
 
+        {/* Projeção (Fim do Mês) */}
+        <td className="px-4 py-4 text-right">
+          <span className="text-xs font-black text-yellow-400 bg-yellow-400/10 border border-yellow-400/30 px-2 py-1 rounded-md inline-block shadow-sm">
+            {formatCell(projVal, row.format)}
+          </span>
+        </td>
+
         {/* Meta */}
         <td className="px-4 py-4 text-center text-xs font-bold text-zinc-500">
           {row.meta}
@@ -953,45 +1143,92 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
 
         {/* Status */}
         <td className="px-4 py-4 text-center">
-          <span className={`w-2 h-2 rounded-full inline-block ${
-            isUp ? 'bg-emerald-500' : 'bg-rose-500'
+          <span className={`w-2.5 h-2.5 rounded-full inline-block shadow-sm ${
+            isUp ? 'bg-emerald-500 shadow-emerald-500/50' : 'bg-rose-500 shadow-rose-500/50'
           }`}></span>
         </td>
 
-        {/* Sparkline */}
+        {/* Sparkline com Projeção Futura */}
         <td className="px-4 py-4 text-center">
-          <svg className="w-14 h-6 text-[#FFD400]/70 group-hover:text-[#FFD400] transition-colors" viewBox="0 0 50 18">
-            <polyline fill="none" stroke="currentColor" strokeWidth="1.5" points={getSparklinePoints(row.key, currentKey)} />
-          </svg>
+          {(() => {
+            const pts = getSparklinePoints(row.key, currentKey, 42, 16);
+            if (!pts) {
+              return (
+                <svg className="w-16 h-6 inline-block text-[#FFD400]/70" viewBox="0 0 60 18">
+                  <polyline fill="none" stroke="currentColor" strokeWidth="1.8" points="0,9 42,9" />
+                  <line x1="42" y1="9" x2="58" y2="9" stroke="currentColor" strokeWidth="1.8" strokeDasharray="2 2" />
+                  <circle cx="58" cy="9" r="2" fill="#FFD400" />
+                </svg>
+              );
+            }
+            const ptArr = pts.split(' ').map(p => p.split(',').map(Number));
+            const lastPt = ptArr[ptArr.length - 1] || [42, 9];
+            const prevPt = ptArr[ptArr.length - 2] || [0, 9];
+            const slopeY = lastPt[1] - prevPt[1];
+            const projY = Math.max(2, Math.min(16, lastPt[1] + slopeY * 0.7));
+            const projX = 58;
+
+            return (
+              <svg className="w-16 h-6 inline-block" viewBox="0 0 60 18">
+                {/* Histórico Real */}
+                <polyline fill="none" stroke="#FFD400" strokeWidth="1.8" points={pts} />
+                {/* Linha de Projeção Tracejada */}
+                <line 
+                  x1={lastPt[0]} 
+                  y1={lastPt[1]} 
+                  x2={projX} 
+                  y2={projY} 
+                  stroke="#FFD400" 
+                  strokeWidth="1.8" 
+                  strokeDasharray="2 2" 
+                  opacity="0.9" 
+                />
+                {/* Ponto Projetado */}
+                <circle cx={projX} cy={projY} r="2" fill="#FFD400" />
+              </svg>
+            );
+          })()}
         </td>
       </tr>
     );
   };
 
   return (
-    <div className="bg-[#0B0B0B] text-white min-h-screen font-sans selection:bg-[#FFD400] selection:text-black pb-16">
+    <div className={`max-w-7xl w-full mx-auto px-4 md:px-8 py-6 md:py-8 flex-1 flex flex-col ${
+      isLight ? 'text-zinc-900' : 'text-white'
+    }`}>
       
 
-      {/* HEADER PRINCIPAL */}
-      <header className="max-w-7xl mx-auto px-8 pt-8 pb-6 border-b border-zinc-900 flex flex-col md:flex-row md:items-end justify-between gap-4">
+      {/* HEADER DO DASHBOARD & CONTROLES — PADRÃO UNIFICADO */}
+      <div className={`flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3 mb-6 border-b ${
+        isLight ? 'border-zinc-200' : 'border-zinc-800/80'
+      }`}>
         <div>
-          <h1 className="text-3xl font-black italic uppercase tracking-tighter text-white leading-none">Dashboard</h1>
-          <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider mt-2">Acompanhe toda a saúde do seu funil de aquisição e vendas.</p>
+          <h1 className={`text-3xl lg:text-4xl font-black italic uppercase tracking-tight leading-none ${
+            isLight ? 'text-zinc-900' : 'text-white'
+          }`}>Dashboard</h1>
+          <p className="text-xs lg:text-sm text-zinc-400 font-medium leading-relaxed mt-1.5">
+            Acompanhe a saúde do seu funil de aquisição, métricas de mídia e desempenho de vendas.
+          </p>
         </div>
 
-        {/* Controles: período + ações */}
-        <div className="flex items-center gap-2">
-          {/* Dropdown Seletor de Período Meta-style */}
+        {/* Controles: Período + Ações (Design Ampliado & Destacado) */}
+        <div className="flex items-center gap-3">
+          {/* Dropdown Seletor de Período Meta-style Ampliado */}
           <div className="relative">
             <button 
               onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
-              className="bg-zinc-950 border border-zinc-850 hover:border-zinc-700 rounded-xl px-4 py-2.5 flex items-center gap-2 text-[10px] font-black text-white outline-none transition-all cursor-pointer select-none active:scale-95 shadow-md"
+              className={`${
+                isLight 
+                  ? 'bg-white border-zinc-200/90 text-zinc-900 hover:bg-zinc-50 hover:border-zinc-300 shadow-sm' 
+                  : 'bg-zinc-950/80 border-zinc-800 text-white hover:bg-zinc-900 hover:border-zinc-700'
+              } border rounded-2xl px-4.5 py-3 flex items-center gap-3 text-xs lg:text-sm font-bold tracking-tight outline-none transition-all cursor-pointer select-none active:scale-95 shadow-md`}
             >
-              <Calendar className="w-4 h-4 text-yellow-400" />
+              <Calendar className="w-5 h-5 text-yellow-400 shrink-0" />
               <span>
                 {formatDateLabel(startDate)} – {formatDateLabel(endDate)}
               </span>
-              <ChevronDown className={`w-3.5 h-3.5 text-zinc-500 transition-transform ${isDatePickerOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-4 h-4 text-zinc-400 shrink-0 transition-transform ${isDatePickerOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {isDatePickerOpen && (
@@ -1001,11 +1238,13 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
                   onClick={() => setIsDatePickerOpen(false)}
                 />
                 
-                <div className="absolute right-0 top-12 mt-2 bg-[#0B0B0B] border border-zinc-900 rounded-[28px] p-6 shadow-2xl z-50 flex gap-6 min-w-[580px] text-left animate-fade-in">
+                <div className={`absolute right-0 top-14 mt-2 ${
+                  isLight ? 'bg-white border-zinc-200 text-zinc-900' : 'bg-[#0B0B0B] border-zinc-900 text-white'
+                } border rounded-[28px] p-6 shadow-2xl z-50 flex gap-6 min-w-[580px] text-left animate-fade-in`}>
                   
                   {/* Atalhos */}
-                  <div className="w-48 shrink-0 flex flex-col gap-1 border-r border-zinc-900 pr-5">
-                    <span className="text-[7.5px] font-black text-zinc-600 uppercase tracking-widest mb-2 pl-2.5">Períodos de Data</span>
+                  <div className={`w-48 shrink-0 flex flex-col gap-1 border-r ${isLight ? 'border-zinc-200 pr-5' : 'border-zinc-900 pr-5'}`}>
+                    <span className="text-[9px] font-black text-zinc-400 uppercase tracking-widest mb-2 pl-2.5">Períodos de Data</span>
                     {[
                       { key: 'este_ano', label: 'Este Ano (2026)' },
                       { key: 'ultimos_7', label: 'Últimos 7 Dias' },
@@ -1022,7 +1261,7 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
                           className={`w-full text-left px-3 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer ${
                             isActive 
                               ? 'bg-yellow-400 text-black' 
-                              : 'text-zinc-400 hover:bg-zinc-900/60 hover:text-white'
+                              : isLight ? 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900' : 'text-zinc-400 hover:bg-zinc-900/60 hover:text-white'
                           }`}
                         >
                           {preset.label}
@@ -1034,10 +1273,10 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
                   {/* Formulário Calendário */}
                   <div className="flex-1 flex flex-col justify-between">
                     <div className="space-y-4">
-                      <span className="text-[7.5px] font-black text-zinc-650 uppercase tracking-widest block">Customizado</span>
+                      <span className="text-[9px] font-black text-zinc-400 uppercase tracking-widest block">Customizado</span>
                       <div className="grid grid-cols-2 gap-3">
                         <div className="space-y-1.5">
-                          <label className="text-[8px] font-black text-zinc-550 uppercase tracking-widest block pl-1">Início</label>
+                          <label className="text-[8.5px] font-black text-zinc-400 uppercase tracking-widest block pl-1">Início</label>
                           <input 
                             type="date"
                             min="2025-01-01"
@@ -1047,11 +1286,13 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
                               setLocalStart(e.target.value);
                               setPresetSelected('personalizado');
                             }}
-                            className="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3.5 py-2.5 text-white font-bold text-[11px] focus:border-yellow-400 outline-none transition-all"
+                            className={`w-full ${
+                              isLight ? 'bg-zinc-50 border-zinc-200 text-zinc-900' : 'bg-zinc-950 border-zinc-900 text-white'
+                            } border rounded-xl px-3.5 py-2.5 font-bold text-xs focus:border-yellow-400 outline-none transition-all`}
                           />
                         </div>
                         <div className="space-y-1.5">
-                          <label className="text-[8px] font-black text-zinc-550 uppercase tracking-widest block pl-1">Término</label>
+                          <label className="text-[8.5px] font-black text-zinc-400 uppercase tracking-widest block pl-1">Término</label>
                           <input 
                             type="date"
                             min="2025-01-01"
@@ -1061,19 +1302,21 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
                               setLocalEnd(e.target.value);
                               setPresetSelected('personalizado');
                             }}
-                            className="w-full bg-zinc-950 border border-zinc-900 rounded-xl px-3.5 py-2.5 text-white font-bold text-[11px] focus:border-yellow-400 outline-none transition-all"
+                            className={`w-full ${
+                              isLight ? 'bg-zinc-50 border-zinc-200 text-zinc-900' : 'bg-zinc-950 border-zinc-900 text-white'
+                            } border rounded-xl px-3.5 py-2.5 font-bold text-xs focus:border-yellow-400 outline-none transition-all`}
                           />
                         </div>
                       </div>
                       
                       {localStart > localEnd && (
-                        <p className="text-[8px] font-bold text-rose-500 uppercase tracking-wide">
+                        <p className="text-[8.5px] font-bold text-rose-500 uppercase tracking-wide">
                           A data de início não pode ser posterior à data de término.
                         </p>
                       )}
                     </div>
 
-                    <div className="flex items-center gap-2 pt-4 border-t border-zinc-900 mt-4">
+                    <div className={`flex items-center gap-2 pt-4 border-t ${isLight ? 'border-zinc-200 mt-4' : 'border-zinc-900 mt-4'}`}>
                       <button
                         onClick={() => {
                           if (localStart > localEnd) return;
@@ -1082,7 +1325,7 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
                           setIsDatePickerOpen(false);
                         }}
                         disabled={localStart > localEnd}
-                        className="flex-1 bg-yellow-400 hover:bg-yellow-300 disabled:opacity-20 disabled:pointer-events-none text-black font-black py-2.5 rounded-xl uppercase tracking-widest text-[9.5px] transition-colors cursor-pointer text-center"
+                        className="flex-1 bg-yellow-400 hover:bg-yellow-300 disabled:opacity-20 disabled:pointer-events-none text-black font-black py-2.5 rounded-xl uppercase tracking-widest text-[10px] transition-colors cursor-pointer text-center"
                       >
                         Aplicar Período
                       </button>
@@ -1092,7 +1335,9 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
                           setLocalEnd(endDate);
                           setIsDatePickerOpen(false);
                         }}
-                        className="px-4 py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white font-black rounded-xl uppercase tracking-widest text-[9.5px] transition-colors cursor-pointer"
+                        className={`px-4 py-2.5 ${
+                          isLight ? 'bg-zinc-100 hover:bg-zinc-200 text-zinc-800' : 'bg-zinc-900 hover:bg-zinc-800 text-white'
+                        } font-black rounded-xl uppercase tracking-widest text-[10px] transition-colors cursor-pointer`}
                       >
                         Cancelar
                       </button>
@@ -1105,15 +1350,19 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
           </div>
 
           {/* Divisor */}
-          <div className="w-px h-5 bg-zinc-800" />
+          <div className={`w-px h-6 ${isLight ? 'bg-zinc-200' : 'bg-zinc-800'}`} />
 
-          {/* Importar CSV */}
+          {/* Importar CSV Ampliado */}
           {!isClientView && (
             <label
-              className="h-9 w-9 flex items-center justify-center bg-zinc-950 border border-zinc-850 hover:border-zinc-700 hover:bg-zinc-900 text-zinc-400 hover:text-white rounded-xl transition-all cursor-pointer"
+              className={`h-11 w-11 flex items-center justify-center ${
+                isLight 
+                  ? 'bg-white border-zinc-200 text-zinc-700 hover:text-zinc-900 hover:bg-zinc-50 hover:border-zinc-300 shadow-sm' 
+                  : 'bg-zinc-950 border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-900 hover:border-zinc-700'
+              } border rounded-2xl transition-all cursor-pointer shadow-md`}
               title="Importar CSV"
             >
-              <FileText className="w-3.5 h-3.5" />
+              <FileText className="w-5 h-5" />
               <input 
                 type="file" 
                 accept=".csv" 
@@ -1142,19 +1391,23 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
             </label>
           )}
 
-          {/* Compartilhar */}
+          {/* Compartilhar Ampliado */}
           <button 
             onClick={generateShareLink}
-            className="h-9 w-9 flex items-center justify-center bg-zinc-950 border border-zinc-850 hover:border-zinc-700 hover:bg-zinc-900 text-zinc-400 hover:text-white rounded-xl transition-all cursor-pointer"
+            className={`h-11 w-11 flex items-center justify-center ${
+              isLight 
+                ? 'bg-white border-zinc-200 text-zinc-700 hover:text-zinc-900 hover:bg-zinc-50 hover:border-zinc-300 shadow-sm' 
+                : 'bg-zinc-950 border-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-900 hover:border-zinc-700'
+            } border rounded-2xl transition-all cursor-pointer shadow-md`}
             title={copied ? 'Link copiado!' : 'Compartilhar'}
           >
-            <Share className="w-3.5 h-3.5" />
+            <Share className="w-5 h-5" />
           </button>
         </div>
-      </header>
+      </div>
 
-      {/* CONTAINER PRINCIPAL */}
-      <main className="max-w-7xl mx-auto px-6 pt-10 space-y-12">
+      {/* CONTEÚDO PRINCIPAL */}
+      <div className="space-y-12">
         
         {/* LINHA 1: KPIs EXECUTIVOS (6 CARDS) */}
         {currentRangeMetrics && (
@@ -1173,7 +1426,7 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
               const isUp = pct >= 0;
 
               return (
-                <div key={i} className="bg-[#121214]/60 backdrop-blur-xl border border-zinc-800/80 rounded-[22px] p-6 flex flex-col justify-between h-44 relative overflow-hidden transition-all duration-300 group hover:scale-[1.03] hover:border-yellow-400/40 hover:shadow-[0_12px_36px_rgba(0,0,0,0.5)] ring-1 ring-inset ring-white/5">
+                <div key={i} className="bg-[#121214]/60 backdrop-blur-xl border border-zinc-800/80 rounded-[22px] p-6 flex flex-col justify-between h-44 relative overflow-hidden transition-all duration-300 group hover:scale-[1.03] hover:border-yellow-400/40 ring-1 ring-inset ring-white/5">
                   {/* Etiqueta / Header */}
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] lg:text-[11px] font-black text-zinc-400 uppercase tracking-wider block">{kpi.label}</span>
@@ -1202,277 +1455,844 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
           </div>
         )}
 
-        {/* SCORE DO FUNIL */}
-        <div className="bg-[#121214]/60 backdrop-blur-xl border border-zinc-800/80 rounded-[28px] p-8 grid grid-cols-1 md:grid-cols-5 gap-8 items-center text-left ring-1 ring-inset ring-white/5 shadow-xl">
-          {/* Placar Geral */}
-          <div className="md:col-span-1 border-r border-zinc-900/60 pr-6 flex items-center gap-5">
-            <div className="w-20 h-20 rounded-full border-[5px] border-[#FFD400] flex items-center justify-center font-black text-white text-2xl shadow-[0_0_20px_rgba(255,212,0,0.3)] shrink-0">
-              {scores.geral}
-            </div>
-            <div>
-              <span className="text-[10px] font-black text-zinc-400 uppercase tracking-wider block">Score Geral</span>
-              <h4 className="text-base font-black italic uppercase tracking-tight text-white mt-1">Saúde Geral</h4>
-              <div className="w-24 bg-zinc-950/80 h-2 border border-zinc-900 rounded-full mt-2 overflow-hidden">
-                <div style={{ width: `${scores.geral}%` }} className="bg-[#FFD400] h-full"></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Sub Scores */}
-          {[
-            { label: 'Topo do Funil', val: scores.topo, desc: 'Engajamento & CPM' },
-            { label: 'Meio do Funil', val: scores.meio, desc: 'Leads & Conversões' },
-            { label: 'Fundo do Funil', val: scores.fundo, desc: 'Compras & CPA' },
-            { label: 'Financeiro', val: scores.fin, desc: 'ROAS & Faturamento' }
-          ].map((sc, i) => (
-            <div key={i} className="space-y-2 text-left">
-              <div className="flex justify-between items-center text-[10px] lg:text-[11px] font-black text-zinc-400 uppercase tracking-wider">
-                <span>{sc.label}</span>
-                <span className="text-white font-black">{sc.val}%</span>
-              </div>
-              <div className="w-full bg-zinc-950/80 h-2 border border-zinc-900 rounded-full overflow-hidden">
-                <div style={{ width: `${sc.val}%` }} className="bg-yellow-400/90 h-full"></div>
-              </div>
-              <span className="text-[10px] text-zinc-550 font-bold block">{sc.desc}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* LINHA 2: FUNIL COMPLETO (13 ETAPAS) */}
+        {/* SEÇÃO LADO A LADO: FUNIL VISUAL (ESQUERDA) vs SCORE & SUB-SCORES (DIREITA) */}
         {currentRangeMetrics && (
-          <div className="bg-[#121214]/60 backdrop-blur-xl border border-zinc-800/80 rounded-[28px] p-8 text-left space-y-6 shadow-xl ring-1 ring-inset ring-white/5">
-            <div>
-              <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest block">Acompanhamento Linear Comercial</span>
-              <h3 className="text-xl font-black uppercase italic tracking-tighter text-white mt-1">Funil Completo</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            
+            {/* COLUNA ESQUERDA (lg:col-span-7): FUNIL VISUAL EXPANDIDO */}
+            <div className="lg:col-span-7 flex flex-col">
+              
+              {/* CARD PRINCIPAL: FUNIL COMERCIAL VISUAL */}
+              <div className={`${
+                isLight ? 'bg-white border-zinc-200/90' : 'bg-[#121214]/60 border-zinc-800/80'
+              } backdrop-blur-xl border rounded-[28px] p-6 text-left space-y-6 flex-1 flex flex-col justify-between`}>
+                {/* Header com Seletor do Tipo (Sem Subtítulo) */}
+                <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2.5 border-b ${
+                  isLight ? 'border-zinc-200' : 'border-zinc-800/80'
+                }`}>
+                  <div>
+                    <h3 className={`text-xl lg:text-2xl font-black uppercase italic tracking-tight leading-tight ${
+                      isLight ? 'text-zinc-900' : 'text-white'
+                    }`}>Funil Comercial</h3>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-[9px] font-black text-zinc-400 uppercase tracking-widest">Tipo:</span>
+                    <select
+                      value={selectedTemplateId}
+                      onChange={(e) => setSelectedTemplateId(e.target.value)}
+                      className={`${
+                        isLight ? 'bg-zinc-50 border-zinc-300 text-zinc-900' : 'bg-zinc-950 border-yellow-400/40 text-yellow-400'
+                      } border font-black text-[10px] uppercase tracking-wider rounded-xl px-3 py-1.5 outline-none focus:ring-1 focus:ring-yellow-400 cursor-pointer`}
+                    >
+                      {Object.values(FUNNEL_TEMPLATES).map(tmpl => (
+                        <option key={tmpl.id} value={tmpl.id} className={isLight ? "bg-white text-zinc-900 font-bold" : "bg-zinc-950 text-white font-bold"}>
+                          {tmpl.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Funil em SVG idêntico ao novo arquivo do CorelDRAW (espaçamento expandido) */}
+                <div className="w-full flex justify-center py-2 flex-1 items-center">
+                  <svg 
+                    viewBox="0 0 128000 117600" 
+                    className="w-full h-auto max-h-[620px] select-none"
+                  >
+                    <g id="CorelFunnelGroup">
+                      {(() => {
+                        const template = FUNNEL_TEMPLATES[selectedTemplateId] || FUNNEL_TEMPLATES.ecommerce;
+
+                        const STAGE_POLYGONS = [
+                          { yellow: "0,120 83430,120 80690,12610 2740,12610", shadow: "83450,0 80690,12610 6050,30160 3290,17550", centerX: 41715, centerY: 6365, rightX: 82060 },
+                          { yellow: "80140,17550 77380,30160 6050,30160 3290,17550", shadow: "80140,17550 77380,30160 9360,47650 6600,35040", centerX: 41715, centerY: 23855, rightX: 78760 },
+                          { yellow: "76820,35040 74060,47650 9360,47650 6600,35040", shadow: "76820,35040 74060,47650 12680,65130 9910,52520", centerX: 41715, centerY: 41345, rightX: 75440 },
+                          { yellow: "73510,52520 70750,65130 12680,65130 9910,52520", shadow: "73510,52520 70750,65130 15990,82620 13230,70010", centerX: 41715, centerY: 58825, rightX: 72130 },
+                          { yellow: "70200,70010 67440,82620 15990,82620 13230,70010", shadow: "70200,70010 67440,82620 19300,100110 16540,87500", centerX: 41715, centerY: 76315, rightX: 68820 },
+                          { yellow: "66880,87500 64120,100110 19300,100110 16540,87500", shadow: "66880,87500 64120,100110 22620,117600 19850,104990", centerX: 41715, centerY: 93805, rightX: 65500 },
+                          { yellow: "63570,104990 60810,117600 22620,117600 19850,104990", shadow: null, centerX: 41715, centerY: 111295, rightX: 62190 }
+                        ];
+
+                        const CONVERSION_BADGE_Y = [15080, 32600, 50085, 67570, 85060, 102550];
+
+                        return (
+                          <>
+                            {/* Render 3D Depth Shadows (black) */}
+                            {STAGE_POLYGONS.map((st, idx) => st.shadow ? (
+                              <polygon key={`shadow-${idx}`} fill="#09090b" points={st.shadow} />
+                            ) : null)}
+
+                            {/* Render CorelDRAW 3D Yellow Polygons + Text Overlay */}
+                            {STAGE_POLYGONS.map((st, idx) => {
+                              const step = template.steps[idx] || template.steps[template.steps.length - 1];
+                              const val = currentRangeMetrics[step.volumeKey as keyof typeof currentRangeMetrics] ?? 0;
+                              const costVal = currentRangeMetrics[step.costKey as keyof typeof currentRangeMetrics] ?? 0;
+
+                              return (
+                                <g key={`stage-${idx}`} className="group cursor-pointer">
+                                  {/* Yellow CorelDRAW Trapezoid Polygon */}
+                                  <polygon 
+                                    fill="#FFCC00" 
+                                    points={st.yellow} 
+                                    className="transition-all duration-300 group-hover:fill-[#FFE033]"
+                                  />
+
+                                  {/* Stage Label & Metric Volume Text inside Polygon */}
+                                  <text 
+                                    x={st.centerX} 
+                                    y={st.centerY - 2200} 
+                                    fill="#000000" 
+                                    textAnchor="middle" 
+                                    fontSize="2100" 
+                                    fontWeight="900" 
+                                    letterSpacing="130"
+                                    className="uppercase"
+                                  >
+                                    {step.label}
+                                  </text>
+                                  <text 
+                                    x={st.centerX} 
+                                    y={st.centerY + 2600} 
+                                    fill="#000000" 
+                                    textAnchor="middle" 
+                                    fontSize="4600" 
+                                    fontWeight="900" 
+                                    fontStyle="italic"
+                                  >
+                                    {formatCell(val, 'number')}
+                                  </text>
+
+                                  {/* Connecting Line to Right Metric Box */}
+                                  <line 
+                                    x1={st.rightX} 
+                                    y1={st.centerY} 
+                                    x2={95000} 
+                                    y2={st.centerY} 
+                                    stroke="#FFCC00" 
+                                    strokeWidth="450" 
+                                    strokeDasharray="1200,600"
+                                    opacity="0.8"
+                                  />
+
+                                  {/* Right Metric Card Container */}
+                                  <rect 
+                                    x={95000} 
+                                    y={st.centerY - 4500} 
+                                    width={31000} 
+                                    height={9000} 
+                                    rx={2200} 
+                                    ry={2200} 
+                                    fill="#09090b" 
+                                    stroke="#27272a" 
+                                    strokeWidth="350"
+                                    className="group-hover:stroke-[#FFCC00] transition-colors"
+                                  />
+
+                                  {/* Cost Label - Centralizado perfeitamente sem vazar */}
+                                  <text 
+                                    x={110500} 
+                                    y={st.centerY - 1200} 
+                                    fill="#a1a1aa" 
+                                    textAnchor="middle" 
+                                    fontSize="1850" 
+                                    fontWeight="900"
+                                    letterSpacing="40"
+                                    className="uppercase"
+                                  >
+                                    {step.costLabel}
+                                  </text>
+
+                                  {/* Cost Value */}
+                                  <text 
+                                    x={110500} 
+                                    y={st.centerY + 2600} 
+                                    fill="#ffffff" 
+                                    textAnchor="middle" 
+                                    fontSize="3400" 
+                                    fontWeight="900" 
+                                    fontStyle="italic"
+                                    className="group-hover:fill-[#FFCC00] transition-colors"
+                                  >
+                                    {formatCell(costVal, step.costFormat || 'currency')}
+                                  </text>
+                                </g>
+                              );
+                            })}
+
+                            {/* Conversion % Text floating cleanly in the expanded gaps between stages */}
+                            {CONVERSION_BADGE_Y.map((badgeY, idx) => {
+                              const prevStep = template.steps[idx];
+                              const nextStep = template.steps[idx + 1];
+                              const prevVal = prevStep ? (currentRangeMetrics[prevStep.volumeKey as keyof typeof currentRangeMetrics] ?? 0) : 0;
+                              const nextVal = nextStep ? (currentRangeMetrics[nextStep.volumeKey as keyof typeof currentRangeMetrics] ?? 0) : 0;
+                              const convRate = prevVal > 0 ? (nextVal / prevVal) * 100 : 0;
+
+                              return (
+                                <text 
+                                  key={`badge-${idx}`}
+                                  x={41715} 
+                                  y={badgeY + 600} 
+                                  fill="#FFCC00" 
+                                  textAnchor="middle" 
+                                  fontSize="2200" 
+                                  fontWeight="900"
+                                  letterSpacing="80"
+                                >
+                                  CONVERSÃO: {convRate.toFixed(1)}%
+                                </text>
+                              );
+                            })}
+                          </>
+                        );
+                      })()}
+                    </g>
+                  </svg>
+                </div>
+              </div>
+
             </div>
 
-            {/* Grid de etapas horizontais scrollable */}
-            <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 overflow-x-auto py-6">
-              {[
-                { label: 'Investimento', key: 'valorUsado', format: 'currency', desc: 'Mídia paga total' },
-                { label: 'Impressões', key: 'impressões', format: 'number', desc: 'Visualizações de anúncios' },
-                { label: 'Alcance', key: 'alcance', format: 'number', desc: 'Pessoas únicas atingidas' },
-                { label: 'Cliques', key: 'clicks', format: 'number', desc: 'Cliques nos criativos' },
-                { label: 'LP Views', key: 'lpViews', format: 'number', desc: 'Visitantes na página' },
-                { label: 'Mensagens', key: 'mensagens', format: 'number', desc: 'Inícios de conversas' },
-                { label: 'Leads', key: 'leads', format: 'number', desc: 'Leads totais cadastrados' },
-                { label: 'Qualificados', key: 'qualificados', format: 'number', desc: 'MQLs filtrados' },
-                { label: 'Propostas', key: 'propostas', format: 'number', desc: 'Reuniões ou propostas' },
-                { label: 'Compras', key: 'compras', format: 'number', desc: 'Transações confirmadas' },
-                { label: 'Vendas', key: 'vendas', format: 'number', desc: 'Pedidos fechados' },
-                { label: 'Receita', key: 'receita', format: 'currency', desc: 'Entrada líquida' },
-                { label: 'Lucro', key: 'lucroBruto', format: 'currency', desc: 'Resultado operacional' }
-              ].map((stage, idx, arr) => {
-                const val = currentRangeMetrics[stage.key as keyof typeof currentRangeMetrics];
-                const prevVal = prevRangeMetrics[stage.key as keyof typeof prevRangeMetrics];
-                const pct = prevVal > 0 ? ((val - prevVal) / prevVal) * 100 : 0;
-                const isUp = pct >= 0;
-                
-                // Calcula a taxa de conversão em relação ao passo anterior
-                let conversionRate = 0;
-                if (idx > 0) {
-                  const prevValOriginal = currentRangeMetrics[arr[idx - 1].key as keyof typeof currentRangeMetrics];
-                  conversionRate = prevValOriginal > 0 ? (val / prevValOriginal) * 100 : 0;
-                }
+            {/* COLUNA DIREITA (lg:col-span-5): SCORE DO FUNIL + SUB-SCORES (ALTURA 100% IGUALADA + INTERATIVO) */}
+            <div className="lg:col-span-5 flex flex-col justify-between gap-4">
+              
+              {/* CARD 1: SCORE GERAL (SAÚDE GERAL DO FUNIL) - CLICÁVEL */}
+              <div 
+                onClick={() => setSelectedStageModal('geral')}
+                className={`${
+                  isLight ? 'bg-white border-zinc-200/90 hover:border-yellow-400/60' : 'bg-[#121214]/70 border-zinc-800/90 hover:border-yellow-400/50'
+                } backdrop-blur-2xl border rounded-[28px] p-5 text-left space-y-4 relative overflow-hidden group transition-all duration-300 cursor-pointer hover:scale-[1.01]`}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-4 min-w-0 flex-1">
+                    {/* Círculo do Score Geral */}
+                    <div className={`relative w-16 h-16 sm:w-18 sm:h-18 rounded-full border-[4px] border-[#FFCC00] flex flex-col items-center justify-center font-black shrink-0 ${
+                      isLight ? 'bg-yellow-400/10 text-zinc-900' : 'bg-zinc-950/60 text-white'
+                    }`}>
+                      <span className="text-xl sm:text-2xl font-black italic leading-none">{scores.geral}</span>
+                      <span className={`text-[8.5px] font-extrabold mt-0.5 tracking-wider ${isLight ? 'text-zinc-500' : 'text-zinc-400'}`}>/100</span>
+                    </div>
 
-                return (
-                  <React.Fragment key={idx}>
-                    {/* Card da etapa */}
-                    <div className="bg-[#0B0B0C] border border-zinc-900 rounded-2xl p-5 shrink-0 w-44 space-y-3 hover:border-yellow-400/40 hover:scale-[1.02] hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)] transition-all duration-200">
-                      <span className="text-[10px] text-yellow-400 font-extrabold uppercase tracking-wider block leading-none">{stage.label}</span>
-                      <h4 className="text-lg font-black italic uppercase tracking-tight text-white leading-none mt-1">
-                        {formatCell(val, stage.format)}
-                      </h4>
-                      <div className="flex justify-between items-center border-t border-zinc-900/60 pt-2.5 text-[9.5px] font-bold text-zinc-500">
-                        <span className={isUp ? 'text-emerald-500' : 'text-rose-500'}>
-                          {isUp ? '▲' : '▼'} {Math.abs(pct).toFixed(0)}%
+                    {/* Detalhes do Score */}
+                    <div className="space-y-1 flex-1 min-w-0">
+                      <span className={`text-[9px] font-black uppercase tracking-widest block truncate ${isLight ? 'text-zinc-500' : 'text-zinc-400'}`}>Score Geral</span>
+                      <h3 className={`text-sm sm:text-base font-black italic uppercase tracking-tight leading-tight truncate ${isLight ? 'text-zinc-900' : 'text-white'}`}>
+                        Saúde Geral do Funil
+                      </h3>
+                      <div className="flex items-center gap-1.5 pt-0.5 flex-wrap">
+                        <span className="bg-[#FFCC00] text-black font-black text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0">
+                          {scores.geral >= 80 ? 'Excelente' : scores.geral >= 60 ? 'Bom' : 'Atenção'}
                         </span>
-                        <span className="truncate w-20 text-right" title={stage.desc}>{stage.desc}</span>
+                        <span className={`text-[10px] font-semibold truncate ${isLight ? 'text-zinc-600' : 'text-zinc-300'}`}>
+                          Funil altamente rentável
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <span className="text-[8.5px] font-black uppercase tracking-wider text-yellow-600 dark:text-yellow-400 bg-yellow-400/10 border border-yellow-400/30 px-2 py-1 rounded-xl flex items-center gap-1 shrink-0 group-hover:bg-yellow-400 group-hover:text-black transition-all">
+                    Ver Histórico ↗
+                  </span>
+                </div>
+
+                {/* Barra de Progresso Inferior */}
+                <div className={`w-full h-2.5 rounded-full overflow-hidden p-0.5 ${
+                  isLight ? 'bg-zinc-150 border border-zinc-200/80' : 'bg-zinc-950/90 border border-zinc-900/90'
+                }`}>
+                  <div 
+                    style={{ width: `${scores.geral}%` }} 
+                    className="bg-gradient-to-r from-yellow-500 via-emerald-400 to-emerald-500 h-full rounded-full transition-all duration-1000"
+                  />
+                </div>
+              </div>
+
+              {/* CONTÊINER DOS SUB-SCORES EMPILHADOS (PREENCHENDO A ALTURA + CLICÁVEIS) */}
+              <div className="flex-1 flex flex-col justify-between gap-3">
+                {[
+                  { id: 'topo' as const, label: 'TOPO DO FUNIL', val: scores.topo, desc: 'Engajamento & CPM', icon: Target },
+                  { id: 'meio' as const, label: 'MEIO DO FUNIL', val: scores.meio, desc: 'Leads & Conversões', icon: LinkIcon },
+                  { id: 'fundo' as const, label: 'FUNDO DO FUNIL', val: scores.fundo, desc: 'Compras & CPA', icon: ShoppingBag },
+                  { id: 'fin' as const, label: 'FINANCEIRO', val: scores.fin, desc: 'ROAS & Faturamento', icon: DollarSign }
+                ].map((sc, i) => (
+                  <div 
+                    key={i} 
+                    onClick={() => setSelectedStageModal(sc.id)}
+                    className={`${
+                      isLight ? 'bg-white border-zinc-200/90 hover:border-yellow-400/60' : 'bg-[#121214]/60 border-zinc-800/80 hover:border-yellow-400/50'
+                    } backdrop-blur-xl border rounded-[24px] p-4 text-left space-y-2.5 flex-1 flex flex-col justify-between transition-all duration-300 cursor-pointer hover:scale-[1.01] group`}
+                  >
+                    {/* Header do Card com Ícone, Título, Porcentagem e Badge */}
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-yellow-400/20 to-amber-500/5 border border-yellow-400/30 flex items-center justify-center text-yellow-500 shrink-0 group-hover:scale-105 transition-transform">
+                          <sc.icon className="w-5 h-5" />
+                        </div>
+                        <div className="min-w-0">
+                          <span className={`text-[9.5px] font-black uppercase tracking-widest block truncate ${isLight ? 'text-zinc-500' : 'text-zinc-400'}`}>{sc.label}</span>
+                          <span className={`text-[10.5px] font-bold block tracking-tight mt-0.5 truncate ${isLight ? 'text-zinc-600' : 'text-zinc-400'}`}>{sc.desc}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2.5 shrink-0">
+                        <h4 className={`text-2xl font-black italic leading-none group-hover:text-yellow-500 transition-colors ${isLight ? 'text-zinc-900' : 'text-white'}`}>{sc.val}%</h4>
+                        <span className="text-[8.5px] font-black uppercase tracking-wider text-yellow-600 dark:text-yellow-400 bg-yellow-400/10 border border-yellow-400/30 px-2 py-1 rounded-lg flex items-center gap-1 group-hover:bg-yellow-400 group-hover:text-black transition-all">
+                          Ver ↗
+                        </span>
                       </div>
                     </div>
 
-                    {/* Conector com taxa de conversão */}
-                    {idx < arr.length - 1 && (
-                      <div className="flex flex-row md:flex-col items-center justify-center gap-1.5 py-2 md:py-0 shrink-0">
-                        <ArrowRight className="w-4 h-4 text-zinc-700 hidden md:block animate-pulse" />
-                        <ArrowDown className="w-4 h-4 text-zinc-700 block md:hidden animate-pulse" />
-                        <span className="bg-zinc-900 border border-zinc-850 text-zinc-400 text-[8px] lg:text-[9px] px-2 py-0.5 rounded-md font-black shadow-md uppercase tracking-widest">
-                          {idx === 0 ? 'CTR' : `${conversionRate.toFixed(1)}%`}
-                        </span>
-                      </div>
-                    )}
-                  </React.Fragment>
-                );
-              })}
+                    {/* Barra de Progresso Horizontal */}
+                    <div className={`w-full h-2.5 rounded-full overflow-hidden p-0.5 ${
+                      isLight ? 'bg-zinc-150 border border-zinc-200/80' : 'bg-zinc-950/80 border border-zinc-900/90'
+                    }`}>
+                      <div 
+                        style={{ width: `${sc.val}%` }} 
+                        className="bg-gradient-to-r from-yellow-400 to-amber-400 h-full rounded-full transition-all duration-700" 
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
             </div>
+
           </div>
         )}
 
-        {/* SEÇÃO IA & INSIGHTS (DOIS PAINÉIS LADO A LADO) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* LINHA 3: GRÁFICOS (DESIGN ENRIQUECIDO & LIMPO DE REDUNDÂNCIAS) */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch text-left">
           
-          {/* Inteligência: Recomendações da IA */}
-          <div className="md:col-span-2 bg-[#121214]/60 backdrop-blur-xl border border-zinc-800/80 rounded-[28px] p-8 text-left space-y-5 shadow-xl ring-1 ring-inset ring-white/5">
-            <div className="flex items-center gap-2.5">
-              <Sparkles className="w-5 h-5 text-yellow-400" />
-              <h3 className="text-base font-black uppercase italic tracking-wider text-white">O que a IA recomenda</h3>
-            </div>
+          {/* GRÁFICO 1: EVOLUÇÃO DO FUNIL (DESIGN ULTRA-COMPACTO & ENCOSTADO NAS BORDAS) */}
+          <div className={`${
+            isLight ? 'bg-white border-zinc-200/90' : 'bg-[#121214]/60 border-zinc-800/80'
+          } backdrop-blur-xl border rounded-[28px] p-6 text-left space-y-3 flex flex-col justify-between h-full relative`}>
             
-            <div className="space-y-3">
-              {getIaRecommendations().map((rec, i) => (
-                <div key={i} className="bg-zinc-950/60 border border-zinc-900/60 p-4.5 rounded-2xl text-[11px] lg:text-xs font-semibold text-zinc-300 leading-relaxed shadow-sm">
-                  {rec}
-                </div>
-              ))}
+            {/* Header */}
+            <div className={`space-y-1 pb-2.5 border-b ${isLight ? 'border-zinc-200' : 'border-zinc-800/80'}`}>
+              <h3 className={`text-xl lg:text-2xl font-black uppercase italic tracking-tight leading-tight ${isLight ? 'text-zinc-900' : 'text-white'}`}>
+                Evolução do Funil
+              </h3>
+              <p className="text-xs lg:text-sm font-medium text-zinc-400 leading-relaxed">
+                Acompanhe a evolução dos principais indicadores de investimento e receita ao longo do semestre.
+              </p>
             </div>
+
+            {/* Seletor de Filtro Posicionado em Cima do Gráfico (Compacto) */}
+            <div className="flex items-center justify-between pt-0 pb-0.5">
+              <span className="text-[9px] font-black uppercase tracking-widest text-zinc-400">
+                Métrica Exibida
+              </span>
+              <select
+                value={chartMetricFilter}
+                onChange={(e) => setChartMetricFilter(e.target.value as any)}
+                className={`text-[9.5px] font-black uppercase tracking-wider rounded-xl px-2.5 py-1 outline-none border transition-all cursor-pointer ${
+                  isLight ? 'bg-zinc-100 border-zinc-200 text-zinc-900 focus:ring-1 focus:ring-yellow-400' : 'bg-zinc-950 border-zinc-800 text-yellow-400 focus:ring-1 focus:ring-yellow-400'
+                }`}
+              >
+                <option value="investimento_receita">Investimento vs. Receita</option>
+                <option value="roas_cpl">ROAS vs. Custo/Lead</option>
+                <option value="leads_vendas">Leads vs. Vendas</option>
+              </select>
+            </div>
+
+            {/* Cálculo Dinâmico dos Pontos do Gráfico a partir de `months` */}
+            {(() => {
+              const activeChartData = months.map(m => {
+                if (chartMetricFilter === 'roas_cpl') {
+                  return {
+                    line1: m.metrics.roas.current,
+                    line2: m.metrics.cpl.current,
+                    label1: 'ROAS',
+                    label2: 'CPL',
+                    unit1: 'x',
+                    unit2: 'R$',
+                    month: m.month
+                  };
+                }
+                if (chartMetricFilter === 'leads_vendas') {
+                  return {
+                    line1: m.metrics.leads.current,
+                    line2: m.metrics.compras.current,
+                    label1: 'Leads',
+                    label2: 'Vendas',
+                    unit1: '',
+                    unit2: '',
+                    month: m.month
+                  };
+                }
+                return {
+                  line1: m.metrics.faturamento.current,
+                  line2: m.metrics.valorUsado.current,
+                  label1: 'Receita',
+                  label2: 'Investimento',
+                  unit1: 'R$',
+                  unit2: 'R$',
+                  month: m.month
+                };
+              });
+
+              const maxLine1 = Math.max(...activeChartData.map(d => d.line1)) || 1;
+              const maxLine2 = Math.max(...activeChartData.map(d => d.line2)) || 1;
+              const maxValChart = Math.max(maxLine1, maxLine2);
+
+              const getSvgY = (val: number) => {
+                if (!maxValChart) return 105;
+                return Math.round(110 - (val / maxValChart) * 95);
+              };
+
+              const stepX = 300 / Math.max(activeChartData.length - 1, 1);
+              const line1Coords = activeChartData.map((d, i) => ({ x: i * stepX, y: getSvgY(d.line1) }));
+              const line2Coords = activeChartData.map((d, i) => ({ x: i * stepX, y: getSvgY(d.line2) }));
+
+              // Função de Curva Bezier Suave (com garantia de comando 'M' inicial)
+              const getSmoothPath = (pts: { x: number; y: number }[]) => {
+                if (!pts || pts.length === 0) return 'M 0,120 L 300,120';
+                if (pts.length === 1) return `M ${pts[0].x},${pts[0].y}`;
+                let path = `M ${pts[0].x},${pts[0].y}`;
+                for (let i = 0; i < pts.length - 1; i++) {
+                  const curr = pts[i];
+                  const next = pts[i + 1];
+                  const cp1x = curr.x + (next.x - curr.x) / 2;
+                  const cp1y = curr.y;
+                  const cp2x = curr.x + (next.x - curr.x) / 2;
+                  const cp2y = next.y;
+                  path += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${next.x},${next.y}`;
+                }
+                return path;
+              };
+
+              const path1Str = getSmoothPath(line1Coords);
+              const path2Str = getSmoothPath(line2Coords);
+              const area1Str = `${path1Str} L 300,120 L 0,120 Z`;
+              const area2Str = `${path2Str} L 300,120 L 0,120 Z`;
+
+              const label1Name = activeChartData[0]?.label1 || 'Receita';
+              const label2Name = activeChartData[0]?.label2 || 'Investimento';
+
+              const formatYAxis = (factor: number) => {
+                const val = maxValChart * factor;
+                if (chartMetricFilter === 'roas_cpl') return `${val.toFixed(1)}x`;
+                if (chartMetricFilter === 'leads_vendas') return `${Math.round(val)}`;
+                if (val >= 1000000) return `${(val / 1000000).toFixed(1)}M`;
+                if (val >= 1000) return `${(val / 1000).toFixed(0)}K`;
+                return `${Math.round(val)}`;
+              };
+
+              return (
+                <div className="flex-1 flex flex-col justify-start relative">
+                  {/* Tooltip Flutuante no Hover */}
+                  {hoveredChartMonth !== null && activeChartData[hoveredChartMonth] && (
+                    <div 
+                      style={{ left: `${(hoveredChartMonth / (activeChartData.length - 1)) * 80 + 10}%` }}
+                      className="absolute top-0 z-30 transform -translate-x-1/2 bg-zinc-950/95 border border-yellow-400/40 text-white rounded-xl p-2.5 shadow-2xl backdrop-blur-md pointer-events-none text-left min-w-[140px] animate-fade-in"
+                    >
+                      <span className="text-[8.5px] font-black text-yellow-400 uppercase tracking-widest block border-b border-zinc-800 pb-1 mb-1">
+                        {activeChartData[hoveredChartMonth].month} — Detalhes
+                      </span>
+                      <div className="space-y-1 text-[10px] font-extrabold">
+                        <div className="flex justify-between items-center text-emerald-400">
+                          <span>{label1Name}:</span>
+                          <span>{formatCell(activeChartData[hoveredChartMonth].line1, activeChartData[hoveredChartMonth].unit1 === 'R$' ? 'currency' : activeChartData[hoveredChartMonth].unit1 === 'x' ? 'multiplier' : 'number')}</span>
+                        </div>
+                        <div className="flex justify-between items-center text-yellow-400">
+                          <span>{label2Name}:</span>
+                          <span>{formatCell(activeChartData[hoveredChartMonth].line2, activeChartData[hoveredChartMonth].unit2 === 'R$' ? 'currency' : activeChartData[hoveredChartMonth].unit2 === 'x' ? 'currency' : 'number')}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex gap-2 items-stretch h-48 mt-1">
+                    {/* Eixo Y Encostado à Esquerda (Compacto w-7) */}
+                    <div className="flex flex-col justify-between text-[8px] font-black text-zinc-400 py-0.5 text-right w-7 shrink-0">
+                      <span>{formatYAxis(1.0)}</span>
+                      <span>{formatYAxis(0.8)}</span>
+                      <span>{formatYAxis(0.6)}</span>
+                      <span>{formatYAxis(0.4)}</span>
+                      <span>{formatYAxis(0.2)}</span>
+                      <span>{formatYAxis(0)}</span>
+                    </div>
+
+                    {/* Área do Gráfico Canvas SVG */}
+                    <div className="flex-1 relative flex flex-col justify-between">
+                      {/* SVG com Curvas Suaves e Gradientes */}
+                      <svg className="w-full h-full overflow-visible select-none" viewBox="0 0 300 120" preserveAspectRatio="none">
+                        <defs>
+                          <linearGradient id="receitaGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#10b981" stopOpacity="0.22" />
+                            <stop offset="100%" stopColor="#10b981" stopOpacity="0.0" />
+                          </linearGradient>
+                          <linearGradient id="investGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#FFD400" stopOpacity="0.25" />
+                            <stop offset="100%" stopColor="#FFD400" stopOpacity="0.0" />
+                          </linearGradient>
+                        </defs>
+
+                        {/* Linhas Guia */}
+                        <line x1="0" y1="0" x2="300" y2="0" stroke={isLight ? "#e4e4e7" : "#27272a"} strokeWidth="0.8" strokeDasharray="3 3" />
+                        <line x1="0" y1="24" x2="300" y2="24" stroke={isLight ? "#e4e4e7" : "#27272a"} strokeWidth="0.8" strokeDasharray="3 3" />
+                        <line x1="0" y1="48" x2="300" y2="48" stroke={isLight ? "#e4e4e7" : "#27272a"} strokeWidth="0.8" strokeDasharray="3 3" />
+                        <line x1="0" y1="72" x2="300" y2="72" stroke={isLight ? "#e4e4e7" : "#27272a"} strokeWidth="0.8" strokeDasharray="3 3" />
+                        <line x1="0" y1="96" x2="300" y2="96" stroke={isLight ? "#e4e4e7" : "#27272a"} strokeWidth="0.8" strokeDasharray="3 3" />
+                        <line x1="0" y1="120" x2="300" y2="120" stroke={isLight ? "#e4e4e7" : "#27272a"} strokeWidth="1" />
+
+                        {/* Preenchimento Suave de Área */}
+                        <path fill="url(#receitaGrad)" d={area1Str} />
+                        <path fill="url(#investGrad)" d={area2Str} />
+
+                        {/* Linhas Curvas Sólidas */}
+                        <path fill="none" stroke="#10b981" strokeWidth="3" d={path1Str} strokeLinecap="round" />
+                        <path fill="none" stroke="#FFD400" strokeWidth="3" d={path2Str} strokeLinecap="round" />
+                      </svg>
+
+                      {/* Overlay HTML com Pontos 100% Redondos em CSS */}
+                      {activeChartData.map((d, i) => {
+                        const leftPct = (i / (activeChartData.length - 1)) * 100;
+                        const topPct1 = (getSvgY(d.line1) / 120) * 100;
+                        const topPct2 = (getSvgY(d.line2) / 120) * 100;
+                        const isHovered = hoveredChartMonth === i;
+
+                        return (
+                          <div key={i}>
+                            {/* Ponto Métrica 1 (Verde) */}
+                            <div 
+                              style={{ left: `${leftPct}%`, top: `${topPct1}%` }}
+                              onMouseEnter={() => setHoveredChartMonth(i)}
+                              onMouseLeave={() => setHoveredChartMonth(null)}
+                              className={`absolute -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full border-2 border-emerald-500 ${
+                                isLight ? 'bg-white' : 'bg-[#121214]'
+                              } cursor-pointer transition-all duration-200 z-10 ${
+                                isHovered ? 'scale-150 ring-4 ring-emerald-500/30 bg-emerald-500' : 'hover:scale-125'
+                              }`}
+                            />
+                            {/* Ponto Métrica 2 (Amarelo Marca #FFD400) */}
+                            <div 
+                              style={{ left: `${leftPct}%`, top: `${topPct2}%` }}
+                              onMouseEnter={() => setHoveredChartMonth(i)}
+                              onMouseLeave={() => setHoveredChartMonth(null)}
+                              className={`absolute -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full border-2 border-yellow-400 ${
+                                isLight ? 'bg-white' : 'bg-[#121214]'
+                              } cursor-pointer transition-all duration-200 z-10 ${
+                                isHovered ? 'scale-150 ring-4 ring-yellow-400/30 bg-yellow-400' : 'hover:scale-125'
+                              }`}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Rótulos dos Meses Dinâmicos e Perfeitamente Alinhados 1:1 com o Gráfico */}
+                  <div className="relative w-full h-4 mt-2 pl-9">
+                    <div className="relative w-full h-full">
+                      {activeChartData.map((d, i) => {
+                        const leftPct = (i / (activeChartData.length - 1)) * 100;
+                        const isHovered = hoveredChartMonth === i;
+                        return (
+                          <span 
+                            key={i}
+                            style={{ left: `${leftPct}%` }}
+                            onMouseEnter={() => setHoveredChartMonth(i)}
+                            onMouseLeave={() => setHoveredChartMonth(null)}
+                            className={`absolute top-0 -translate-x-1/2 text-[9px] font-black uppercase tracking-wider cursor-pointer transition-colors ${
+                              isHovered ? 'text-yellow-400 font-bold scale-110' : 'text-zinc-400'
+                            }`}
+                          >
+                            {d.month.toUpperCase()}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Legenda Dinâmica do Gráfico */}
+                  <div className="flex items-center justify-between text-[9px] font-black uppercase tracking-wider text-zinc-400 pt-2.5 mt-2 border-t border-zinc-100 dark:border-zinc-900/60">
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> {label1Name}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-yellow-400"></span> {label2Name}
+                    </span>
+                    <span className="flex items-center gap-1.5 text-zinc-400">
+                      <span className="w-3 border-b-2 border-dashed border-yellow-400"></span> Tendência
+                    </span>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Banner Projeção IA Calculado Dinamicamente */}
+            {(() => {
+              const lastVal = months[months.length - 1]?.metrics.faturamento.current || 380000;
+              const projNext = Math.round(lastVal * 1.18);
+              return (
+                <div className="bg-blue-500/10 border border-blue-400/25 p-3.5 rounded-2xl flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
+                    <Sparkles className="w-4 h-4 text-blue-400" />
+                  </div>
+                  <div className="min-w-0 text-[10.5px] font-semibold text-zinc-300 leading-tight">
+                    <span className="text-[8.5px] font-black text-blue-400 uppercase tracking-widest block">Projeção IA</span>
+                    Mantido o ritmo atual, a receita pode alcançar <span className="font-black text-emerald-500">{formatCell(projNext, 'currency')}</span> no próximo mês.
+                  </div>
+                </div>
+              );
+            })()}
+
           </div>
 
-          {/* Painel Lateral: Insights Inteligentes */}
-          <div className="md:col-span-1 bg-[#121214]/60 backdrop-blur-xl border border-zinc-800/80 rounded-[28px] p-8 text-left space-y-5 shadow-xl ring-1 ring-inset ring-white/5">
-            <div className="flex items-center gap-2.5">
-              <Lightbulb className="w-5 h-5 text-yellow-400" />
-              <h3 className="text-base font-black uppercase italic tracking-wider text-white">Insights Inteligentes</h3>
+          {/* GRÁFICO 2: CONVERSÃO ENTRE ETAPAS */}
+          <div className={`${
+            isLight ? 'bg-white border-zinc-200/90' : 'bg-[#121214]/60 border-zinc-800/80'
+          } backdrop-blur-xl border rounded-[28px] p-6 text-left space-y-5 flex flex-col justify-between h-full`}>
+            
+            {/* Header */}
+            <div className={`space-y-1 pb-2.5 border-b ${isLight ? 'border-zinc-200' : 'border-zinc-800/80'}`}>
+              <h3 className={`text-xl lg:text-2xl font-black uppercase italic tracking-tight leading-tight ${isLight ? 'text-zinc-900' : 'text-white'}`}>
+                Conversão entre Etapas
+              </h3>
+              <p className="text-xs lg:text-sm font-medium text-zinc-400 leading-relaxed">
+                Análise de conversão entre cada etapa do funil para identificar gargalos e otimizar resultados.
+              </p>
             </div>
-            <div className="space-y-2.5">
+
+            {/* Lista dos 6 Cartões de Etapa de Conversão */}
+            <div className="space-y-2.5 flex-1 flex flex-col justify-between">
               {[
-                { label: 'ROAS aumentou 18%', priority: 'Alta', status: 'green' },
-                { label: 'CPA caiu nos anúncios', priority: 'Média', status: 'green' },
-                { label: 'CTR abaixo da média', priority: 'Média', status: 'yellow' },
-                { label: 'Conversão da Landing caiu', priority: 'Alta', status: 'red' },
-                { label: 'Lucro bruto subiu', priority: 'Alta', status: 'green' }
-              ].map((ins, i) => (
-                <div key={i} className="bg-zinc-950/60 border border-zinc-900/60 p-4.5 rounded-xl flex items-center justify-between shadow-sm">
-                  <div className="flex items-center gap-3">
-                    <span className={`w-2.5 h-2.5 rounded-full ${
-                      ins.status === 'green' ? 'bg-emerald-500' : ins.status === 'yellow' ? 'bg-yellow-400' : 'bg-rose-500'
-                    }`}></span>
-                    <span className="text-[11px] lg:text-xs font-bold text-zinc-200">{ins.label}</span>
+                { icon: Eye, label: 'Impressões ➔ Cliques (CTR)', val: '2.1%', delta: '↑ 0.4pp', isUp: true, pct: 21, color: 'bg-yellow-400' },
+                { icon: ArrowUpRight, label: 'Cliques ➔ LP Views', val: '88%', delta: '↑ 5.2pp', isUp: true, pct: 88, color: 'bg-emerald-500' },
+                { icon: Monitor, label: 'LP Views ➔ Mensagens', val: '15.5%', delta: '↓ 2.1pp', isUp: false, pct: 15.5, color: 'bg-yellow-400' },
+                { icon: Smartphone, label: 'Mensagens ➔ Leads', val: '40.8%', delta: '↑ 3.7pp', isUp: true, pct: 40.8, color: 'bg-emerald-500' },
+                { icon: Target, label: 'Leads ➔ Propostas', val: '35%', delta: '↑ 2.3pp', isUp: true, pct: 35, color: 'bg-yellow-400' },
+                { icon: FileText, label: 'Propostas ➔ Vendas', val: '53%', delta: '↑ 4.8pp', isUp: true, pct: 53, color: 'bg-emerald-500' }
+              ].map((step, i) => (
+                <div key={i} className={`p-2.5 rounded-2xl border transition-all ${
+                  isLight ? 'bg-zinc-50/80 border-zinc-200/80' : 'bg-zinc-950/60 border-zinc-900'
+                } space-y-1.5`}>
+                  <div className="flex items-center justify-between gap-2 text-[11px]">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-6 h-6 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
+                        <step.icon className="w-3.5 h-3.5" />
+                      </div>
+                      <span className={`font-bold truncate ${isLight ? 'text-zinc-800' : 'text-zinc-200'}`}>{step.label}</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className={`font-black italic ${isLight ? 'text-zinc-900' : 'text-white'}`}>{step.val}</span>
+                      <span className={`text-[9px] font-black px-1.5 py-0.5 rounded-full ${
+                        step.isUp ? 'text-emerald-500 bg-emerald-500/10' : 'text-rose-500 bg-rose-500/10'
+                      }`}>
+                        {step.delta}
+                      </span>
+                    </div>
                   </div>
-                  <button className="text-[10px] font-black uppercase tracking-wider text-yellow-400 hover:underline hover:text-yellow-300 transition-colors">Detalhes</button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
 
-        {/* LINHA 3: GRÁFICOS */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
-          {/* Gráfico 1: Evolução do Funil */}
-          <div className="lg:col-span-1 bg-[#121214]/60 backdrop-blur-xl border border-zinc-800/80 rounded-[28px] p-8 text-left space-y-6 shadow-xl ring-1 ring-inset ring-white/5">
-            <div>
-              <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest block">Histórico do Semestre</span>
-              <h3 className="text-base font-black uppercase italic tracking-wider text-white mt-1">Evolução do Funil</h3>
-            </div>
-
-            {/* Custom SVG Line Chart */}
-            <div className="h-44 relative">
-              <svg className="w-full h-full" viewBox="0 0 300 100" preserveAspectRatio="none">
-                <line x1="0" y1="20" x2="300" y2="20" stroke="#18181b" strokeWidth="0.5" />
-                <line x1="0" y1="50" x2="300" y2="50" stroke="#18181b" strokeWidth="0.5" />
-                <line x1="0" y1="80" x2="300" y2="80" stroke="#18181b" strokeWidth="0.5" />
-                
-                {/* Linha Investimento (Yellow) */}
-                <polyline fill="none" stroke="#FFD400" strokeWidth="2.5" points="0,85 60,70 120,60 180,68 240,75 300,45" />
-                
-                {/* Linha Receita (Green) */}
-                <polyline fill="none" stroke="#10b981" strokeWidth="2.5" points="0,75 60,62 120,40 180,55 240,58 300,25" />
-              </svg>
-            </div>
-
-            <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-wider text-zinc-400">
-              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[#FFD400]"></span> Investimento</span>
-              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Receita</span>
-            </div>
-          </div>
-
-          {/* Gráfico 2: Conversão entre Etapas */}
-          <div className="lg:col-span-1 bg-[#121214]/60 backdrop-blur-xl border border-zinc-800/80 rounded-[28px] p-8 text-left space-y-5 shadow-xl ring-1 ring-inset ring-white/5">
-            <div>
-              <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest block">Fluxo Percentual</span>
-              <h3 className="text-base font-black uppercase italic tracking-wider text-white mt-1">Conversão entre Etapas</h3>
-            </div>
-
-            <div className="space-y-3.5 pt-2">
-              {[
-                { label: 'Impressões ➔ Cliques (CTR)', pct: 2.1, color: 'bg-[#FFD400]' },
-                { label: 'Cliques ➔ LP Views', pct: 88.0, color: 'bg-emerald-500' },
-                { label: 'LP Views ➔ Mensagens', pct: 15.5, color: 'bg-[#FFD400]' },
-                { label: 'Mensagens ➔ Leads', pct: 40.8, color: 'bg-emerald-500' },
-                { label: 'Leads ➔ Propostas', pct: 35.0, color: 'bg-[#FFD400]' },
-                { label: 'Propostas ➔ Vendas', pct: 53.0, color: 'bg-emerald-500' }
-              ].map((bar, i) => (
-                <div key={i} className="space-y-1.5">
-                  <div className="flex justify-between items-center text-[10px] lg:text-[11px] font-bold text-zinc-300">
-                    <span>{bar.label}</span>
-                    <span className="text-white font-black">{bar.pct}%</span>
-                  </div>
-                  <div className="w-full bg-zinc-950 h-2 rounded-full overflow-hidden border border-zinc-900">
-                    <div style={{ width: `${bar.pct}%` }} className={`h-full ${bar.color}`}></div>
+                  {/* Barra de Progresso Interna */}
+                  <div className="w-full bg-zinc-200 dark:bg-zinc-900 h-1.5 rounded-full overflow-hidden">
+                    <div style={{ width: `${step.pct}%` }} className={`h-full rounded-full ${step.color}`} />
                   </div>
                 </div>
               ))}
             </div>
-          </div>
 
-          {/* Gráfico 3: Distribuição dos Canais */}
-          <div className="lg:col-span-1 bg-[#121214]/60 backdrop-blur-xl border border-zinc-800/80 rounded-[28px] p-8 text-left space-y-6 shadow-xl ring-1 ring-inset ring-white/5">
-            <div>
-              <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest block">Mix de Mídia</span>
-              <h3 className="text-base font-black uppercase italic tracking-wider text-white mt-1">Distribuição dos Canais</h3>
-            </div>
-
-            <div className="flex items-center justify-around py-2 gap-4">
-              {/* Donut */}
-              <div className="w-24 h-24 relative flex items-center justify-center shrink-0">
-                <svg className="w-full h-full" viewBox="0 0 36 36">
-                  <circle cx="18" cy="18" r="15.915" fill="none" stroke="#18181b" strokeWidth="4" />
-                  <circle cx="18" cy="18" r="15.915" fill="none" stroke="#FFD400" strokeWidth="4" strokeDasharray="45 55" strokeDashoffset="0" />
-                  <circle cx="18" cy="18" r="15.915" fill="none" stroke="#a78bfa" strokeWidth="4" strokeDasharray="30 70" strokeDashoffset="-45" />
-                  <circle cx="18" cy="18" r="15.915" fill="none" stroke="#818cf8" strokeWidth="4" strokeDasharray="15 85" strokeDashoffset="-75" />
-                  <circle cx="18" cy="18" r="15.915" fill="none" stroke="#e4e4e7" strokeWidth="4" strokeDasharray="10 90" strokeDashoffset="-90" />
-                </svg>
-                <div className="absolute w-10 h-10 rounded-full bg-[#0B0B0B] border border-zinc-900 flex items-center justify-center text-[#FFD400] shadow-md">
-                  <Activity className="w-4 h-4" />
+            {/* Banner Taxa de Conversão Geral */}
+            <div className="bg-emerald-500/10 border border-emerald-400/25 p-3.5 rounded-2xl flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-500 flex items-center justify-center shrink-0">
+                  <TrendingUp className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="text-[8.5px] font-black text-zinc-400 uppercase tracking-widest block">Taxa de Conversão Geral</span>
+                  <h4 className={`text-xl font-black italic ${isLight ? 'text-zinc-900' : 'text-white'}`}>0.57%</h4>
                 </div>
               </div>
 
-              {/* Legendas */}
-              <div className="space-y-2 text-left">
+              <span className="text-[9.5px] font-black text-emerald-500 bg-emerald-500/15 px-2.5 py-1 rounded-full shrink-0">
+                ↑ 12% <span className="text-zinc-400 font-normal text-[8.5px] ml-0.5">vs. período</span>
+              </span>
+            </div>
+
+          </div>
+
+          {/* GRÁFICO 3: DISTRIBUIÇÃO DOS CANAIS */}
+          <div className={`${
+            isLight ? 'bg-white border-zinc-200/90' : 'bg-[#121214]/60 border-zinc-800/80'
+          } backdrop-blur-xl border rounded-[28px] p-6 text-left space-y-5 flex flex-col justify-between h-full`}>
+            
+            {/* Header */}
+            <div className={`space-y-1 pb-2.5 border-b ${isLight ? 'border-zinc-200' : 'border-zinc-800/80'}`}>
+              <h3 className={`text-xl lg:text-2xl font-black uppercase italic tracking-tight leading-tight ${isLight ? 'text-zinc-900' : 'text-white'}`}>
+                Distribuição dos Canais
+              </h3>
+              <p className="text-xs lg:text-sm font-medium text-zinc-400 leading-relaxed">
+                Distribuição de mídia por canal de aquisição para orientar a alocação inteligente de orçamento.
+              </p>
+            </div>
+
+            {/* GRÁFICO DONUT CENTRALIZADO NO TOPO */}
+            <div className="flex flex-col items-center justify-center py-2 flex-1 space-y-4">
+              <div className="w-36 h-36 relative flex items-center justify-center shrink-0 mx-auto">
+                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke={isLight ? "#f4f4f5" : "#18181b"} strokeWidth="4.5" />
+                  {/* Meta Ads (45%) - #1877F2 */}
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#1877F2" strokeWidth="4.5" strokeDasharray="45 55" strokeDashoffset="0" />
+                  {/* Google Ads (30%) - #4285F4 */}
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4285F4" strokeWidth="4.5" strokeDasharray="30 70" strokeDashoffset="-45" />
+                  {/* TikTok (15%) - #EE1D52 */}
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#EE1D52" strokeWidth="4.5" strokeDasharray="15 85" strokeDashoffset="-75" />
+                  {/* LinkedIn (10%) - #0A66C2 */}
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0A66C2" strokeWidth="4.5" strokeDasharray="10 90" strokeDashoffset="-90" />
+                </svg>
+                <div className="absolute flex flex-col items-center justify-center text-center">
+                  <span className="text-[8.5px] font-black text-zinc-400 uppercase tracking-widest leading-none">Investimento</span>
+                  <span className="text-[9.5px] font-black text-zinc-400 uppercase tracking-widest leading-none mt-0.5">Total</span>
+                </div>
+              </div>
+
+              {/* LEGENDA EMPILHADA ABAIXO DO GRÁFICO COM LOGOTIPOS & CORES OFICIAIS */}
+              <div className="w-full space-y-2.5 pt-2 border-t border-zinc-100 dark:border-zinc-900/60">
                 {[
-                  { label: 'Meta Ads', pct: '45%', color: 'bg-[#FFD400]' },
-                  { label: 'Google Ads', pct: '30%', color: 'bg-purple-400' },
-                  { label: 'TikTok', pct: '15%', color: 'bg-indigo-400' },
-                  { label: 'LinkedIn', pct: '10%', color: 'bg-zinc-300' }
-                ].map((channel, i) => (
-                  <div key={i} className="flex items-center gap-2 text-[10px] lg:text-[11px] font-bold text-zinc-300">
-                    <span className={`w-2 h-2 rounded-full ${channel.color}`}></span>
-                    <span className="w-20 truncate">{channel.label}</span>
-                    <span className="text-white font-black">{channel.pct}</span>
+                  { 
+                    label: 'Meta Ads', 
+                    pct: '45%', 
+                    delta: '↑ 8%', 
+                    isUp: true, 
+                    color: 'bg-[#1877F2]',
+                    icon: (
+                      <svg className="w-[17px] h-[12px] shrink-0" viewBox="0 0 270 191" fill="none">
+                        <defs>
+                          <linearGradient id="MetaGrad1_leg" x1="61" y1="117" x2="259" y2="127" gradientUnits="userSpaceOnUse">
+                            <stop style={{ stopColor: '#0064e1' }} offset="0"/>
+                            <stop style={{ stopColor: '#0064e1' }} offset="0.4"/>
+                            <stop style={{ stopColor: '#0073ee' }} offset="0.83"/>
+                            <stop style={{ stopColor: '#0082fb' }} offset="1"/>
+                          </linearGradient>
+                          <linearGradient id="MetaGrad2_leg" x1="45" y1="139" x2="45" y2="66" gradientUnits="userSpaceOnUse">
+                            <stop style={{ stopColor: '#0082fb' }} offset="0"/>
+                            <stop style={{ stopColor: '#0064e0' }} offset="1"/>
+                          </linearGradient>
+                        </defs>
+                        <path style={{ fill: '#0081fb' }} d="m31.06,125.96c0,10.98 2.41,19.41 5.56,24.51 4.13,6.68 10.29,9.51 16.57,9.51 8.1,0 15.51-2.01 29.79-21.76 11.44-15.83 24.92-38.05 33.99-51.98l15.36-23.6c10.67-16.39 23.02-34.61 37.18-46.96 11.56-10.08 24.03-15.68 36.58-15.68 21.07,0 41.14,12.21 56.5,35.11 16.81,25.08 24.97,56.67 24.97,89.27 0,19.38-3.82,33.62-10.32,44.87-6.28,10.88-18.52,21.75-39.11,21.75l0-31.02c17.63,0 22.03-16.2 22.03-34.74 0-26.42-6.16-55.74-19.73-76.69-9.63-14.86-22.11-23.94-35.84-23.94-14.85,0-26.8,11.2-40.23,31.17-7.14,10.61-14.47,23.54-22.7,38.13l-9.06,16.05c-18.2,32.27-22.81,39.62-31.91,51.75-15.95,21.24-29.57,29.29-47.5,29.29-21.27,0-34.72-9.21-43.05-23.09-6.8-11.31-10.14-26.15-10.14-43.06z"/>
+                        <path style={{ fill: 'url(#MetaGrad1_leg)' }} d="m24.49,37.3c14.24-21.95 34.79-37.3 58.36-37.3 13.65,0 27.22,4.04 41.39,15.61 15.5,12.65 32.02,33.48 52.63,67.81l7.39,12.32c17.84,29.72 27.99,45.01 33.93,52.22 7.64,9.26 12.99,12.02 19.94,12.02 17.63,0 22.03-16.2 22.03-34.74l27.4-.86c0,19.38-3.82,33.62-10.32,44.87-6.28,10.88-18.52,21.75-39.11,21.75-12.8,0-24.14-2.78-36.68-14.61-9.64-9.08-20.91-25.21-29.58-39.71l-25.79-43.08c-12.94-21.62-24.81-37.74-31.68-45.04-7.39-7.85-16.89-17.33-32.05-17.33-12.27,0-22.69,8.61-31.41,21.78z"/>
+                        <path style={{ fill: 'url(#MetaGrad2_leg)' }} d="m82.35,31.23c-12.27,0-22.69,8.61-31.41,21.78-12.33,18.61-19.88,46.33-19.88,72.95 0,10.98 2.41,19.41 5.56,24.51l-26.48,17.44c-6.8-11.31-10.14-26.15-10.14-43.06 0-30.75 8.44-62.8 24.49-87.55 14.24-21.95 34.79-37.3 58.36-37.3z"/>
+                      </svg>
+                    )
+                  },
+                  { 
+                    label: 'Google Ads', 
+                    pct: '30%', 
+                    delta: '↑ 5%', 
+                    isUp: true, 
+                    color: 'bg-[#4285F4]',
+                    icon: (
+                      <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                      </svg>
+                    )
+                  },
+                  { 
+                    label: 'TikTok', 
+                    pct: '15%', 
+                    delta: '↓ 3%', 
+                    isUp: false, 
+                    color: 'bg-[#EE1D52]',
+                    icon: (
+                      <svg className="w-4 h-4 text-[#EE1D52] shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.29 0 .56.04.83.12V9.37a6.34 6.34 0 0 0-1-.08 6.34 6.34 0 1 0 6.34 6.34V9.07a8.16 8.16 0 0 0 4.94 1.62V7.21a4.84 4.84 0 0 1-1-.52z"/>
+                      </svg>
+                    )
+                  },
+                  { 
+                    label: 'LinkedIn', 
+                    pct: '10%', 
+                    delta: '- 0%', 
+                    isUp: true, 
+                    color: 'bg-[#0A66C2]',
+                    icon: (
+                      <svg className="w-4 h-4 text-[#0A66C2] shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                      </svg>
+                    )
+                  }
+                ].map((ch, i) => (
+                  <div key={i} className={`p-2 rounded-xl border flex items-center justify-between gap-2 text-[11px] ${
+                    isLight ? 'bg-zinc-50/80 border-zinc-200/80' : 'bg-zinc-950/60 border-zinc-900'
+                  }`}>
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      {ch.icon}
+                      <span className={`font-bold truncate ${isLight ? 'text-zinc-800' : 'text-zinc-200'}`}>{ch.label}</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className={`font-black italic ${isLight ? 'text-zinc-900' : 'text-white'}`}>{ch.pct}</span>
+                      <span className={`text-[8.5px] font-black px-1.5 py-0.5 rounded-full ${
+                        ch.delta.includes('-') ? 'text-zinc-400 bg-zinc-500/10' : ch.isUp ? 'text-emerald-500 bg-emerald-500/10' : 'text-rose-500 bg-rose-500/10'
+                      }`}>
+                        {ch.delta}
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
+
+            {/* Card Destaque: MELHOR DESEMPENHO (META ADS - AZUL OFICIAL & LOGO DA META) */}
+            <div className="bg-[#1877F2]/10 border border-[#1877F2]/30 p-3.5 rounded-2xl flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-[#0081FB]/15 flex items-center justify-center shrink-0">
+                  <svg className="w-[20px] h-[14px] shrink-0" viewBox="0 0 270 191" fill="none">
+                    <defs>
+                      <linearGradient id="MetaGrad1_card" x1="61" y1="117" x2="259" y2="127" gradientUnits="userSpaceOnUse">
+                        <stop style={{ stopColor: '#0064e1' }} offset="0"/>
+                        <stop style={{ stopColor: '#0064e1' }} offset="0.4"/>
+                        <stop style={{ stopColor: '#0073ee' }} offset="0.83"/>
+                        <stop style={{ stopColor: '#0082fb' }} offset="1"/>
+                      </linearGradient>
+                      <linearGradient id="MetaGrad2_card" x1="45" y1="139" x2="45" y2="66" gradientUnits="userSpaceOnUse">
+                        <stop style={{ stopColor: '#0082fb' }} offset="0"/>
+                        <stop style={{ stopColor: '#0064e0' }} offset="1"/>
+                      </linearGradient>
+                    </defs>
+                    <path style={{ fill: '#0081fb' }} d="m31.06,125.96c0,10.98 2.41,19.41 5.56,24.51 4.13,6.68 10.29,9.51 16.57,9.51 8.1,0 15.51-2.01 29.79-21.76 11.44-15.83 24.92-38.05 33.99-51.98l15.36-23.6c10.67-16.39 23.02-34.61 37.18-46.96 11.56-10.08 24.03-15.68 36.58-15.68 21.07,0 41.14,12.21 56.5,35.11 16.81,25.08 24.97,56.67 24.97,89.27 0,19.38-3.82,33.62-10.32,44.87-6.28,10.88-18.52,21.75-39.11,21.75l0-31.02c17.63,0 22.03-16.2 22.03-34.74 0-26.42-6.16-55.74-19.73-76.69-9.63-14.86-22.11-23.94-35.84-23.94-14.85,0-26.8,11.2-40.23,31.17-7.14,10.61-14.47,23.54-22.7,38.13l-9.06,16.05c-18.2,32.27-22.81,39.62-31.91,51.75-15.95,21.24-29.57,29.29-47.5,29.29-21.27,0-34.72-9.21-43.05-23.09-6.8-11.31-10.14-26.15-10.14-43.06z"/>
+                    <path style={{ fill: 'url(#MetaGrad1_card)' }} d="m24.49,37.3c14.24-21.95 34.79-37.3 58.36-37.3 13.65,0 27.22,4.04 41.39,15.61 15.5,12.65 32.02,33.48 52.63,67.81l7.39,12.32c17.84,29.72 27.99,45.01 33.93,52.22 7.64,9.26 12.99,12.02 19.94,12.02 17.63,0 22.03-16.2 22.03-34.74l27.4-.86c0,19.38-3.82,33.62-10.32,44.87-6.28,10.88-18.52,21.75-39.11,21.75-12.8,0-24.14-2.78-36.68-14.61-9.64-9.08-20.91-25.21-29.58-39.71l-25.79-43.08c-12.94-21.62-24.81-37.74-31.68-45.04-7.39-7.85-16.89-17.33-32.05-17.33-12.27,0-22.69,8.61-31.41,21.78z"/>
+                    <path style={{ fill: 'url(#MetaGrad2_card)' }} d="m82.35,31.23c-12.27,0-22.69,8.61-31.41,21.78-12.33,18.61-19.88,46.33-19.88,72.95 0,10.98 2.41,19.41 5.56,24.51l-26.48,17.44c-6.8-11.31-10.14-26.15-10.14-43.06 0-30.75 8.44-62.8 24.49-87.55 14.24-21.95 34.79-37.3 58.36-37.3z"/>
+                  </svg>
+                </div>
+                <div>
+                  <span className="text-[8.5px] font-black text-[#1877F2] uppercase tracking-widest block">Melhor Desempenho</span>
+                  <h4 className="text-sm font-black text-[#1877F2]">Meta Ads</h4>
+                  <p className="text-[9.5px] text-zinc-400 font-medium">Maior retorno sobre investimento (ROAS)</p>
+                </div>
+              </div>
+
+              <span className="bg-[#1877F2]/20 text-[#1877F2] font-extrabold text-xs px-3 py-1 rounded-full shrink-0">
+                ROAS 4.2x
+              </span>
+            </div>
+
           </div>
 
         </div>
 
         {/* LINHA 4: TABELA EXECUTIVA DETALHADA */}
-        <div className="bg-zinc-900/30 border border-zinc-850 rounded-[28px] overflow-hidden hover:border-zinc-800 transition-all shadow-xl">
+        <div className="bg-zinc-900/30 border border-zinc-850 rounded-[28px] overflow-hidden hover:border-zinc-800 transition-all">
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse table-fixed min-w-[950px]">
+            <table className="w-full text-left border-collapse min-w-[1050px]">
               
               <thead>
-                <tr className="border-b border-zinc-900 bg-zinc-950/60">
-                  <th className="sticky left-0 bg-[#0B0B0B] px-6 py-5 text-[11px] font-bold uppercase tracking-wider text-zinc-400 w-52 border-r border-zinc-900/60 z-20 text-left">
+                <tr className="border-b border-zinc-900 bg-zinc-950/80">
+                  <th className="sticky left-0 bg-[#0B0B0B] px-6 py-5 text-[11px] font-extrabold uppercase tracking-wider text-zinc-400 w-60 border-r border-zinc-900/60 z-20 text-left">
                     Métrica
                   </th>
-                  <th className="px-4 py-5 text-[11px] font-bold uppercase tracking-wider text-zinc-400 text-right">Período Selecionado</th>
-                  <th className="px-4 py-5 text-[11px] font-bold uppercase tracking-wider text-zinc-400 text-right">Comparativo Anterior</th>
-                  <th className="px-4 py-5 text-[11px] font-bold uppercase tracking-wider text-zinc-400 text-right">Variação %</th>
-                  <th className="px-4 py-5 text-[11px] font-bold uppercase tracking-wider text-zinc-400 text-center">Meta</th>
-                  <th className="px-4 py-5 text-[11px] font-bold uppercase tracking-wider text-zinc-400 text-center">Status</th>
-                  <th className="px-4 py-5 text-[11px] font-bold uppercase tracking-wider text-zinc-400 text-center">Tendência</th>
+                  <th className="px-4 py-5 text-[11px] font-extrabold uppercase tracking-wider text-zinc-300 text-right">Período Selecionado</th>
+                  <th className="px-4 py-5 text-[11px] font-extrabold uppercase tracking-wider text-zinc-400 text-right">Comparativo Anterior</th>
+                  <th className="px-4 py-5 text-[11px] font-extrabold uppercase tracking-wider text-zinc-400 text-right">Variação %</th>
+                  <th className="px-4 py-5 text-[11px] font-extrabold uppercase tracking-wider text-yellow-400 text-right bg-yellow-400/5 border-x border-yellow-400/10">Projeção (Fim do Mês)</th>
+                  <th className="px-4 py-5 text-[11px] font-extrabold uppercase tracking-wider text-zinc-400 text-center">Meta</th>
+                  <th className="px-4 py-5 text-[11px] font-extrabold uppercase tracking-wider text-zinc-400 text-center">Status</th>
+                  <th className="px-4 py-5 text-[11px] font-extrabold uppercase tracking-wider text-zinc-400 text-center">Tendência & Projeção</th>
                 </tr>
               </thead>
 
@@ -1515,7 +2335,7 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
               { type: 'yellow', title: 'CTR abaixo da média', impact: 'Moderado', priority: 'Média', action: 'A fadiga criativa dos banners está alta. Recomenda-se subir 3 novas variações de ganchos em vídeo até sexta.' },
               { type: 'green', title: 'ROAS excelente detectado', impact: 'Positivo', priority: 'Alta', action: 'ROAS superior a 1.70x no funil geral. Autorizada escala vertical de orçamento em 15% na campanha principal.' }
             ].map((alert, i) => (
-              <div key={i} className="bg-[#121214]/60 backdrop-blur-xl border border-zinc-800/80 rounded-2xl p-6 flex flex-col justify-between h-48 hover:scale-[1.02] hover:border-zinc-700 transition-all shadow-xl ring-1 ring-inset ring-white/5">
+              <div key={i} className="bg-[#121214]/60 backdrop-blur-xl border border-zinc-800/80 rounded-2xl p-6 flex flex-col justify-between h-48 hover:scale-[1.02] hover:border-zinc-700 transition-all ring-1 ring-inset ring-white/5">
                 <div>
                   <div className="flex items-center justify-between">
                     <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded ${
@@ -1538,7 +2358,151 @@ const PerformanceDashboard: React.FC<PerformanceDashboardProps> = ({
           </div>
         </div>
 
-      </main>
+        {/* MODAL DE HISTÓRICO DE MÉTRICAS DA ETAPA SELECIONADA */}
+        {selectedStageModal && (
+          <div 
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-black/75 backdrop-blur-md animate-fade-in"
+            onClick={() => setSelectedStageModal(null)}
+          >
+            <div 
+              className={`max-w-4xl w-full rounded-[28px] p-6 shadow-2xl border text-left flex flex-col max-h-[88vh] overflow-hidden ${
+                isLight ? 'bg-white border-zinc-200 text-zinc-900' : 'bg-[#121214] border-zinc-800 text-white'
+              }`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header do Modal */}
+              <div className={`flex items-center justify-between pb-5 border-b ${
+                isLight ? 'border-zinc-200' : 'border-zinc-850'
+              }`}>
+                <div className="flex items-center gap-4">
+                  <div className="w-11 h-11 rounded-2xl bg-yellow-400/10 border border-yellow-400/30 flex items-center justify-center text-yellow-500 shadow-md shrink-0">
+                    {selectedStageModal === 'topo' && <Target className="w-6 h-6" />}
+                    {selectedStageModal === 'meio' && <LinkIcon className="w-6 h-6" />}
+                    {selectedStageModal === 'fundo' && <ShoppingBag className="w-6 h-6" />}
+                    {selectedStageModal === 'fin' && <DollarSign className="w-6 h-6" />}
+                    {selectedStageModal === 'geral' && <Activity className="w-6 h-6" />}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-black text-yellow-500 uppercase tracking-widest">Diagnóstico & Histórico</span>
+                      <span className="bg-yellow-400/20 text-yellow-500 text-[9px] font-black px-2 py-0.5 rounded-full uppercase">
+                        {selectedStageModal === 'geral' ? `${scores.geral}/100 Geral` : `${scores[selectedStageModal]}% Score`}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-black italic uppercase tracking-tight mt-0.5">
+                      {selectedStageModal === 'topo' && 'Topo do Funil — Engajamento & CPM'}
+                      {selectedStageModal === 'meio' && 'Meio do Funil — Leads & Conversão'}
+                      {selectedStageModal === 'fundo' && 'Fundo do Funil — Compras & CPA'}
+                      {selectedStageModal === 'fin' && 'Financeiro — ROAS & Rentabilidade'}
+                      {selectedStageModal === 'geral' && 'Saúde Geral do Funil — Resumo Executivo'}
+                    </h3>
+                  </div>
+                </div>
+
+                <button 
+                  onClick={() => setSelectedStageModal(null)}
+                  className={`p-2 rounded-xl border transition-colors ${
+                    isLight ? 'border-zinc-200 hover:bg-zinc-100 text-zinc-500' : 'border-zinc-800 hover:bg-zinc-900 text-zinc-400'
+                  }`}
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Conteúdo da Tabela de Métricas Históricas */}
+              <div className="flex-1 overflow-y-auto overflow-x-auto py-4 space-y-4">
+                <table className="w-full text-left text-[11px] border-collapse">
+                  <thead>
+                    <tr className={`border-b ${isLight ? 'border-zinc-200 text-zinc-500 bg-zinc-50' : 'border-zinc-850 text-zinc-400 bg-zinc-950/60'}`}>
+                      <th className="p-3 font-black uppercase tracking-wider">Métrica</th>
+                      {months.map(m => (
+                        <th key={m.month} className="p-3 font-black uppercase tracking-wider text-center">{m.month}</th>
+                      ))}
+                      <th className="p-3 font-black uppercase tracking-wider text-right">Evolução</th>
+                    </tr>
+                  </thead>
+                  <tbody className={`divide-y ${isLight ? 'divide-zinc-200/60' : 'divide-zinc-900/60'}`}>
+                    {(() => {
+                      const rowsMap = {
+                        topo: [
+                          { key: 'impressões', label: 'Impressões Totais', format: 'number' },
+                          { key: 'alcance', label: 'Alcance Estimado', format: 'number' },
+                          { key: 'cpm', label: 'CPM (Custo por Mil)', format: 'currency' },
+                          { key: 'clicks', label: 'Cliques no Link', format: 'number' },
+                          { key: 'ctr', label: 'CTR (Taxa de Clique %)', format: 'percent' },
+                          { key: 'cpc', label: 'CPC (Custo por Clique)', format: 'currency' }
+                        ],
+                        meio: [
+                          { key: 'lpViews', label: 'Page Views (Visitas à LP)', format: 'number' },
+                          { key: 'custoLpView', label: 'Custo por Visita LP', format: 'currency' },
+                          { key: 'leads', label: 'Leads / Contatos Gerados', format: 'number' },
+                          { key: 'cpl', label: 'CPL (Custo por Lead)', format: 'currency' },
+                          { key: 'txCliqueLead', label: 'Taxa Clique -> Lead (%)', format: 'percent' }
+                        ],
+                        fundo: [
+                          { key: 'checkout', label: 'Iniciou Checkout / Carrinho', format: 'number' },
+                          { key: 'custoCheckout', label: 'Custo por Checkout', format: 'currency' },
+                          { key: 'compras', label: 'Compras / Vendas Realizadas', format: 'number' },
+                          { key: 'cpa', label: 'CPA (Custo por Aquisição)', format: 'currency' },
+                          { key: 'ticketMedio', label: 'Ticket Médio', format: 'currency' }
+                        ],
+                        fin: [
+                          { key: 'valorUsado', label: 'Investimento em Mídia', format: 'currency' },
+                          { key: 'faturamento', label: 'Faturamento Bruto', format: 'currency' },
+                          { key: 'lucroBruto', label: 'Lucro Bruto', format: 'currency' },
+                          { key: 'roas', label: 'ROAS (Retorno em Anúncios)', format: 'multiplier' },
+                          { key: 'roi', label: 'ROI (Retorno do Investimento)', format: 'percent' }
+                        ],
+                        geral: [
+                          { key: 'valorUsado', label: 'Investimento Total', format: 'currency' },
+                          { key: 'leads', label: 'Leads Gerados', format: 'number' },
+                          { key: 'compras', label: 'Vendas Totais', format: 'number' },
+                          { key: 'faturamento', label: 'Faturamento Bruto', format: 'currency' },
+                          { key: 'roas', label: 'ROAS Geral', format: 'multiplier' }
+                        ]
+                      };
+
+                      const activeRows = rowsMap[selectedStageModal];
+
+                      return activeRows.map((r, idx) => {
+                        const firstVal = getVal(months[0], r.key, 'current');
+                        const lastVal = getVal(months[months.length - 1], r.key, 'current');
+                        const varPct = firstVal > 0 ? ((lastVal - firstVal) / firstVal) * 100 : 0;
+                        const isGood = ['cpm', 'cpc', 'cpl', 'cpa', 'custoLpView', 'custoCheckout'].includes(r.key) ? varPct <= 0 : varPct >= 0;
+
+                        return (
+                          <tr key={idx} className="hover:bg-yellow-400/5 transition-colors">
+                            <td className="p-3 font-bold">{r.label}</td>
+                            {months.map(m => (
+                              <td key={m.month} className="p-3 text-center font-mono text-[10.5px]">
+                                {formatCell(getVal(m, r.key, 'current'), r.format)}
+                              </td>
+                            ))}
+                            <td className={`p-3 text-right font-black ${isGood ? 'text-emerald-500' : 'text-rose-500'}`}>
+                              {varPct >= 0 ? '▲' : '▼'} {Math.abs(varPct).toFixed(1)}%
+                            </td>
+                          </tr>
+                        );
+                      });
+                    })()}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Footer do Modal */}
+              <div className={`pt-4 border-t flex justify-end ${isLight ? 'border-zinc-200' : 'border-zinc-850'}`}>
+                <button 
+                  onClick={() => setSelectedStageModal(null)}
+                  className="bg-yellow-400 hover:bg-yellow-300 text-black font-black text-xs px-5 py-2.5 rounded-xl uppercase tracking-wider transition-all shadow-md active:scale-95 cursor-pointer"
+                >
+                  Fechar Visualização
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+      </div>
     </div>
   );
 };

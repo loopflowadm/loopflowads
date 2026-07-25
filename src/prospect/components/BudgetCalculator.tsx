@@ -1,7 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import { ProspectData } from '../types';
 import Logo from './Logo';
-import { Download, ArrowRight, TrendingUp, Smartphone, Store, Calculator, MapPin, ShoppingBag, Target, Percent, DollarSign, Zap, Rocket, Clock, FileText, CheckCircle2, Shield, MessageCircle, ExternalLink, ChevronLeft } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import {
+  Download01Icon,
+  ArrowRight01Icon,
+  AnalyticsUpIcon,
+  SmartPhone01Icon,
+  Store01Icon,
+  CalculatorIcon as CalculatorIconHuge,
+  Location01Icon,
+  ShoppingBag01Icon,
+  Target01Icon,
+  PercentIcon,
+  Dollar01Icon,
+  FlashIcon,
+  RocketIcon,
+  Clock01Icon,
+  File01Icon,
+  CheckmarkCircle01Icon,
+  Shield01Icon,
+  Comment01Icon,
+  Link01Icon,
+  ChevronLeftIcon
+} from '@hugeicons/core-free-icons';
+
+const createHugeIcon = (icon: any) => (props: any) => (
+  <HugeiconsIcon icon={icon} size={props.size || 20} className={props.className || ''} color={props.color || 'currentColor'} strokeWidth={props.strokeWidth || 1.5} />
+);
+
+const Download = createHugeIcon(Download01Icon);
+const ArrowRight = createHugeIcon(ArrowRight01Icon);
+const TrendingUp = createHugeIcon(AnalyticsUpIcon);
+const Smartphone = createHugeIcon(SmartPhone01Icon);
+const Store = createHugeIcon(Store01Icon);
+const Calculator = createHugeIcon(CalculatorIconHuge);
+const MapPin = createHugeIcon(Location01Icon);
+const ShoppingBag = createHugeIcon(ShoppingBag01Icon);
+const Target = createHugeIcon(Target01Icon);
+const Percent = createHugeIcon(PercentIcon);
+const DollarSign = createHugeIcon(Dollar01Icon);
+const Zap = createHugeIcon(FlashIcon);
+const Rocket = createHugeIcon(RocketIcon);
+const Clock = createHugeIcon(Clock01Icon);
+const FileText = createHugeIcon(File01Icon);
+const CheckCircle2 = createHugeIcon(CheckmarkCircle01Icon);
+const Shield = createHugeIcon(Shield01Icon);
+const MessageCircle = createHugeIcon(Comment01Icon);
+const ExternalLink = createHugeIcon(Link01Icon);
+const ChevronLeft = createHugeIcon(ChevronLeftIcon);
 
 interface BudgetCalculatorProps {
   prospect: ProspectData;
@@ -693,7 +740,7 @@ const BudgetCalculator: React.FC<BudgetCalculatorProps> = ({ prospect, onBack })
   return (
     <div className="max-w-7xl mx-auto px-8 py-8">
       {/* Page Header — padrão unificado */}
-      <div className="mb-8 pb-6 border-b border-zinc-900">
+      <div className="pb-3 mb-6 border-b border-zinc-900">
         <h1 className="text-3xl font-black uppercase tracking-tighter italic text-white leading-none">Calculadora de Escala</h1>
         <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mt-2">Simule o retorno financeiro da operação</p>
       </div>

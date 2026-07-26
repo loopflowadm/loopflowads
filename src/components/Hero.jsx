@@ -127,7 +127,7 @@ export default function Hero({ onOpenModal }) {
           <span className="font-extrabold text-brand-black block sm:inline">Coloque sua empresa em</span>{' '}
           
           {/* Badge de Interface com Destaque em Preto/Amarelo */}
-          <span className="inline-block bg-brand-black text-brand-yellow px-4.5 sm:px-6 py-1.5 sm:py-2.5 rounded-2xl sm:rounded-[22px] shadow-[0_10px_25px_rgba(0,0,0,0.25)] border border-white/10 font-black mx-1 transform -rotate-1 translate-y-[5px] align-middle select-none text-[0.88em]">
+          <span className="inline-block bg-brand-black text-brand-yellow px-4.5 sm:px-6 py-1.5 sm:py-2.5 rounded-2xl sm:rounded-[22px] shadow-[0_10px_25px_rgba(0,0,0,0.25)] border border-white/10 font-black tracking-wide mx-1 transform -rotate-1 translate-y-[5px] align-middle select-none text-[0.88em]">
             loop de crescimento
           </span>
           

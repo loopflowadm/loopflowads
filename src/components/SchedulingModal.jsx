@@ -20,11 +20,19 @@ export default function SchedulingModal({ isOpen, onClose }) {
   // Parâmetros do Calendly
   const calendlyUrl = "https://calendly.com/loopflowsolutions/30min?hide_event_type_details=1&hide_gdpr_banner=1";
 
+  const MODEL_OPTIONS = [
+    "Venda direta ao consumidor final (B2C)",
+    "Venda para outras empresas (B2B)",
+    "Negócio local (clínica, escritório, loja física)",
+    "Loja virtual / e-commerce",
+    "Curso ou produto digital",
+    "Sistema/software (SaaS)"
+  ];
+
   // Estados do Formulário de 2 etapas
   const [step, setStep] = useState('form');
   const [name, setName] = useState('');
-  const [segment, setSegment] = useState('');
-  const [logo, setLogo] = useState('');
+  const [selectedModels, setSelectedModels] = useState([]);
   const [iframeError, setIframeError] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
 
@@ -35,8 +43,7 @@ export default function SchedulingModal({ isOpen, onClose }) {
       const t = setTimeout(() => {
         setStep('form');
         setName('');
-        setSegment('');
-        setLogo('');
+        setSelectedModels([]);
         setIframeError(false);
         setIframeLoaded(false);
       }, 400);
@@ -53,20 +60,18 @@ export default function SchedulingModal({ isOpen, onClose }) {
     return () => window.removeEventListener('keydown', handleEsc);
   }, [isOpen, onClose]);
 
-  const handleLogoChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setLogo(reader.result);
-      };
-      reader.readAsDataURL(file);
+  const toggleModel = (opt) => {
+    if (selectedModels.includes(opt)) {
+      setSelectedModels(selectedModels.filter(s => s !== opt));
+    } else {
+      setSelectedModels([...selectedModels, opt]);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name && segment) {
+    if (name && selectedModels.length > 0) {
+      const segmentStr = selectedModels.join(', ');
       const id = Date.now().toString();
 
       // Salva no Supabase de forma assíncrona (não-bloqueante)
@@ -74,8 +79,8 @@ export default function SchedulingModal({ isOpen, onClose }) {
         {
           id: id,
           name: name,
-          segment: segment,
-          logo: logo || null,
+          segment: segmentStr,
+          logo: null,
           google_sheets_url: null
         }
       ]).then(({ error }) => {
@@ -90,8 +95,8 @@ export default function SchedulingModal({ isOpen, onClose }) {
       const newProspect = {
         id: id,
         name: name,
-        segment: segment,
-        logo: logo,
+        segment: segmentStr,
+        logo: '',
         date: new Date().toISOString()
       };
       const existing = JSON.parse(localStorage.getItem('loopflow_prospects:v1') || '[]');
@@ -211,76 +216,67 @@ export default function SchedulingModal({ isOpen, onClose }) {
                   {step === 'form' ? (
                     <form
                       onSubmit={handleSubmit}
-                      className="p-6 sm:p-8 space-y-5 overflow-y-auto h-full flex flex-col justify-center"
+                      className="p-6 sm:p-8 space-y-4 overflow-y-auto h-full flex flex-col justify-between"
                     >
-                      <div className="space-y-1.5">
-                        <label htmlFor="modalCompanyName" className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
-                          Nome da Empresa
-                        </label>
-                        <input
-                          id="modalCompanyName"
-                          type="text"
-                          required
-                          placeholder="Ex: Burger Flow"
-                          className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-3.5 text-sm text-white font-semibold focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow outline-none transition-all placeholder:text-zinc-600"
-                          value={name}
-                          onChange={e => setName(e.target.value)}
-                          autoComplete="organization"
-                        />
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <label htmlFor="modalNichoSelect" className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
-                          Nicho de Atuação
-                        </label>
-                        <select
-                          id="modalNichoSelect"
-                          className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-3.5 text-sm text-white font-semibold focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow outline-none transition-all appearance-none cursor-pointer"
-                          value={segment}
-                          onChange={e => setSegment(e.target.value)}
-                          required
-                        >
-                          <option value="">Selecione o segmento...</option>
-                          <option value="Restaurante / Delivery">Restaurante / Delivery</option>
-                          <option value="E-commerce / Varejo">E-commerce / Varejo</option>
-                          <option value="Negócio Local / Clínicas / Serviços">Negócio Local / Clínicas / Serviços</option>
-                          <option value="B2B / Corporativo / Outro">B2B / Corporativo / Outro</option>
-                        </select>
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest block">
-                          Identidade Visual — Opcional
-                        </span>
-                        <div className="flex items-center gap-3">
-                          <label
-                            htmlFor="modalLogoFile"
-                            className="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-zinc-800 rounded-2xl py-4 cursor-pointer hover:border-brand-yellow/50 transition-all bg-zinc-900/40 group"
-                          >
-                            <span className="text-zinc-500 text-xs font-semibold group-hover:text-brand-yellow transition-colors flex items-center gap-2">
-                              <Upload className="w-3.5 h-3.5" aria-hidden="true" />
-                              {logo ? 'Logo Carregada ✓' : 'Fazer upload da logo'}
-                            </span>
-                            <input
-                              id="modalLogoFile"
-                              type="file"
-                              className="hidden"
-                              accept="image/*"
-                              onChange={handleLogoChange}
-                              aria-label="Upload da logo da empresa"
-                            />
+                      <div className="space-y-4">
+                        <div className="space-y-1.5">
+                          <label htmlFor="modalCompanyName" className="text-[10px] font-black text-zinc-500 uppercase tracking-widest">
+                            Nome da Empresa
                           </label>
-                          {logo && (
-                            <div className="w-14 h-14 rounded-xl overflow-hidden flex items-center justify-center border-2 border-brand-yellow shadow-lg bg-zinc-900 shrink-0">
-                              <img src={logo} alt="Preview da logo" className="w-full h-full object-cover" />
-                            </div>
-                          )}
+                          <input
+                            id="modalCompanyName"
+                            type="text"
+                            required
+                            placeholder="Ex: Sua Empresa"
+                            className="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-3.5 text-sm text-white font-semibold focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow outline-none transition-all placeholder:text-zinc-600"
+                            value={name}
+                            onChange={e => setName(e.target.value)}
+                            autoComplete="organization"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest block">
+                            Modelo do Negócio / Nicho de Atuação
+                          </label>
+                          <div className="grid grid-cols-1 gap-2">
+                            {MODEL_OPTIONS.map((opt) => {
+                              const isSelected = selectedModels.includes(opt);
+                              return (
+                                <div
+                                  key={opt}
+                                  onClick={() => toggleModel(opt)}
+                                  className={`flex items-center gap-3 px-4 py-2.5 rounded-xl border text-xs font-bold cursor-pointer transition-all ${
+                                    isSelected
+                                      ? 'bg-brand-yellow/10 border-brand-yellow text-white shadow-[0_0_15px_rgba(255,204,0,0.1)]'
+                                      : 'bg-zinc-900 border-zinc-800/80 text-zinc-400 hover:border-zinc-700 hover:text-white'
+                                  }`}
+                                >
+                                  <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all shrink-0 ${
+                                    isSelected ? 'bg-brand-yellow border-brand-yellow text-black' : 'border-zinc-700 bg-zinc-950'
+                                  }`}>
+                                    {isSelected && (
+                                      <svg className="w-3 h-3 stroke-[3]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                      </svg>
+                                    )}
+                                  </div>
+                                  <span className="leading-snug">{opt}</span>
+                                </div>
+                              );
+                            })}
+                          </div>
                         </div>
                       </div>
 
                       <button
                         type="submit"
-                        className="w-full bg-brand-yellow hover:bg-brand-yellow-hover text-brand-black font-black py-4 rounded-2xl uppercase tracking-widest text-xs shadow-lg shadow-brand-yellow/10 flex items-center justify-center gap-2 hover:-translate-y-0.5 transition-all active:scale-[0.98] cursor-pointer mt-2"
+                        disabled={!name || selectedModels.length === 0}
+                        className={`w-full font-black py-4 rounded-2xl uppercase tracking-widest text-xs shadow-lg flex items-center justify-center gap-2 transition-all cursor-pointer mt-3 shrink-0 ${
+                          name && selectedModels.length > 0
+                            ? 'bg-brand-yellow hover:bg-brand-yellow-hover text-brand-black shadow-brand-yellow/10 hover:-translate-y-0.5 active:scale-[0.98]'
+                            : 'bg-zinc-800 text-zinc-600 cursor-not-allowed opacity-50'
+                        }`}
                       >
                         Avançar para Agendamento
                         <ArrowRight className="w-4 h-4" aria-hidden="true" />

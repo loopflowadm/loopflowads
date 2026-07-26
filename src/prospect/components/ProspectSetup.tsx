@@ -72,10 +72,12 @@ const ProspectSetup: React.FC<ProspectSetupProps> = ({ onComplete }) => {
                   required
                 >
                   <option value="">Selecione o segmento...</option>
-                  <option value="Restaurante / Delivery">Restaurante / Delivery</option>
-                  <option value="E-commerce / Varejo">E-commerce / Varejo</option>
-                  <option value="Negócio Local / Clínicas / Serviços">Negócio Local / Clínicas / Serviços</option>
-                  <option value="B2B / Corporativo / Outro">B2B / Corporativo / Outro</option>
+                  <option value="Venda direta ao consumidor final (B2C)">Venda direta ao consumidor final (B2C)</option>
+                  <option value="Venda para outras empresas (B2B)">Venda para outras empresas (B2B)</option>
+                  <option value="Negócio local (clínica, escritório, loja física)">Negócio local (clínica, escritório, loja física)</option>
+                  <option value="Loja virtual / e-commerce">Loja virtual / e-commerce</option>
+                  <option value="Curso ou produto digital">Curso ou produto digital</option>
+                  <option value="Sistema/software (SaaS)">Sistema/software (SaaS)</option>
                 </select>
               </div>
             </div>

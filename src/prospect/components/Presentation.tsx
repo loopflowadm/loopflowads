@@ -69,10 +69,15 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
   const [currentStep, setCurrentStep] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
   const [localProspect, setLocalProspect] = useState<ProspectData>(prospect);
+  const [localSlides, setLocalSlides] = useState<Slide[]>(slides);
 
   useEffect(() => {
     setLocalProspect(prospect);
   }, [prospect]);
+
+  useEffect(() => {
+    setLocalSlides(slides);
+  }, [slides]);
 
   const updateField = (field: keyof ProspectData, val: string) => {
     const updated = { ...localProspect, [field]: val };
@@ -80,6 +85,40 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
     if (onUpdateProspect) {
       onUpdateProspect(updated);
     }
+  };
+
+  const updateSlideTitle = (newTitle: string) => {
+    const updated = [...localSlides];
+    updated[currentStep] = { ...updated[currentStep], title: newTitle };
+    setLocalSlides(updated);
+  };
+
+  const updateSlideSubtitle = (newSubtitle: string) => {
+    const updated = [...localSlides];
+    updated[currentStep] = { ...updated[currentStep], subtitle: newSubtitle };
+    setLocalSlides(updated);
+  };
+
+  const updateSlideContentItem = (index: number, val: string) => {
+    const updated = [...localSlides];
+    const newContent = [...(updated[currentStep].content || [])];
+    newContent[index] = val;
+    updated[currentStep] = { ...updated[currentStep], content: newContent };
+    setLocalSlides(updated);
+  };
+
+  const updateSlideMetricField = (mIdx: number, field: 'label' | 'value' | 'desc', val: string) => {
+    const updated = [...localSlides];
+    const currentMetrics = [...(updated[currentStep].metrics || [])];
+    currentMetrics[mIdx] = { ...currentMetrics[mIdx], [field]: val };
+    updated[currentStep] = { ...updated[currentStep], metrics: currentMetrics };
+    setLocalSlides(updated);
+  };
+
+  const updateSlideHighlightField = (val: string) => {
+    const updated = [...localSlides];
+    updated[currentStep] = { ...updated[currentStep], highlight: val };
+    setLocalSlides(updated);
   };
 
   const EditableField: React.FC<{
@@ -95,38 +134,32 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
       return <span className={className}>{clean(value)}</span>;
     }
 
-    const inputClasses = `${className} bg-transparent text-inherit font-[inherit] tracking-[inherit] leading-[inherit] select-text pointer-events-auto border-b-2 border-dashed border-yellow-400/90 focus:border-yellow-400 focus:bg-yellow-400/10 focus:outline-none transition-all w-full z-50 relative px-1 py-0.5 rounded-sm`;
-
-    if (multiline) {
-      return (
-        <textarea
-          value={value || ''}
-          onChange={(e) => onChange(e.target.value)}
-          onClick={(e) => e.stopPropagation()}
-          onMouseDown={(e) => e.stopPropagation()}
-          onKeyDown={(e) => e.stopPropagation()}
-          placeholder={placeholder}
-          rows={2}
-          className={inputClasses}
-        />
-      );
-    }
-
     return (
-      <input
-        type="text"
-        value={value || ''}
-        onChange={(e) => onChange(e.target.value)}
-        onClick={(e) => e.stopPropagation()}
+      <span
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => {
+          const newText = e.currentTarget.textContent || '';
+          onChange(newText);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && !multiline) {
+            e.preventDefault();
+            e.currentTarget.blur();
+          }
+          e.stopPropagation();
+        }}
+        onKeyUp={(e) => e.stopPropagation()}
         onMouseDown={(e) => e.stopPropagation()}
-        onKeyDown={(e) => e.stopPropagation()}
-        placeholder={placeholder}
-        className={inputClasses}
-      />
+        onClick={(e) => e.stopPropagation()}
+        className={`${className} outline-none border-b-2 border-dashed border-yellow-400/90 focus:border-yellow-300 focus:bg-yellow-400/10 transition-colors px-0.5 rounded-sm inline-block max-w-full relative z-50 cursor-text`}
+      >
+        {clean(value)}
+      </span>
     );
   };
 
-  const slide = slides[currentStep];
+  const slide = localSlides[currentStep] || slides[currentStep];
 
   const next = () => {
     if (currentStep < slides.length - 1) {
@@ -751,36 +784,65 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                   </span>
                 </div>
                 <h3 className="text-4xl lg:text-[52px] font-black text-white leading-[1] tracking-tight italic uppercase mb-4">
-                  {personalizeText(slide.title)}
+                  <EditableField
+                    value={slide.title}
+                    onChange={updateSlideTitle}
+                  />
                 </h3>
-                {slide.subtitle && (
+                {(slide.subtitle || isEditing) && (
                   <p className="text-base lg:text-lg text-zinc-400 font-bold max-w-2xl leading-snug tracking-tight border-l-2 border-yellow-400/30 pl-6 italic">
-                    {personalizeText(slide.subtitle)}
+                    <EditableField
+                      value={slide.subtitle || ''}
+                      onChange={updateSlideSubtitle}
+                      multiline
+                      placeholder="Subtítulo da métrica..."
+                    />
                   </p>
                 )}
               </div>
 
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
                 {slide.metrics?.map((m, idx) => (
-                  <div key={idx} className="bg-zinc-900/40 backdrop-blur border border-zinc-800 p-8 rounded-[32px] border-b-4 border-b-yellow-400 shadow-xl group hover:bg-zinc-900 transition-all flex flex-col justify-center min-h-[220px]">
-                    <div className="text-zinc-500 font-black mb-4 uppercase text-[9px] tracking-[0.2em]">{m.label}</div>
-                    <div className="text-5xl lg:text-6xl font-black text-white mb-4 tracking-tighter group-hover:text-yellow-400 transition-colors uppercase italic leading-none">{m.value}</div>
-                    <div className="text-zinc-400 text-[10px] font-bold uppercase tracking-wider leading-relaxed">{m.desc}</div>
+                  <div key={idx} className="bg-zinc-900/50 backdrop-blur border border-zinc-800 p-7 lg:p-8 rounded-3xl border-b-4 border-b-yellow-400 shadow-xl group hover:border-yellow-400/40 transition-all duration-300 flex flex-col justify-center min-h-[220px]">
+                    <div className="text-zinc-500 font-black mb-4 uppercase text-[9px] tracking-[0.2em]">
+                      <EditableField
+                        value={m.label}
+                        onChange={(v) => updateSlideMetricField(idx, 'label', v)}
+                      />
+                    </div>
+                    <div className="text-5xl lg:text-6xl font-black text-white mb-4 tracking-tighter group-hover:text-yellow-400 transition-colors uppercase italic leading-none">
+                      <EditableField
+                        value={m.value}
+                        onChange={(v) => updateSlideMetricField(idx, 'value', v)}
+                      />
+                    </div>
+                    <div className="text-zinc-400 text-[10px] font-bold uppercase tracking-wider leading-relaxed">
+                      <EditableField
+                        value={m.desc}
+                        onChange={(v) => updateSlideMetricField(idx, 'desc', v)}
+                        multiline
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
 
-              {slide.highlight && (
+              {(slide.highlight || isEditing) && (
                 <div className="p-5 lg:p-6 bg-yellow-400 rounded-[24px] relative overflow-hidden shadow-xl flex items-center group max-w-2xl ml-0">
                   <div className="absolute -right-6 top-1/2 -translate-y-1/2 text-[80px] font-black text-black opacity-[0.05] select-none pointer-events-none transform -rotate-12 italic group-hover:translate-x-0 transition-transform duration-700">
                     SUCCESS
                   </div>
-                  <div className="flex items-center space-x-5 relative z-10 text-black">
+                  <div className="flex items-center space-x-5 relative z-10 text-black w-full">
                     <div className="bg-black/10 p-2 rounded-xl shrink-0">
                       <Zap className="w-8 h-8" />
                     </div>
-                    <div className="text-lg lg:text-xl font-black leading-tight italic uppercase tracking-tighter">
-                      "{personalizeText(slide.highlight)}"
+                    <div className="text-lg lg:text-xl font-black leading-tight italic uppercase tracking-tighter flex-1">
+                      "<EditableField
+                        value={slide.highlight || ''}
+                        onChange={updateSlideHighlightField}
+                        multiline
+                        placeholder="Mensagem de destaque..."
+                      />"
                     </div>
                   </div>
                 </div>
@@ -799,36 +861,47 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                   </span>
                 </div>
                 <h3 className="text-4xl lg:text-[52px] font-black text-white leading-[1] tracking-tight italic uppercase mb-4">
-                  {personalizeText(slide.title)}
+                  <EditableField
+                    value={slide.title}
+                    onChange={updateSlideTitle}
+                  />
                 </h3>
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {slide.content.map((item, idx) => {
-                  const [header, desc] = item.split(': ');
                   return (
-                    <div key={idx} className="bg-zinc-900/30 border border-zinc-800 p-8 rounded-[40px] relative overflow-hidden group hover:border-yellow-400/30 transition-all min-h-[220px] flex flex-col justify-center">
-                      <div className="absolute top-0 right-0 p-8 text-7xl font-black text-white/5 italic">0{idx + 1}</div>
-                      <div className="text-yellow-400 font-black text-[10px] uppercase tracking-widest mb-6 bg-yellow-400/10 w-fit px-4 py-1 rounded-full">{header}</div>
+                    <div key={idx} className="bg-zinc-900/50 border border-zinc-800 p-8 rounded-3xl relative overflow-hidden group hover:border-yellow-400/40 transition-all duration-300 min-h-[220px] flex flex-col justify-center shadow-xl">
+                      <div className="absolute top-0 right-0 p-8 text-7xl font-black text-white/5 italic select-none pointer-events-none">0{idx + 1}</div>
+                      <div className="text-yellow-400 font-black text-[10px] uppercase tracking-widest mb-6 bg-yellow-400/10 w-fit px-4 py-1 rounded-full">Etapa 0{idx + 1}</div>
                       <div className="text-2xl font-black text-white italic uppercase tracking-tighter leading-tight relative z-10">
-                        {personalizeText(desc)}
+                        <EditableField
+                          value={item}
+                          onChange={(v) => updateSlideContentItem(idx, v)}
+                          multiline
+                        />
                       </div>
                     </div>
                   );
                 })}
               </div>
 
-              {slide.highlight && (
+              {(slide.highlight || isEditing) && (
                 <div className="p-5 lg:p-6 bg-yellow-400 rounded-[24px] relative overflow-hidden shadow-xl flex items-center group max-w-2xl">
                   <div className="absolute -right-6 top-1/2 -translate-y-1/2 text-[80px] font-black text-black opacity-[0.05] select-none pointer-events-none transform -rotate-12 italic group-hover:translate-x-0 transition-transform duration-700">
                     SUCCESS
                   </div>
-                  <div className="flex items-center space-x-5 relative z-10 text-black">
+                  <div className="flex items-center space-x-5 relative z-10 text-black w-full">
                     <div className="bg-black/10 p-2 rounded-xl shrink-0">
                       <Zap className="w-8 h-8" />
                     </div>
-                    <div className="text-lg lg:text-xl font-black leading-tight italic uppercase tracking-tighter">
-                      "{personalizeText(slide.highlight)}"
+                    <div className="text-lg lg:text-xl font-black leading-tight italic uppercase tracking-tighter flex-1">
+                      "<EditableField
+                        value={slide.highlight || ''}
+                        onChange={updateSlideHighlightField}
+                        multiline
+                        placeholder="Mensagem de destaque..."
+                      />"
                     </div>
                   </div>
                 </div>
@@ -847,48 +920,72 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                   </span>
                 </div>
                 <h3 className="text-4xl lg:text-[52px] font-black text-white leading-[1] tracking-tight italic uppercase mb-4">
-                  {personalizeText(slide.title)}
+                  <EditableField
+                    value={slide.title}
+                    onChange={updateSlideTitle}
+                  />
                 </h3>
               </div>
 
-              <div className="grid grid-cols-2 gap-8">
-                <div className="bg-zinc-950 p-10 rounded-[40px] border border-zinc-900 relative">
-                  <div className="absolute -top-4 left-10 bg-zinc-900 px-6 py-2 rounded-xl text-[10px] font-black text-zinc-500 uppercase tracking-widest">Cenário A</div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="bg-zinc-950 p-8 sm:p-10 rounded-3xl border border-zinc-900 relative shadow-xl">
+                  <div className="absolute -top-4 left-10 bg-zinc-900 px-6 py-2 rounded-xl text-[10px] font-black text-zinc-500 uppercase tracking-widest border border-zinc-800">Cenário A</div>
                   <h4 className="text-2xl font-black text-zinc-400 mb-8 uppercase tracking-tighter italic">Gestão Tradicional</h4>
                   <ul className="space-y-4">
-                    {slide.content[0].split(',').map((item, i) => (
-                      <li key={i} className="flex items-start text-zinc-500 font-bold text-base leading-tight">
+                    {(slide.content[0] || '').split(',').map((item, i) => (
+                      <li key={i} className="flex items-start text-zinc-400 font-bold text-base leading-tight">
                         <span className="w-1.5 h-1.5 bg-zinc-800 rounded-full mr-4 mt-2 shrink-0"></span>
-                        {item.trim()}
+                        <EditableField
+                          value={item.trim()}
+                          onChange={(v) => {
+                            const items = (slide.content[0] || '').split(',').map(x => x.trim());
+                            items[i] = v;
+                            updateSlideContentItem(0, items.join(', '));
+                          }}
+                          multiline
+                        />
                       </li>
                     ))}
                   </ul>
                 </div>
-                <div className="bg-zinc-900/50 p-10 rounded-[40px] border-2 border-yellow-400 shadow-[0_0_80px_rgba(250,204,21,0.1)] relative">
+                <div className="bg-zinc-900/50 p-8 sm:p-10 rounded-3xl border-2 border-yellow-400 shadow-[0_0_80px_rgba(250,204,21,0.1)] relative">
                   <div className="absolute -top-4 left-10 bg-yellow-400 px-6 py-2 rounded-xl text-[10px] font-black text-black uppercase tracking-widest">Cenário LoopFlow</div>
                   <h4 className="text-3xl font-black text-white mb-8 uppercase tracking-tighter italic">Escala Inteligente</h4>
                   <ul className="space-y-5">
-                    {slide.content[1].split(',').map((item, i) => (
+                    {(slide.content[1] || '').split(',').map((item, i) => (
                       <li key={i} className="flex items-center text-white font-black text-xl italic leading-tight">
                         <CheckCircle2 className="w-6 h-6 mr-4 text-yellow-400 shrink-0" />
-                        {item.trim()}
+                        <EditableField
+                          value={item.trim()}
+                          onChange={(v) => {
+                            const items = (slide.content[1] || '').split(',').map(x => x.trim());
+                            items[i] = v;
+                            updateSlideContentItem(1, items.join(', '));
+                          }}
+                          multiline
+                        />
                       </li>
                     ))}
                   </ul>
                 </div>
               </div>
 
-              {slide.highlight && (
+              {(slide.highlight || isEditing) && (
                 <div className="p-5 lg:p-6 bg-yellow-400 rounded-[24px] relative overflow-hidden shadow-xl flex items-center group max-w-2xl">
                   <div className="absolute -right-6 top-1/2 -translate-y-1/2 text-[80px] font-black text-black opacity-[0.05] select-none pointer-events-none transform -rotate-12 italic group-hover:translate-x-0 transition-transform duration-700">
                     SUCCESS
                   </div>
-                  <div className="flex items-center space-x-5 relative z-10 text-black">
+                  <div className="flex items-center space-x-5 relative z-10 text-black w-full">
                     <div className="bg-black/10 p-2 rounded-xl shrink-0">
                       <Zap className="w-8 h-8" />
                     </div>
-                    <div className="text-lg lg:text-xl font-black leading-tight italic uppercase tracking-tighter">
-                      "{personalizeText(slide.highlight)}"
+                    <div className="text-lg lg:text-xl font-black leading-tight italic uppercase tracking-tighter flex-1">
+                      "<EditableField
+                        value={slide.highlight || ''}
+                        onChange={updateSlideHighlightField}
+                        multiline
+                        placeholder="Mensagem de destaque..."
+                      />"
                     </div>
                   </div>
                 </div>
@@ -907,34 +1004,46 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                   </span>
                 </div>
                 <h3 className="text-4xl lg:text-[52px] font-black text-white leading-[1] tracking-tight italic uppercase mb-4">
-                  {personalizeText(slide.title)}
+                  <EditableField
+                    value={slide.title}
+                    onChange={updateSlideTitle}
+                  />
                 </h3>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {slide.content.map((item, i) => (
-                  <div key={i} className="bg-zinc-900/40 p-8 rounded-[32px] border border-zinc-800 flex items-center space-x-6 hover:bg-zinc-900 transition-all min-h-[120px]">
-                    <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-zinc-500 font-black text-sm">
+                  <div key={i} className="bg-zinc-900/50 p-7 lg:p-8 rounded-3xl border border-zinc-800 flex items-center space-x-6 hover:border-yellow-400/40 transition-all duration-300 min-h-[120px] shadow-xl">
+                    <div className="w-10 h-10 bg-yellow-400/10 text-yellow-400 rounded-xl flex items-center justify-center font-black text-sm shrink-0">
                       {i + 1}
                     </div>
-                    <div className="text-xl font-bold text-zinc-100 tracking-tight italic leading-snug">
-                      {personalizeText(item)}
+                    <div className="text-xl font-bold text-zinc-100 tracking-tight italic leading-snug flex-1">
+                      <EditableField
+                        value={item}
+                        onChange={(v) => updateSlideContentItem(i, v)}
+                        multiline
+                      />
                     </div>
                   </div>
                 ))}
               </div>
 
-              {slide.highlight && (
+              {(slide.highlight || isEditing) && (
                 <div className="p-5 lg:p-6 bg-yellow-400 rounded-[24px] relative overflow-hidden shadow-xl flex items-center group max-w-2xl">
                   <div className="absolute -right-6 top-1/2 -translate-y-1/2 text-[80px] font-black text-black opacity-[0.05] select-none pointer-events-none transform -rotate-12 italic group-hover:translate-x-0 transition-transform duration-700">
                     SUCCESS
                   </div>
-                  <div className="flex items-center space-x-5 relative z-10 text-black">
+                  <div className="flex items-center space-x-5 relative z-10 text-black w-full">
                     <div className="bg-black/10 p-2 rounded-xl shrink-0">
                       <Zap className="w-8 h-8" />
                     </div>
-                    <div className="text-lg lg:text-xl font-black leading-tight italic uppercase tracking-tighter">
-                      "{personalizeText(slide.highlight)}"
+                    <div className="text-lg lg:text-xl font-black leading-tight italic uppercase tracking-tighter flex-1">
+                      "<EditableField
+                        value={slide.highlight || ''}
+                        onChange={updateSlideHighlightField}
+                        multiline
+                        placeholder="Mensagem de destaque..."
+                      />"
                     </div>
                   </div>
                 </div>
@@ -954,11 +1063,18 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                     </span>
                   </div>
                   <h3 className="text-4xl lg:text-[52px] font-black text-white leading-[1] tracking-tight italic uppercase mb-4">
-                    {personalizeText(slide.title)}
+                    <EditableField
+                      value={slide.title}
+                      onChange={updateSlideTitle}
+                    />
                   </h3>
-                  {slide.subtitle && (
+                  {(slide.subtitle || isEditing) && (
                     <p className="text-base lg:text-lg text-zinc-400 font-bold max-w-2xl leading-snug tracking-tight border-l-2 border-yellow-400/30 pl-6 italic">
-                      {personalizeText(slide.subtitle)}
+                      <EditableField
+                        value={slide.subtitle || ''}
+                        onChange={updateSlideSubtitle}
+                        multiline
+                      />
                     </p>
                   )}
                 </div>
@@ -969,22 +1085,33 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                       <span className="flex-shrink-0 w-8 h-8 bg-yellow-400 text-black rounded-lg font-black flex items-center justify-center mr-5 group-hover:scale-110 transition-transform not-italic text-sm mt-1">
                         {i + 1}
                       </span>
-                      {personalizeText(item)}
+                      <div className="flex-1">
+                        <EditableField
+                          value={item}
+                          onChange={(v) => updateSlideContentItem(i, v)}
+                          multiline
+                        />
+                      </div>
                     </li>
                   ))}
                 </ul>
 
-                {slide.highlight && (
+                {(slide.highlight || isEditing) && (
                   <div className="p-5 lg:p-6 bg-yellow-400 rounded-[24px] relative overflow-hidden shadow-xl flex items-center group max-w-2xl">
                     <div className="absolute -right-6 top-1/2 -translate-y-1/2 text-[80px] font-black text-black opacity-[0.05] select-none pointer-events-none transform -rotate-12 italic group-hover:translate-x-0 transition-transform duration-700">
                       SUCCESS
                     </div>
-                    <div className="flex items-center space-x-5 relative z-10 text-black">
+                    <div className="flex items-center space-x-5 relative z-10 text-black w-full">
                       <div className="bg-black/10 p-2 rounded-xl shrink-0">
                         <Zap className="w-8 h-8" />
                       </div>
-                      <div className="text-lg lg:text-xl font-black leading-tight italic uppercase tracking-tighter">
-                        "{personalizeText(slide.highlight)}"
+                      <div className="text-lg lg:text-xl font-black leading-tight italic uppercase tracking-tighter flex-1">
+                        "<EditableField
+                          value={slide.highlight || ''}
+                          onChange={updateSlideHighlightField}
+                          multiline
+                          placeholder="Mensagem de destaque..."
+                        />"
                       </div>
                     </div>
                   </div>
@@ -1062,24 +1189,26 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
         <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-yellow-400/5 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-white/5 rounded-full blur-[150px] pointer-events-none"></div>
 
-        <div className="flex-1 max-w-[1600px] mx-auto w-full px-12 lg:px-20 py-6 flex flex-col justify-center">
+        <div key={currentStep} className="animate-fade-in flex-1 max-w-[1600px] mx-auto w-full px-12 lg:px-20 py-6 flex flex-col justify-center">
           {renderSlideContent(slide)}
         </div>
 
         {/* Global Navigation Controls */}
-        <div className="absolute bottom-8 right-12 z-[70] flex items-center space-x-3">
+        <div className="absolute bottom-8 right-12 z-[70] flex flex-col items-end space-y-2.5">
+          {/* Botão de Edição (Apenas Ícone, acima das setas) */}
           <button
             onClick={() => setIsEditing(!isEditing)}
-            className={`flex items-center space-x-2 px-5 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all cursor-pointer backdrop-blur-xl border shadow-2xl ${
+            title={isEditing ? 'Concluir Edição' : 'Ativar Edição'}
+            className={`p-3.5 rounded-2xl transition-all cursor-pointer backdrop-blur-xl border shadow-2xl flex items-center justify-center ${
               isEditing
-                ? 'bg-yellow-400 text-black shadow-[0_0_25px_rgba(250,204,21,0.5)] border-yellow-300 animate-pulse'
-                : 'bg-zinc-900/90 text-zinc-300 hover:text-white border-zinc-800 hover:border-yellow-400/50'
+                ? 'bg-yellow-400 text-black shadow-[0_0_25px_rgba(250,204,21,0.5)] border-yellow-300 animate-pulse scale-105'
+                : 'bg-zinc-900/90 text-zinc-300 hover:text-white border-zinc-800 hover:border-yellow-400/50 hover:bg-zinc-850'
             }`}
           >
-            <Edit3 className={`w-4 h-4 ${isEditing ? 'text-black' : 'text-yellow-400'}`} />
-            <span>{isEditing ? 'Concluir Edição' : 'Ativar Edição'}</span>
+            <Edit3 className={`w-5 h-5 ${isEditing ? 'text-black' : 'text-yellow-400'}`} strokeWidth={2.5} />
           </button>
 
+          {/* Setas de Navegação */}
           <div className="flex bg-zinc-900/90 backdrop-blur-xl border border-zinc-800 rounded-2xl p-1.5 shadow-2xl">
             <button
               onClick={prev}

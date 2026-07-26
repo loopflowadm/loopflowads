@@ -17,6 +17,7 @@ import SchedulingModal from './components/SchedulingModal';
 import Logo from './components/Logo';
 import ProspectDashboard from './prospect/ProspectDashboard';
 import ClientPerformanceView from './prospect/ClientPerformanceView';
+import AgendarPage from './components/AgendarPage';
 
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -67,6 +68,12 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Verifica se a rota condiz com agendamento dedicado (/agendar ou /diagnostico)
+  const isAgendar = currentPath.pathname === '/agendar' || 
+                    currentPath.pathname === '/diagnostico' || 
+                    currentPath.hash.startsWith('#/agendar') || 
+                    currentPath.hash.startsWith('#/diagnostico');
+
   // Verifica se a rota condiz com prospecção (com ou sem hash)
   const isProspect = currentPath.pathname === '/prospeccao' || 
                     currentPath.pathname.startsWith('/prospeccao/') || 
@@ -76,6 +83,10 @@ export default function App() {
   const isPerformance = currentPath.pathname === '/performance' || 
                        currentPath.pathname.startsWith('/performance/') || 
                        currentPath.hash.startsWith('#/performance');
+
+  if (isAgendar) {
+    return <AgendarPage />;
+  }
 
   if (isProspect) {
     return <ProspectDashboard />;

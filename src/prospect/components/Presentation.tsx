@@ -77,6 +77,37 @@ const SmoothBgImage: React.FC<{ src: string; alt?: string; className?: string }>
   );
 };
 
+const SmoothBgVideo: React.FC<{
+  src: string;
+  className?: string;
+  targetOpacityClass?: string;
+}> = ({
+  src,
+  className = 'absolute right-0 top-0 bottom-0 h-full w-[75%] lg:w-[68%] object-cover object-right z-0 pointer-events-none',
+  targetOpacityClass = 'opacity-100'
+}) => {
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setLoaded(false);
+  }, [src]);
+
+  return (
+    <video
+      autoPlay
+      loop
+      muted
+      playsInline
+      onLoadedData={() => setLoaded(true)}
+      onCanPlay={() => setLoaded(true)}
+      className={`${className} transition-all duration-1000 ease-out ${
+        loaded ? `${targetOpacityClass} scale-100 blur-0` : 'opacity-0 scale-105 blur-sm'
+      }`}
+      src={src}
+    />
+  );
+};
+
 interface PresentationProps {
   slides: Slide[];
   prospect: ProspectData;
@@ -232,13 +263,10 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
         return (
           <div className="flex-1 flex flex-col justify-between -m-8 md:-m-12 p-8 md:p-14 bg-zinc-950 text-white relative overflow-hidden select-none">
             {/* Background Video */}
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover z-0 opacity-80"
+            <SmoothBgVideo
               src={slide.bgVideo || '/videos/rocket.mp4'}
+              className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+              targetOpacityClass="opacity-80"
             />
 
             {/* Left side gradient overlay / transparency for crisp readability */}
@@ -407,13 +435,10 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
         return (
           <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden select-none bg-zinc-950">
             {/* Background Video */}
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute right-0 top-0 bottom-0 h-full w-[75%] lg:w-[68%] object-cover object-right z-0"
+            <SmoothBgVideo
               src={slide.bgVideo || '/videos/Target_hit.mp4'}
+              className="absolute right-0 top-0 bottom-0 h-full w-[75%] lg:w-[68%] object-cover object-right z-0 pointer-events-none"
+              targetOpacityClass="opacity-100"
             />
 
             {/* Gradient overlay suave */}
@@ -529,13 +554,10 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
         return (
           <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden select-none bg-zinc-950">
             {/* Background Video */}
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute right-0 top-0 bottom-0 h-full w-[75%] lg:w-[68%] object-cover object-right z-0"
+            <SmoothBgVideo
               src={slide.bgVideo || '/videos/Growth_chart.mp4'}
+              className="absolute right-0 top-0 bottom-0 h-full w-[75%] lg:w-[68%] object-cover object-right z-0 pointer-events-none"
+              targetOpacityClass="opacity-100"
             />
 
             {/* Gradient overlay */}
@@ -654,13 +676,10 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
         return (
           <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden select-none bg-zinc-950">
             {/* Background Video */}
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover z-0 opacity-75 pointer-events-none"
+            <SmoothBgVideo
               src={slide.bgVideo || '/videos/montain.mp4'}
+              className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+              targetOpacityClass="opacity-75"
             />
             {/* Dark Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent/30 z-0 pointer-events-none" />
@@ -1048,14 +1067,11 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
       case 'proposal-next-steps': {
         return (
           <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden select-none bg-zinc-950">
-            {/* Background Video on Right Side (Astronaut.mp4 - 100% visível) */}
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute right-0 top-0 bottom-0 h-full w-[75%] lg:w-[68%] object-cover object-right z-0 opacity-100"
+            {/* Background Video on Right Side (Astronaut.mp4 - Fade suave 100% visível) */}
+            <SmoothBgVideo
               src={slide.bgVideo || '/videos/Astronaut.mp4'}
+              className="absolute right-0 top-0 bottom-0 h-full w-[75%] lg:w-[68%] object-cover object-right z-0 pointer-events-none"
+              targetOpacityClass="opacity-100"
             />
 
             {/* Gradient overlay suave no lado esquerdo do vídeo */}

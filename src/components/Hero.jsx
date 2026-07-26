@@ -124,7 +124,7 @@ export default function Hero({ onOpenModal }) {
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="text-4xl sm:text-[3.2rem] md:text-[3.65rem] tracking-tight leading-[1.08] text-brand-black max-w-3xl mb-8 font-normal"
         >
-          <span className="font-semibold text-neutral-900/90 block sm:inline">Coloque sua empresa em</span>{' '}
+          <span className="font-extrabold text-brand-black block sm:inline">Coloque sua empresa em</span>{' '}
           
           {/* Badge de Interface com Destaque em Preto/Amarelo */}
           <span className="inline-block bg-brand-black text-brand-yellow px-4.5 sm:px-6 py-1.5 sm:py-2.5 rounded-2xl sm:rounded-[22px] shadow-[0_10px_25px_rgba(0,0,0,0.25)] border border-white/10 font-black mx-1 transform -rotate-1 translate-y-[5px] align-middle select-none text-[0.88em]">
@@ -152,7 +152,7 @@ export default function Hero({ onOpenModal }) {
           transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
           className="text-sm sm:text-base md:text-lg text-neutral-800/80 font-medium leading-relaxed max-w-3xl mb-8"
         >
-          Diagnóstico, estratégia, execução e acompanhamento de indicadores. Tudo em um só lugar,<br className="hidden sm:inline" />
+          Diagnóstico, estratégia, execução e acompanhamento de indicadores. Tudo em um só lugar, <br className="hidden sm:inline" />
           com uma equipe que trata seu marketing como se fosse seu próprio negócio.
         </motion.p>
 
@@ -183,7 +183,7 @@ export default function Hero({ onOpenModal }) {
           transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="text-sm sm:text-base text-neutral-800/80 font-bold max-w-2xl leading-relaxed mt-2"
         >
-          Agende uma call de diagnóstico gratuita e descubra,<br className="hidden sm:inline" /> em 30 minutos, onde seu marketing está travando.
+          Agende uma call de diagnóstico gratuita e descubra, <br className="hidden sm:inline" />em 30 minutos, onde seu marketing está travando.
         </motion.p>
       </div>
 

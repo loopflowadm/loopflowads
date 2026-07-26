@@ -9,6 +9,7 @@ export interface Slide {
   highlight?: string;
   pausePrompt?: string;
   image?: string;
+  bgVideo?: string;
   metrics?: { label: string; value: string; desc: string }[];
 }
 

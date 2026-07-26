@@ -21,9 +21,9 @@ export const getCommercialProposalSlides = (prospect?: ProspectData): Slide[] =>
   const auditFinding1 = prospect?.auditFinding1 || 'Falta de otimização de topo e meio de funil, gerando tráfego sem retenção de leads.';
   const auditFinding2 = prospect?.auditFinding2 || 'Ausência de testes A/B contínuos em criativos de alta conversão e remarketing ativo.';
   const businessGoal = prospect?.businessGoal || 'Escalar o faturamento mensal de forma previsível e aumentar a margem de lucro operacional.';
-  const front1 = prospect?.front1 || 'Aquisição Direta & Tráfego Pago — Campanhas otimizadas para conversão e geração de demanda.';
-  const front2 = prospect?.front2 || 'Otimização de Funil & WhatsApp — Aumento da taxa de conversão do clique até o fechamento.';
-  const front3 = prospect?.front3 || 'Posicionamento & Retenção — Fortalecimento de marca e aumento da frequência de compra (LTV).';
+  const front1 = prospect?.front1 || 'Planejamento das campanhas e definição do público certo desde o início (Meta Ads, e Google Ads quando aplicável). Foco em não desperdiçar verba com quem não converte.';
+  const front2 = prospect?.front2 || 'Configuração dos anúncios com foco em conversão e rastreamento correto (pixel e eventos de conversão). Isso garante que os dados que guiam a otimização sejam confiáveis desde o primeiro dia.';
+  const front3 = prospect?.front3 || 'Ajustes constantes com base em performance real, com relatório semanal simplificado, relatório mensal completo e reunião mensal de acompanhamento. Assim você sempre sabe onde está o dinheiro.';
 
   const todayStr = prospect?.presentationDate || new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
@@ -38,6 +38,7 @@ export const getCommercialProposalSlides = (prospect?: ProspectData): Slide[] =>
       subtitle: 'Como vamos colocar seu negócio em loop de crescimento',
       highlight: 'PROPOSTA COMERCIAL',
       pausePrompt: `REUNIÃO DE DIAGNÓSTICO · ${todayStr}`,
+      bgVideo: '/videos/rocket.mp4',
       content: []
     },
     {
@@ -57,6 +58,7 @@ export const getCommercialProposalSlides = (prospect?: ProspectData): Slide[] =>
       type: 'proposal-understanding',
       title: `O que entendemos sobre ${companyName}`,
       subtitle: 'Com base no que você nos contou no formulário de agendamento',
+      bgVideo: '/videos/Target_hit.mp4',
       content: [
         `SEGMENTO:${segment}`,
         `PROBLEMA:${painPoint}`,
@@ -68,6 +70,7 @@ export const getCommercialProposalSlides = (prospect?: ProspectData): Slide[] =>
       type: 'proposal-findings',
       title: 'O que vimos e qual o seu objetivo',
       subtitle: 'Com base no que analisamos e o que nos contou',
+      bgVideo: '/videos/Growth_chart.mp4',
       content: [
         `ACHADO_1:${auditFinding1}`,
         `ACHADO_2:${auditFinding2}`,
@@ -79,6 +82,7 @@ export const getCommercialProposalSlides = (prospect?: ProspectData): Slide[] =>
       type: 'proposal-pillars',
       title: `Nossa proposta para ${companyName}`,
       subtitle: 'Conectada diretamente ao que você nos contou',
+      bgVideo: '/videos/montain.mp4',
       content: [
         `FRENTE_1:${front1}`,
         `FRENTE_2:${front2}`,
@@ -118,6 +122,7 @@ export const getCommercialProposalSlides = (prospect?: ProspectData): Slide[] =>
       subtitle: 'Abrimos 1 onboarding novo por vez — é assim que garantimos atenção total a cada cliente nos primeiros 60 dias.',
       highlight: 'Faz sentido pra você começarmos ainda esse mês?',
       pausePrompt: `Se topar, o próximo passo é: assinatura do contrato → kickoff em até ${kickoffDays} dias úteis → primeiras entregas em até ${deliveriesDays} dias úteis.`,
+      bgVideo: '/videos/Astronaut.mp4',
       content: [
         `KICKOFF_DAYS:${kickoffDays}`,
         `DELIVERIES_DAYS:${deliveriesDays}`

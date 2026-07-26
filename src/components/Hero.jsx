@@ -122,12 +122,12 @@ export default function Hero({ onOpenModal }) {
           initial={{ opacity: 0, filter: 'blur(10px)', y: 25 }}
           animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="text-4xl sm:text-[3.2rem] md:text-[3.65rem] tracking-tight leading-[1.08] text-brand-black max-w-3xl mb-8 font-normal"
+          className="text-4xl sm:text-[3.2rem] md:text-[3.65rem] tracking-normal leading-[1.1] text-brand-black max-w-3xl mb-8 font-normal"
         >
           <span className="font-extrabold text-brand-black block sm:inline">Coloque sua empresa em</span>{' '}
           
           {/* Badge de Interface com Destaque em Preto/Amarelo */}
-          <span className="inline-block bg-brand-black text-brand-yellow px-4.5 sm:px-6 py-1.5 sm:py-2.5 rounded-2xl sm:rounded-[22px] shadow-[0_10px_25px_rgba(0,0,0,0.25)] border border-white/10 font-black tracking-wide mx-1 transform -rotate-1 translate-y-[5px] align-middle select-none text-[0.88em]">
+          <span className="inline-block bg-brand-black text-brand-yellow px-4.5 sm:px-6 py-1.5 sm:py-2.5 rounded-2xl sm:rounded-[22px] shadow-[0_10px_25px_rgba(0,0,0,0.25)] border border-white/10 font-black mx-1 transform -rotate-1 translate-y-[5px] align-middle select-none text-[0.88em]">
             loop de crescimento
           </span>
           

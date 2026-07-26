@@ -41,32 +41,50 @@ export default function AgendarPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name && selectedModels.length > 0) {
-      const segmentStr = selectedModels.join(', ');
-      const id = Date.now().toString();
+    const trimmedName = (name || '').trim();
+    if (!trimmedName) {
+      alert("Por favor, informe o nome da empresa.");
+      return;
+    }
 
-      supabase.from('prospects').insert([
-        {
-          id: id,
-          name: name,
-          segment: segmentStr,
-          logo: null,
-          google_sheets_url: null
-        }
-      ]).catch(() => {});
+    const segmentStr = selectedModels.length > 0
+      ? selectedModels.join(', ')
+      : 'Geral / Não especificado';
 
+    const id = Date.now().toString();
+
+    try {
+      if (supabase && supabase.from) {
+        supabase.from('prospects').insert([
+          {
+            id: id,
+            name: trimmedName,
+            segment: segmentStr,
+            logo: null,
+            google_sheets_url: null
+          }
+        ]).then(() => {}).catch(() => {});
+      }
+    } catch (err) {
+      // Ignora erro para não travar avanço
+    }
+
+    try {
       const newProspect = {
         id: id,
-        name: name,
+        name: trimmedName,
         segment: segmentStr,
         logo: '',
         date: new Date().toISOString()
       };
       const existing = JSON.parse(localStorage.getItem('loopflow_prospects:v1') || '[]');
       localStorage.setItem('loopflow_prospects:v1', JSON.stringify([newProspect, ...existing]));
-
-      setStep('calendly');
+    } catch (err) {
+      // Ignora erro de localStorage
     }
+
+    // Avança para o iframe do Calendly
+    setStep('calendly');
   };
 
   const isCalendly = step === 'calendly';
@@ -208,9 +226,9 @@ export default function AgendarPage() {
 
                 <button
                   type="submit"
-                  disabled={!name || selectedModels.length === 0}
+                  disabled={!name.trim()}
                   className={`w-full font-black py-4 rounded-2xl uppercase tracking-widest text-xs shadow-lg flex items-center justify-center gap-2 transition-all cursor-pointer mt-3 shrink-0 ${
-                    name && selectedModels.length > 0
+                    name.trim()
                       ? 'bg-brand-yellow hover:bg-brand-yellow-hover text-brand-black shadow-brand-yellow/10 hover:-translate-y-0.5 active:scale-[0.98]'
                       : 'bg-zinc-800 text-zinc-600 cursor-not-allowed opacity-50'
                   }`}

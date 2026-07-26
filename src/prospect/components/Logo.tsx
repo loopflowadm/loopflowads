@@ -3,9 +3,10 @@ import React from 'react';
 interface LogoProps {
   className?: string;
   symbolOnly?: boolean;
+  color?: string;
 }
 
-const Logo: React.FC<LogoProps> = ({ className = "w-full h-full", symbolOnly = false }) => {
+const Logo: React.FC<LogoProps> = ({ className = "w-full h-full", symbolOnly = false, color }) => {
   if (symbolOnly) {
     return (
       <svg 

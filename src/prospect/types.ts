@@ -63,6 +63,64 @@ export interface ProspectData {
   // Onboarding
   kickoffDays?: string;
   deliveriesDays?: string;
+
+  // Campos Dinâmicos de Personalização de Slides
+  coverTag?: string;
+  coverSubtitle?: string;
+  coverFooter?: string;
+  agendaSubtitle?: string;
+  agendaStep1Title?: string;
+  agendaStep1Desc?: string;
+  agendaStep2Title?: string;
+  agendaStep2Desc?: string;
+  agendaStep3Title?: string;
+  agendaStep3Desc?: string;
+  agendaStep4Title?: string;
+  agendaStep4Desc?: string;
+  understandingTitlePrefix?: string;
+  understandingSubtitle?: string;
+  segmentCardLabel?: string;
+  painPointCardLabel?: string;
+  marketingSituationCardLabel?: string;
+  findingsTitlePrefix?: string;
+  findingsTitleWord1?: string;
+  findingsTitleMid?: string;
+  findingsTitleWord2?: string;
+  findingsSubtitle?: string;
+  finding1Title?: string;
+  finding2Title?: string;
+  goalCardLabel?: string;
+  pillarsTag?: string;
+  pillarsPrefix?: string;
+  pillarsSubtitle?: string;
+  front1Title?: string;
+  front2Title?: string;
+  front3Title?: string;
+  howItWorksTitlePrefix?: string;
+  howItWorksTitle?: string;
+  step1Title?: string;
+  step1Desc?: string;
+  step2Title?: string;
+  step2Desc?: string;
+  step3Title?: string;
+  step3Desc?: string;
+  step4Title?: string;
+  step4Desc?: string;
+  deliverablesTag?: string;
+  investmentTitle?: string;
+  investmentSubtitle?: string;
+  setupLabel?: string;
+  operationLabel?: string;
+  investmentFooter?: string;
+  nextStepsPrefix?: string;
+  nextStepsTitle?: string;
+  nextStepsSubtitle?: string;
+  step1CardTitle?: string;
+  step1CardDesc?: string;
+  step2CardTitle?: string;
+  step3CardTitle?: string;
+  ctaBannerTitle?: string;
+  ctaBannerSubtext?: string;
 }
 
 export type AppState = 'list' | 'setup' | 'menu' | 'presentation' | 'calculator' | 'performance-dashboard' | 'pitch-editor';

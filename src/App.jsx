@@ -68,11 +68,16 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Verifica se a rota condiz com agendamento dedicado (/agendar ou /diagnostico)
-  const isAgendar = currentPath.pathname === '/agendar' || 
-                    currentPath.pathname === '/diagnostico' || 
-                    currentPath.hash.startsWith('#/agendar') || 
-                    currentPath.hash.startsWith('#/diagnostico');
+  // Verifica se a rota condiz com agendamento dedicado (/agendamento, /agendar, /diagnostico)
+  const path = (currentPath.pathname || '').toLowerCase();
+  const hash = (currentPath.hash || '').toLowerCase();
+
+  const isAgendar = path.includes('agendamento') || 
+                    path.includes('agendar') || 
+                    path.includes('diagnostico') || 
+                    hash.includes('agendamento') || 
+                    hash.includes('agendar') || 
+                    hash.includes('diagnostico');
 
   // Verifica se a rota condiz com prospecção (com ou sem hash)
   const isProspect = currentPath.pathname === '/prospeccao' || 

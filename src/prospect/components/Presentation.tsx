@@ -271,14 +271,22 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
 
   const renderSlideContent = (slide: Slide) => {
     let effectiveType = slide.type;
-    if (currentStep === 0 || slide.id === 'prop-cover') effectiveType = 'proposal-cover';
-    else if (currentStep === 1 || slide.id === 'prop-agenda') effectiveType = 'proposal-agenda';
-    else if (currentStep === 2 || slide.id === 'prop-understanding') effectiveType = 'proposal-understanding';
-    else if (currentStep === 3 || slide.id === 'prop-findings') effectiveType = 'proposal-findings';
-    else if (currentStep === 4 || slide.id === 'prop-pillars') effectiveType = 'proposal-pillars';
-    else if (currentStep === 5 || slide.id === 'prop-how-it-works') effectiveType = 'proposal-how-it-works';
-    else if (currentStep === 6 || slide.id === 'prop-investment') effectiveType = 'proposal-investment';
-    else if (currentStep === 7 || slide.id === 'prop-next-steps') effectiveType = 'proposal-next-steps';
+    if (slide.type === 'proposal-cover' || slide.id === 'prop-cover') effectiveType = 'proposal-cover';
+    else if (slide.type === 'proposal-agenda' || slide.id === 'prop-agenda') effectiveType = 'proposal-agenda';
+    else if (slide.type === 'proposal-understanding' || slide.id === 'prop-understanding') effectiveType = 'proposal-understanding';
+    else if (slide.type === 'proposal-findings' || slide.id === 'prop-findings') effectiveType = 'proposal-findings';
+    else if (slide.type === 'proposal-pillars' || slide.id === 'prop-pillars') effectiveType = 'proposal-pillars';
+    else if (slide.type === 'proposal-how-it-works' || slide.id === 'prop-how-it-works') effectiveType = 'proposal-how-it-works';
+    else if (slide.type === 'proposal-investment' || slide.id === 'prop-investment') effectiveType = 'proposal-investment';
+    else if (slide.type === 'proposal-next-steps' || slide.id === 'prop-next-steps') effectiveType = 'proposal-next-steps';
+    else if (currentStep === 0) effectiveType = 'proposal-cover';
+    else if (currentStep === 1) effectiveType = 'proposal-agenda';
+    else if (currentStep === 2) effectiveType = 'proposal-understanding';
+    else if (currentStep === 3) effectiveType = 'proposal-findings';
+    else if (currentStep === 4) effectiveType = 'proposal-pillars';
+    else if (currentStep === 5) effectiveType = 'proposal-how-it-works';
+    else if (currentStep === 6) effectiveType = 'proposal-investment';
+    else if (currentStep === 7) effectiveType = 'proposal-next-steps';
 
     switch (effectiveType) {
       case 'proposal-cover':

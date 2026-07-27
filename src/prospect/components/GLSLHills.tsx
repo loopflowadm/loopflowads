@@ -14,7 +14,7 @@ const GLSLHills: React.FC<GLSLHillsProps> = ({
   height = '100%',
   cameraZ = 125,
   planeSize = 256,
-  speed = 0.5
+  speed = 0.12
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -136,7 +136,7 @@ const GLSLHills: React.FC<GLSLHillsProps> = ({
               void main(void) {
                 vec3 updatePosition = (rotateMatrixX(radians(90.0)) * vec4(position, 1.0)).xyz;
                 float sin1 = sin(radians(updatePosition.x / 128.0 * 90.0));
-                vec3 noisePosition = updatePosition + vec3(0.0, 0.0, time * -30.0);
+                vec3 noisePosition = updatePosition + vec3(0.0, 0.0, time * -10.0);
                 float noise1 = cnoise(noisePosition * 0.08);
                 float noise2 = cnoise(noisePosition * 0.06);
                 float noise3 = cnoise(noisePosition * 0.4);

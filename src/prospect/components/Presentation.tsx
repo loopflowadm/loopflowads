@@ -349,9 +349,9 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
             <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/40 via-transparent to-transparent pointer-events-none z-0" />
 
             <div className="space-y-10 relative z-10">
-              {/* Header (Centralizado) */}
-              <div className={`text-center max-w-3xl mx-auto ${getAnimProps(0).className || ''}`} style={getAnimProps(0).style}>
-                <h3 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-none tracking-tight uppercase mb-3">
+              {/* Header (Centralizado em uma só linha) */}
+              <div className={`text-center max-w-5xl mx-auto ${getAnimProps(0).className || ''}`} style={getAnimProps(0).style}>
+                <h3 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-none tracking-tight uppercase mb-3 whitespace-nowrap">
                   O QUE <span className="text-yellow-400">VAMOS VER</span> HOJE
                 </h3>
                 <p className="text-sm sm:text-base text-zinc-300 font-medium italic">

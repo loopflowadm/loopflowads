@@ -54,6 +54,7 @@ const TrendingUp = createHugeIcon(AnalyticsUpIcon);
 const Star = createHugeIcon(StarIcon);
 const Filter = createHugeIcon(FilterIcon);
 const Cog = createHugeIcon(Settings01Icon);
+const Settings = createHugeIcon(Settings01Icon);
 const ClipboardList = createHugeIcon(ClipboardIcon);
 const Rocket = createHugeIcon(RocketIcon);
 const CheckCheck = createHugeIcon(CheckCheckIcon);

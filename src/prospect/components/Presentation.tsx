@@ -344,13 +344,13 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
           <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden select-none bg-zinc-950">
             {/* Interactive GLSL 3D Hills Shader Background */}
             <GLSLHills />
-            {/* Dark gradient overlay from bottom to top & top vignette */}
-            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/80 via-60% to-transparent pointer-events-none z-0" />
-            <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/70 via-transparent to-transparent pointer-events-none z-0" />
+            {/* Subtle dark gradient overlay from bottom to top & top vignette */}
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/70 via-zinc-950/30 to-transparent pointer-events-none z-0" />
+            <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/40 via-transparent to-transparent pointer-events-none z-0" />
 
             <div className="space-y-10 relative z-10">
-              {/* Header */}
-              <div className={getAnimProps(0).className} style={getAnimProps(0).style}>
+              {/* Header (Centralizado) */}
+              <div className={`text-center max-w-3xl mx-auto ${getAnimProps(0).className || ''}`} style={getAnimProps(0).style}>
                 <h3 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-none tracking-tight uppercase mb-3">
                   O QUE <span className="text-yellow-400">VAMOS VER</span> HOJE
                 </h3>

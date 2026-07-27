@@ -696,7 +696,7 @@ const BudgetCalculator: React.FC<BudgetCalculatorProps> = ({ prospect, onBack })
                         <div key={i} className="p-6 relative group overflow-hidden">
                           <div className="absolute top-0 right-0 p-4 text-4xl font-black text-zinc-100 italic leading-none opacity-80 select-none">0{i + 1}</div>
                           <div className="bg-white p-2.5 rounded-xl w-fit mb-4 text-yellow-500 border border-zinc-200 flex items-center justify-center">
-                            {React.cloneElement(step.icon as React.ReactElement, { strokeWidth: 2.5 })}
+                            {React.cloneElement(step.icon as React.ReactElement, { strokeWidth: 2.5 } as any)}
                           </div>
                           <div className="text-[8px] font-black text-zinc-400 uppercase tracking-[0.2em] mb-1.5 flex items-center gap-2">
                             <div className="w-1.5 h-1.5 bg-yellow-400 rounded-full"></div>

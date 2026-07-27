@@ -31,7 +31,7 @@ const GLSLHills: React.FC<GLSLHillsProps> = ({
 
       constructor() {
         this.uniforms = {
-          time: { type: 'f', value: 0 },
+          time: { value: 0 },
         };
         this.mesh = this.createMesh();
         this.time = speed;

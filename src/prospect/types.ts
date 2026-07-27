@@ -26,6 +26,9 @@ export interface ProspectData {
   name: string;
   segment: string;
   logo: string; // Base64 ou URL
+  companyName?: string;
+  logoUrl?: string;
+  colorScheme?: { primary: string; secondary?: string };
   googleSheetsUrl?: string; // Link público CSV do Google Sheets
   status?: 'novo' | 'agendado' | 'proposta' | 'ganho' | 'perdido';
   metaAdAccountId?: string;
@@ -123,6 +126,6 @@ export interface ProspectData {
   ctaBannerSubtext?: string;
 }
 
-export type AppState = 'list' | 'setup' | 'menu' | 'presentation' | 'calculator' | 'performance-dashboard' | 'pitch-editor';
+export type AppState = 'list' | 'setup' | 'menu' | 'presentation' | 'calculator' | 'performance-dashboard' | 'pitch-editor' | 'laboratorio';
 
 

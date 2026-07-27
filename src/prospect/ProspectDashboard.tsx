@@ -6,6 +6,7 @@ import ProspectSetup from './components/ProspectSetup';
 import PathSelector from './components/PathSelector';
 import BudgetCalculator from './components/BudgetCalculator';
 import PerformanceDashboard from './components/PerformanceDashboard';
+import LaboratorioView from '../laboratorio/LaboratorioView';
 import Logo from './components/Logo';
 import { supabase } from '../lib/supabase';
 import { HugeiconsIcon } from '@hugeicons/react';
@@ -30,7 +31,8 @@ import {
   ChevronRightIcon,
   Briefcase01Icon,
   Maximize01Icon,
-  Minimize01Icon
+  Minimize01Icon,
+  SparklesIcon
 } from '@hugeicons/core-free-icons';
 
 const createHugeIcon = (icon: any) => (props: any) => (
@@ -57,7 +59,25 @@ const ChevronLeft = createHugeIcon(ChevronLeftIcon);
 const ChevronRight = createHugeIcon(ChevronRightIcon);
 const Briefcase = createHugeIcon(Briefcase01Icon);
 const Maximize2 = createHugeIcon(Maximize01Icon);
-const Minimize2 = createHugeIcon(Minimize01Icon);
+const Sparkles = createHugeIcon(SparklesIcon);
+
+const LaboratoryIcon = (props: { className?: string }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={props.className || "w-3.5 h-3.5 shrink-0"}
+  >
+    <path d="M10 2v5.5L4.5 17.5C3.8 18.7 4.7 20 6.1 20h11.8c1.4 0 2.3-1.3 1.6-2.5L14 7.5V2" />
+    <path d="M8.5 2h7" />
+    <path d="M7 14.5h10" strokeDasharray="1 1.5" opacity="0.7" />
+    <circle cx="10" cy="11.5" r="0.75" fill="currentColor" />
+    <circle cx="14" cy="13.5" r="0.75" fill="currentColor" />
+  </svg>
+);
 
 // Toast notification system
 type Toast = { id: string; message: string; type: 'success' | 'error' };
@@ -270,11 +290,11 @@ const ProspectDashboard: React.FC = () => {
       if (error) throw error;
 
       // Recupera backup para mesclar dados locais que possam não estar na nuvem
-      const backup = JSON.parse(localStorage.getItem('loopflow_prospects:v1') || '[]');
+      const backup: any[] = JSON.parse(localStorage.getItem('loopflow_prospects:v1') || '[]');
       const backupMap = new Map(backup.map((p: any) => [p.id, p]));
 
       const mapped = data.map((p: any) => {
-        const local = backupMap.get(p.id);
+        const local: any = backupMap.get(p.id);
         let parsedSheetsUrl = p.google_sheets_url || '';
         let contactName = '';
         let contactPhone = '';
@@ -768,41 +788,48 @@ const ProspectDashboard: React.FC = () => {
               {/* Center Column: Lead navigation tabs */}
               <div className="w-1/3 flex justify-center">
                 {view !== 'list' && activeProspect && (
-                  <nav className={`flex items-center gap-1 p-1 rounded-xl border ${
-                    theme === 'light' ? 'bg-zinc-100 border-zinc-200/60' : 'bg-zinc-900/60 border-zinc-900'
+                  <nav className={`flex items-center gap-1 p-1.5 rounded-xl border ${
+                    theme === 'light' ? 'bg-zinc-100 border-zinc-200/80 shadow-sm' : 'bg-zinc-950 border-zinc-850'
                   }`}>
                     <button
                       onClick={() => setView('performance-dashboard')}
-                      className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[9.5px] font-black uppercase tracking-wider transition-all cursor-pointer ${
+                      className={`px-3.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer ${
                         view === 'performance-dashboard'
-                          ? 'bg-yellow-400 text-black shadow-sm'
-                          : 'text-zinc-550 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+                          ? 'bg-yellow-400 text-black shadow-sm font-black'
+                          : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
                       }`}
                     >
-                      <TrendingUp className="w-3.5 h-3.5 shrink-0" />
                       <span>Métricas</span>
                     </button>
                     <button
                       onClick={() => setView('calculator')}
-                      className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[9.5px] font-black uppercase tracking-wider transition-all cursor-pointer ${
+                      className={`px-3.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer ${
                         view === 'calculator'
-                          ? 'bg-yellow-400 text-black shadow-sm'
-                          : 'text-zinc-550 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+                          ? 'bg-yellow-400 text-black shadow-sm font-black'
+                          : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
                       }`}
                     >
-                      <Calculator className="w-3.5 h-3.5 shrink-0" />
                       <span>Calculadora</span>
                     </button>
                     <button
                       onClick={() => setView('menu')}
-                      className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[9.5px] font-black uppercase tracking-wider transition-all cursor-pointer ${
+                      className={`px-3.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer ${
                         view === 'menu' || view === 'pitch-editor'
-                          ? 'bg-yellow-400 text-black shadow-sm'
-                          : 'text-zinc-555 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+                          ? 'bg-yellow-400 text-black shadow-sm font-black'
+                          : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
                       }`}
                     >
-                      <Play className="w-3.5 h-3.5 shrink-0" />
                       <span>Pitch</span>
+                    </button>
+                    <button
+                      onClick={() => setView('laboratorio')}
+                      className={`px-3.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer ${
+                        view === 'laboratorio'
+                          ? 'bg-yellow-400 text-black shadow-sm font-black'
+                          : 'text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
+                      }`}
+                    >
+                      <span>Laboratório</span>
                     </button>
                   </nav>
                 )}
@@ -878,7 +905,7 @@ const ProspectDashboard: React.FC = () => {
                   onMouseLeave={handleMouseLeave}
                   onMouseUp={handleMouseUp}
                   onMouseMove={handleMouseMove}
-                  onDragStart={handleDragStartBoard}
+                  onDragStart={(e: any) => handleDragStartBoard(e)}
                   className="flex gap-4 overflow-x-auto pb-4 pt-1 select-none scrollbar-thin scrollbar-thumb-zinc-900 scrollbar-track-transparent max-w-full flex-1"
                 >
                   {STAGES.map((stage, idx) => {
@@ -1184,6 +1211,12 @@ const ProspectDashboard: React.FC = () => {
               onBack={() => setView('list')}
               theme={theme}
             />
+          </div>
+        )}
+
+        {view === 'laboratorio' && activeProspect && (
+          <div className="w-full">
+            <LaboratorioView prospect={activeProspect} />
           </div>
         )}
         </div>

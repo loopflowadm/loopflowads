@@ -813,6 +813,82 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
         );
       }
 
+      case 'proposal-how-it-works': {
+        return (
+          <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden select-none bg-zinc-950">
+            {/* Background Video */}
+            <SmoothBgVideo
+              src={slide.bgVideo || '/videos/target.mp4'}
+              className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+              targetOpacityClass="opacity-75"
+            />
+            {/* Dark Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent/30 z-0 pointer-events-none" />
+
+            <div className="space-y-6 relative z-10">
+              <div className={getAnimProps(0).className} style={getAnimProps(0).style}>
+                <div className="inline-block bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 px-4 py-1.5 rounded-full text-xs sm:text-sm font-black uppercase tracking-widest mb-3 shadow-md">
+                  <EditableField
+                    value={localProspect.howItWorksTag || 'METODOLOGIA DE TRABALHO'}
+                    onChange={(v) => updateField('howItWorksTag' as any, v)}
+                  />
+                </div>
+                <h3 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-none tracking-tight uppercase mb-2">
+                  <EditableField
+                    value={localProspect.howItWorksTitle || 'COMO FUNCIONA NA PRÁTICA'}
+                    onChange={(v) => updateField('howItWorksTitle' as any, v)}
+                  />
+                </h3>
+                <p className="text-sm sm:text-base text-zinc-300 font-medium italic">
+                  <EditableField
+                    value={localProspect.howItWorksSubtitle || 'Processo estruturado em 4 etapas para colocar seu crescimento em piloto automático'}
+                    onChange={(v) => updateField('howItWorksSubtitle' as any, v)}
+                    multiline
+                  />
+                </p>
+              </div>
+
+              {/* 4 Stepper Nodes */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {[
+                  { step: '01', titleKey: 'howStep1Title', descKey: 'howStep1Desc', defTitle: 'DIAGNÓSTICO', defDesc: 'Imersão no seu modelo de negócio, oferta e métricas atuais.' },
+                  { step: '02', titleKey: 'howStep2Title', descKey: 'howStep2Desc', defTitle: 'ESTRUTURA', defDesc: 'Configuração técnica, pixel, rastreamento e cópias estratégicas.' },
+                  { step: '03', titleKey: 'howStep3Title', descKey: 'howStep3Desc', defTitle: 'OPERAÇÃO', defDesc: 'Lançamento das campanhas e testes contínuos de criativos.' },
+                  { step: '04', titleKey: 'howStep4Title', descKey: 'howStep4Desc', defTitle: 'ESCALA', defDesc: 'Otimização diária de verba e relatórios transparentes de ROI.' }
+                ].map((item, idx) => (
+                  <div key={idx} className={`bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800 p-5 rounded-2xl space-y-2 relative group hover:border-yellow-400/50 transition-all ${getAnimProps(150 + idx * 120).className || ''}`} style={getAnimProps(150 + idx * 120).style}>
+                    <div className="text-yellow-400 font-black text-2xl tracking-tighter opacity-80 group-hover:opacity-100 transition-opacity">
+                      {item.step}
+                    </div>
+                    <h4 className="text-base font-extrabold text-white uppercase tracking-wider">
+                      <EditableField
+                        value={(localProspect as any)[item.titleKey] || item.defTitle}
+                        onChange={(v) => updateField(item.titleKey as any, v)}
+                      />
+                    </h4>
+                    <p className="text-xs text-zinc-300 font-medium leading-relaxed italic">
+                      <EditableField
+                        value={(localProspect as any)[item.descKey] || item.defDesc}
+                        onChange={(v) => updateField(item.descKey as any, v)}
+                        multiline
+                      />
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Deliverables Banner */}
+              <div className={`p-5 bg-zinc-900/90 backdrop-blur-md rounded-2xl border border-zinc-800 flex items-center justify-between shadow-xl ${getAnimProps(630).className || ''}`} style={getAnimProps(630).style}>
+                <div className="flex items-center space-x-3 text-yellow-400 font-black text-sm uppercase tracking-wider">
+                  <CheckCircle2 className="w-6 h-6 shrink-0" />
+                  <span>ENTREGÁVEIS INCLUSOS: SETUP + GESTÃO CONTÍNUA + RELATÓRIOS SEMANAIS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
       case 'proposal-investment': {
         return (
           <div className="flex-1 flex flex-col justify-center space-y-4 md:space-y-5 -m-8 md:-m-12 p-8 md:p-14 text-black relative overflow-hidden select-none bg-gradient-to-br from-amber-500 via-yellow-400 to-amber-300">

@@ -257,6 +257,17 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
     return str.replace(/[\[\]]/g, '').trim();
   };
 
+  const getAnimProps = (delayMs: number) => {
+    if (isEditing) return {};
+    return {
+      className: 'animate-fade-in-up',
+      style: {
+        animationDelay: `${delayMs}ms`,
+        animationFillMode: 'backwards' as const
+      }
+    };
+  };
+
   const renderSlideContent = (slide: Slide) => {
     switch (slide.type) {
       case 'proposal-cover':
@@ -273,7 +284,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
             <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/85 to-transparent/30 z-1 pointer-events-none" />
 
             {/* Top Bar: Pill Tag Left, Brand Logo Right */}
-            <div className="flex justify-between items-center relative z-10">
+            <div className={`flex justify-between items-center relative z-10 ${getAnimProps(0).className || ''}`} style={getAnimProps(0).style}>
               <span className="bg-yellow-400 text-black px-5 py-2.5 rounded-full text-xs sm:text-sm font-black uppercase tracking-widest shadow-lg">
                 <EditableField
                   value={localProspect.coverTag || 'PROPOSTA COMERCIAL'}
@@ -287,14 +298,14 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
 
             {/* Center Content: Main Company Name & Subtitle */}
             <div className="my-auto py-12 relative z-10 max-w-4xl space-y-6">
-              <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black text-white tracking-tight leading-none uppercase drop-shadow-lg">
+              <h1 className={`text-5xl sm:text-7xl lg:text-8xl font-black text-white tracking-tight leading-none uppercase drop-shadow-lg ${getAnimProps(150).className || ''}`} style={getAnimProps(150).style}>
                 <EditableField
                   value={localProspect.name}
                   onChange={(v) => updateField('name', v)}
                   placeholder="Nome da Empresa"
                 />
               </h1>
-              <div className="inline-block bg-yellow-400 text-black px-6 py-3.5 rounded-2xl shadow-2xl">
+              <div className={`inline-block bg-yellow-400 text-black px-6 py-3.5 rounded-2xl shadow-2xl ${getAnimProps(300).className || ''}`} style={getAnimProps(300).style}>
                 <p className="text-sm sm:text-xl font-bold tracking-tight">
                   <EditableField
                     value={localProspect.coverSubtitle || 'Como vamos colocar seu negócio em loop de crescimento'}
@@ -306,7 +317,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
             </div>
 
             {/* Bottom Footer */}
-            <div className="relative z-10 pt-6 border-t border-white/10 flex justify-between items-center text-xs sm:text-sm font-black uppercase tracking-wider text-zinc-300">
+            <div className={`relative z-10 pt-6 border-t border-white/10 flex justify-between items-center text-xs sm:text-sm font-black uppercase tracking-wider text-zinc-300 ${getAnimProps(450).className || ''}`} style={getAnimProps(450).style}>
               <span>
                 <EditableField
                   value={localProspect.coverFooter || `REUNIÃO DE DIAGNÓSTICO · ${new Date().toLocaleDateString('pt-BR')}`}
@@ -330,7 +341,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
 
             <div className="space-y-10 relative z-10">
               {/* Header */}
-              <div>
+              <div className={getAnimProps(0).className} style={getAnimProps(0).style}>
                 <h3 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-none tracking-tight uppercase mb-3">
                   O QUE <span className="text-yellow-400">VAMOS VER</span> HOJE
                 </h3>
@@ -361,7 +372,8 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                           <circle cx="11" cy="9" r="2"/>
                         </svg>
                       ),
-                      num: '01'
+                      num: '01',
+                      delay: 180
                     },
                     {
                       keyStep: 'agendaStep2Title',
@@ -369,7 +381,8 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                       defaultTitle: 'O que analisamos e qual o seu objetivo',
                       defaultDesc: 'O resultado de negócio que importa',
                       icon: <Target className="w-9 h-9 text-yellow-400" />,
-                      num: '02'
+                      num: '02',
+                      delay: 300
                     },
                     {
                       keyStep: 'agendaStep3Title',
@@ -377,7 +390,8 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                       defaultTitle: 'Nossa proposta',
                       defaultDesc: 'Como vamos estruturar o trabalho',
                       icon: <Lightbulb className="w-9 h-9 text-yellow-400" />,
-                      num: '03'
+                      num: '03',
+                      delay: 420
                     },
                     {
                       keyStep: 'agendaStep4Title',
@@ -393,12 +407,14 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                           <line x1="10" y1="9" x2="8" y2="9"/>
                         </svg>
                       ),
-                      num: '04'
+                      num: '04',
+                      delay: 540
                     }
                   ].map((item, idx) => (
                     <div
                       key={idx}
-                      className="bg-[#0b0b0b]/95 border border-zinc-800/90 rounded-2xl p-7 flex flex-col justify-between min-h-[260px] shadow-2xl hover:border-yellow-400/50 hover:bg-[#111111] transition-all duration-300 group"
+                      className={`bg-[#0b0b0b]/95 border border-zinc-800/90 rounded-2xl p-7 flex flex-col justify-between min-h-[260px] shadow-2xl hover:border-yellow-400/50 hover:bg-[#111111] transition-all duration-300 group ${getAnimProps(item.delay).className || ''}`}
+                      style={getAnimProps(item.delay).style}
                     >
                       <div className="flex items-start justify-between mb-4">
                         <div className="p-2 rounded-xl bg-yellow-400/10">
@@ -446,7 +462,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
 
             {/* Left Content (Title & Cards) */}
             <div className="relative z-10 max-w-3xl space-y-6">
-              <div>
+              <div className={getAnimProps(0).className} style={getAnimProps(0).style}>
                 <h3 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-[0.95] tracking-tight uppercase">
                   <EditableField
                     value={localProspect.understandingTitlePrefix || 'O QUE ENTENDEMOS SOBRE'}
@@ -472,7 +488,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                 {/* Top Row: Segment & Problem */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Card Segmento */}
-                  <div className="bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-5 rounded-2xl flex items-center space-x-4 hover:border-yellow-400/40 transition-all shadow-xl">
+                  <div className={`bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-5 rounded-2xl flex items-center space-x-4 hover:border-yellow-400/40 transition-all shadow-xl ${getAnimProps(180).className || ''}`} style={getAnimProps(180).style}>
                     <div className="w-12 h-12 rounded-xl bg-yellow-400/10 flex items-center justify-center shrink-0">
                       <svg className="w-7 h-7 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
@@ -498,7 +514,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                   </div>
 
                   {/* Card Problema */}
-                  <div className="bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-5 rounded-2xl flex items-center space-x-4 hover:border-yellow-400/40 transition-all shadow-xl">
+                  <div className={`bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-5 rounded-2xl flex items-center space-x-4 hover:border-yellow-400/40 transition-all shadow-xl ${getAnimProps(320).className || ''}`} style={getAnimProps(320).style}>
                     <div className="w-12 h-12 rounded-xl bg-yellow-400/10 flex items-center justify-center shrink-0">
                       <AlertTriangle className="w-7 h-7 text-yellow-400" />
                     </div>
@@ -521,7 +537,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                 </div>
 
                 {/* Bottom Row: Marketing Situation */}
-                <div className="bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-5 rounded-2xl flex items-center space-x-4 hover:border-yellow-400/40 transition-all shadow-xl">
+                <div className={`bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-5 rounded-2xl flex items-center space-x-4 hover:border-yellow-400/40 transition-all shadow-xl ${getAnimProps(460).className || ''}`} style={getAnimProps(460).style}>
                   <div className="w-12 h-12 rounded-xl bg-yellow-400/10 flex items-center justify-center shrink-0">
                     <svg className="w-7 h-7 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                       <path d="m3 11 18-5v12L3 13v-2z"/>
@@ -565,7 +581,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
 
             {/* Left Content (Title & Cards) */}
             <div className="relative z-10 max-w-3xl space-y-6">
-              <div>
+              <div className={getAnimProps(0).className} style={getAnimProps(0).style}>
                 <h3 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-[0.95] tracking-tight uppercase">
                   <EditableField
                     value={localProspect.findingsTitlePrefix || 'O QUE'}
@@ -601,7 +617,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                 {/* Top Row: Achado 1 & Achado 2 */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Achado 1 */}
-                  <div className="bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-5 rounded-2xl flex items-center space-x-4 hover:border-yellow-400/40 transition-all shadow-xl">
+                  <div className={`bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-5 rounded-2xl flex items-center space-x-4 hover:border-yellow-400/40 transition-all shadow-xl ${getAnimProps(180).className || ''}`} style={getAnimProps(180).style}>
                     <div className="w-12 h-12 rounded-xl bg-yellow-400/10 flex items-center justify-center shrink-0">
                       <Search className="w-7 h-7 text-yellow-400" />
                     </div>
@@ -623,7 +639,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                   </div>
 
                   {/* Achado 2 */}
-                  <div className="bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-5 rounded-2xl flex items-center space-x-4 hover:border-yellow-400/40 transition-all shadow-xl">
+                  <div className={`bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-5 rounded-2xl flex items-center space-x-4 hover:border-yellow-400/40 transition-all shadow-xl ${getAnimProps(320).className || ''}`} style={getAnimProps(320).style}>
                     <div className="w-12 h-12 rounded-xl bg-yellow-400/10 flex items-center justify-center shrink-0">
                       <BarChart3 className="w-7 h-7 text-yellow-400" />
                     </div>
@@ -646,7 +662,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                 </div>
 
                 {/* Card Onde você quer chegar */}
-                <div className="bg-[#0e0e0e]/95 backdrop-blur-md border-2 border-yellow-400/90 p-6 rounded-2xl flex items-center space-x-5 shadow-[0_0_35px_rgba(250,204,21,0.15)]">
+                <div className={`bg-[#0e0e0e]/95 backdrop-blur-md border-2 border-yellow-400/90 p-6 rounded-2xl flex items-center space-x-5 shadow-[0_0_35px_rgba(250,204,21,0.15)] ${getAnimProps(460).className || ''}`} style={getAnimProps(460).style}>
                   <div className="w-14 h-14 rounded-2xl bg-yellow-400/10 flex items-center justify-center shrink-0">
                     <TrendingUp className="w-8 h-8 text-yellow-400" />
                   </div>
@@ -686,7 +702,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
 
             <div className="space-y-6 relative z-10">
               {/* Restrito ao lado esquerdo com contraste de pesos tipográficos maior e mais imponente */}
-              <div className="max-w-2xl lg:max-w-3xl">
+              <div className={`max-w-2xl lg:max-w-3xl ${getAnimProps(0).className || ''}`} style={getAnimProps(0).style}>
                 <div className="inline-block bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 px-4 py-1.5 rounded-full text-xs sm:text-sm font-black uppercase tracking-widest mb-3 shadow-md">
                   <EditableField
                     value={localProspect.pillarsTag || 'Proposta de Valor'}
@@ -718,7 +734,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 {/* Frente 1 */}
-                <div className="bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-6 rounded-2xl space-y-3 hover:border-yellow-400/40 transition-all group flex flex-col justify-between shadow-xl">
+                <div className={`bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-6 rounded-2xl space-y-3 hover:border-yellow-400/40 transition-all group flex flex-col justify-between shadow-xl ${getAnimProps(180).className || ''}`} style={getAnimProps(180).style}>
                   <div>
                     <div className="w-11 h-11 rounded-xl bg-yellow-400/10 flex items-center justify-center text-yellow-400 mb-4">
                       <TrendingUp className="w-6 h-6" />
@@ -740,7 +756,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                 </div>
 
                 {/* Frente 2 */}
-                <div className="bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-6 rounded-2xl space-y-3 hover:border-yellow-400/40 transition-all group flex flex-col justify-between shadow-xl">
+                <div className={`bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-6 rounded-2xl space-y-3 hover:border-yellow-400/40 transition-all group flex flex-col justify-between shadow-xl ${getAnimProps(320).className || ''}`} style={getAnimProps(320).style}>
                   <div>
                     <div className="w-11 h-11 rounded-xl bg-yellow-400/10 flex items-center justify-center text-yellow-400 mb-4">
                       <Palette className="w-6 h-6" />
@@ -762,7 +778,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                 </div>
 
                 {/* Frente 3 */}
-                <div className="bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-6 rounded-2xl space-y-3 hover:border-yellow-400/40 transition-all group flex flex-col justify-between shadow-xl">
+                <div className={`bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-6 rounded-2xl space-y-3 hover:border-yellow-400/40 transition-all group flex flex-col justify-between shadow-xl ${getAnimProps(460).className || ''}`} style={getAnimProps(460).style}>
                   <div>
                     <div className="w-11 h-11 rounded-xl bg-yellow-400/10 flex items-center justify-center text-yellow-400 mb-4">
                       <Brain className="w-6 h-6" />
@@ -808,7 +824,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
             />
 
             {/* Header */}
-            <div className="relative z-10 space-y-1">
+            <div className={`relative z-10 space-y-1 ${getAnimProps(0).className || ''}`} style={getAnimProps(0).style}>
               <h3 className="text-4xl sm:text-6xl lg:text-7xl font-black text-black leading-tight tracking-tight uppercase drop-shadow-sm">
                 <EditableField
                   value={localProspect.investmentTitle || 'INVESTIMENTO'}
@@ -825,7 +841,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
             </div>
 
             {/* Main Dark Capsule Container */}
-            <div className="relative z-10 bg-[#0b0b0b]/95 backdrop-blur-md text-white p-6 sm:p-10 rounded-[32px] shadow-2xl border border-zinc-800/80 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+            <div className={`relative z-10 bg-[#0b0b0b]/95 backdrop-blur-md text-white p-6 sm:p-10 rounded-[32px] shadow-2xl border border-zinc-800/80 grid grid-cols-1 md:grid-cols-12 gap-6 items-center ${getAnimProps(200).className || ''}`} style={getAnimProps(200).style}>
               {/* Left Column: Plan Name & Subtitle */}
               <div className="md:col-span-5 space-y-3">
                 <div className="flex items-center space-x-3">
@@ -883,7 +899,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
             </div>
 
             {/* Footer Bullet Note */}
-            <div className="relative z-10 flex items-center space-x-2 text-xs sm:text-sm font-bold text-black/90">
+            <div className={`relative z-10 flex items-center space-x-2 text-xs sm:text-sm font-bold text-black/90 ${getAnimProps(450).className || ''}`} style={getAnimProps(450).style}>
               <span className="w-2 h-2 rounded-full bg-black shrink-0" />
               <span>
                 <EditableField
@@ -901,7 +917,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
         return (
           <div className="flex-1 flex flex-col justify-center space-y-8 select-none">
             {/* Header */}
-            <div className="text-center">
+            <div className={`text-center ${getAnimProps(0).className || ''}`} style={getAnimProps(0).style}>
               <h3 className="text-3xl lg:text-5xl font-black text-white leading-tight tracking-tight uppercase mb-2">
                 <EditableField
                   value={localProspect.howItWorksTitlePrefix || 'COMO'}
@@ -928,31 +944,35 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                     keyDesc: 'step1Desc',
                     defaultTitle: 'DIAGNÓSTICO',
                     defaultDesc: 'Entendemos o cenário e os dados disponíveis.',
-                    icon: <Search className="w-8 h-8 text-yellow-400" />
+                    icon: <Search className="w-8 h-8 text-yellow-400" />,
+                    delay: 150
                   },
                   {
                     keyTitle: 'step2Title',
                     keyDesc: 'step2Desc',
                     defaultTitle: 'ESTRUTURA',
                     defaultDesc: 'Criamos a estrutura de funil e tracking.',
-                    icon: <Filter className="w-8 h-8 text-yellow-400" />
+                    icon: <Filter className="w-8 h-8 text-yellow-400" />,
+                    delay: 270
                   },
                   {
                     keyTitle: 'step3Title',
                     keyDesc: 'step3Desc',
                     defaultTitle: 'OPERAÇÃO',
                     defaultDesc: 'Executamos, otimizamos e testamos diariamente.',
-                    icon: <Cog className="w-8 h-8 text-yellow-400" />
+                    icon: <Cog className="w-8 h-8 text-yellow-400" />,
+                    delay: 390
                   },
                   {
                     keyTitle: 'step4Title',
                     keyDesc: 'step4Desc',
                     defaultTitle: 'ESCALA',
                     defaultDesc: 'Escalamos o que funciona com previsibilidade.',
-                    icon: <TrendingUp className="w-8 h-8 text-yellow-400" />
+                    icon: <TrendingUp className="w-8 h-8 text-yellow-400" />,
+                    delay: 510
                   }
                 ].map((step, idx) => (
-                  <div key={idx} className="flex flex-col items-center group">
+                  <div key={idx} className={`flex flex-col items-center group ${getAnimProps(step.delay).className || ''}`} style={getAnimProps(step.delay).style}>
                     {/* Dark 3D Circular Capsule Button */}
                     <div className="w-18 h-18 rounded-full bg-[#141414] border border-zinc-700/80 shadow-2xl flex items-center justify-center mb-3 group-hover:border-yellow-400/60 group-hover:scale-105 transition-all duration-300 ring-4 ring-black">
                       {step.icon}
@@ -976,7 +996,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
             </div>
 
             {/* Bottom Deliverables Section */}
-            <div className="space-y-2">
+            <div className={`space-y-2 ${getAnimProps(630).className || ''}`} style={getAnimProps(630).style}>
               <span className="text-xs font-black text-yellow-400 uppercase tracking-widest block mb-2 text-center">
                 <EditableField
                   value={localProspect.deliverablesTag || 'O QUE ESTÁ INCLUSO'}
@@ -1078,7 +1098,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
             <div className="absolute right-0 top-0 bottom-0 h-full w-[75%] lg:w-[68%] bg-gradient-to-r from-zinc-950 via-zinc-950/25 to-transparent z-1 pointer-events-none" />
 
             <div className="space-y-6 relative z-10 max-w-4xl">
-              <div>
+              <div className={getAnimProps(0).className} style={getAnimProps(0).style}>
                 <h3 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-none tracking-tight uppercase">
                   <EditableField
                     value={localProspect.nextStepsPrefix || 'PRÓXIMOS'}
@@ -1107,7 +1127,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 relative z-10">
                   {/* Card 01 Assinatura */}
-                  <div className="bg-[#0e0e0e]/95 backdrop-blur-md border-2 border-yellow-400/90 p-5 rounded-2xl flex flex-col justify-between shadow-[0_0_30px_rgba(250,204,21,0.15)] hover:border-yellow-400 transition-all">
+                  <div className={`bg-[#0e0e0e]/95 backdrop-blur-md border-2 border-yellow-400/90 p-5 rounded-2xl flex flex-col justify-between shadow-[0_0_30px_rgba(250,204,21,0.15)] hover:border-yellow-400 transition-all ${getAnimProps(180).className || ''}`} style={getAnimProps(180).style}>
                     <div className="flex items-center justify-between mb-4">
                       <span className="text-3xl font-black text-yellow-400">01</span>
                       <div className="p-2 rounded-xl bg-yellow-400/10 text-yellow-400">
@@ -1132,7 +1152,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                   </div>
 
                   {/* Card 02 Kickoff */}
-                  <div className="bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-5 rounded-2xl flex flex-col justify-between shadow-xl hover:border-yellow-400/40 transition-all">
+                  <div className={`bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-5 rounded-2xl flex flex-col justify-between shadow-xl hover:border-yellow-400/40 transition-all ${getAnimProps(320).className || ''}`} style={getAnimProps(320).style}>
                     <div className="flex items-center justify-between mb-4">
                       <span className="text-3xl font-black text-white/90">02</span>
                       <div className="p-2 rounded-xl bg-yellow-400/10 text-yellow-400">
@@ -1153,7 +1173,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                   </div>
 
                   {/* Card 03 Primeiras entregas */}
-                  <div className="bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-5 rounded-2xl flex flex-col justify-between shadow-xl hover:border-yellow-400/40 transition-all">
+                  <div className={`bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800/90 p-5 rounded-2xl flex flex-col justify-between shadow-xl hover:border-yellow-400/40 transition-all ${getAnimProps(460).className || ''}`} style={getAnimProps(460).style}>
                     <div className="flex items-center justify-between mb-4">
                       <span className="text-3xl font-black text-white/90">03</span>
                       <div className="p-2 rounded-xl bg-yellow-400/10 text-yellow-400">
@@ -1176,7 +1196,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
               </div>
 
               {/* Giant Yellow Banner */}
-              <div className="bg-yellow-400 text-black p-5 sm:p-6 rounded-2xl shadow-2xl text-center space-y-1">
+              <div className={`bg-yellow-400 text-black p-5 sm:p-6 rounded-2xl shadow-2xl text-center space-y-1 ${getAnimProps(600).className || ''}`} style={getAnimProps(600).style}>
                 <h4 className="text-lg sm:text-2xl font-black uppercase tracking-tight leading-tight">
                   <EditableField
                     value={localProspect.ctaBannerTitle || 'FAZ SENTIDO PRA VOCÊ COMEÇARMOS AINDA ESSE MÊS?'}

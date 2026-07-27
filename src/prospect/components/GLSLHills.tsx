@@ -154,12 +154,14 @@ const GLSLHills: React.FC<GLSLHillsProps> = ({
               varying vec3 vPosition;
 
               void main(void) {
-                float opacity = (96.0 - length(vPosition)) / 256.0 * 0.6;
-                vec3 color = vec3(0.95, 0.8, 0.15);
-                gl_FragColor = vec4(color, opacity);
+                float dist = length(vPosition);
+                float opacity = clamp((260.0 - dist) / 260.0, 0.15, 0.9);
+                vec3 goldColor = mix(vec3(1.0, 0.84, 0.1), vec3(0.85, 0.6, 0.0), clamp((vPosition.y + 10.0) / 40.0, 0.0, 1.0));
+                gl_FragColor = vec4(goldColor, opacity);
               }
             `,
-            transparent: true
+            transparent: true,
+            side: THREE.DoubleSide
           })
         );
       }
@@ -172,9 +174,11 @@ const GLSLHills: React.FC<GLSLHillsProps> = ({
     let animationFrameId: number;
     const canvas = canvasRef.current;
     const container = containerRef.current;
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, (container.clientWidth || window.innerWidth) / (container.clientHeight || window.innerHeight), 1, 10000);
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
     const clock = new THREE.Clock();
     const plane = new Plane();
 
@@ -194,8 +198,8 @@ const GLSLHills: React.FC<GLSLHillsProps> = ({
     };
 
     const init = () => {
-      const w = container.clientWidth || window.innerWidth;
-      const h = container.clientHeight || window.innerHeight;
+      const w = container?.clientWidth || window.innerWidth;
+      const h = container?.clientHeight || window.innerHeight;
       renderer.setSize(w, h, false);
       renderer.setClearColor(0x000000, 0);
       camera.position.set(0, 16, cameraZ);
@@ -218,10 +222,10 @@ const GLSLHills: React.FC<GLSLHillsProps> = ({
   }, [cameraZ, planeSize, speed]);
 
   return (
-    <div ref={containerRef} className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden" style={{ width, height }}>
+    <div ref={containerRef} className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full pointer-events-none"
       />
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Slide, ProspectData } from '../types';
 import Logo from './Logo';
+import GLSLHills from './GLSLHills';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
   ChevronLeftIcon,
@@ -331,10 +332,10 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
       case 'proposal-agenda':
         return (
           <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden select-none bg-zinc-950">
-            {/* Background Image with smooth entrance */}
-            <SmoothBgImage src="/background slide.jpg" alt="Background Slide" />
-            {/* Base dark overlay & strong side gradients to eliminate any right-side seams */}
-            <div className="absolute inset-0 bg-zinc-950/40 z-0 pointer-events-none" />
+            {/* Interactive GLSL 3D Hills Shader Background */}
+            <GLSLHills />
+            {/* Base dark overlay & strong side gradients for depth */}
+            <div className="absolute inset-0 bg-zinc-950/50 z-0 pointer-events-none" />
             <div className="absolute right-0 top-0 bottom-0 w-[45%] bg-gradient-to-l from-zinc-950 via-zinc-950/80 to-transparent z-0 pointer-events-none" />
             <div className="absolute left-0 top-0 bottom-0 w-[35%] bg-gradient-to-r from-zinc-950 via-zinc-950/80 to-transparent z-0 pointer-events-none" />
             <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/80 via-transparent to-zinc-950/90 z-0 pointer-events-none" />

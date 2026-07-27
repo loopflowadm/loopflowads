@@ -831,65 +831,101 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
               targetOpacityClass="opacity-75"
             />
             {/* Dark Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent/30 z-0 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-transparent/30 z-0 pointer-events-none" />
 
-            <div className="space-y-6 relative z-10">
+            <div className="space-y-8 relative z-10">
+              {/* Main Title: COMO FUNCIONA NA PRÁTICA */}
               <div className={getAnimProps(0).className} style={getAnimProps(0).style}>
-                <div className="inline-block bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 px-4 py-1.5 rounded-full text-xs sm:text-sm font-black uppercase tracking-widest mb-3 shadow-md">
-                  <EditableField
-                    value={localProspect.howItWorksTag || 'METODOLOGIA DE TRABALHO'}
-                    onChange={(v) => updateField('howItWorksTag' as any, v)}
-                  />
-                </div>
-                <h3 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-none tracking-tight uppercase mb-2">
-                  <EditableField
-                    value={localProspect.howItWorksTitle || 'COMO FUNCIONA NA PRÁTICA'}
-                    onChange={(v) => updateField('howItWorksTitle' as any, v)}
-                  />
+                <h3 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-none tracking-tight uppercase">
+                  COMO <span className="text-yellow-400">FUNCIONA NA PRÁTICA</span>
                 </h3>
-                <p className="text-sm sm:text-base text-zinc-300 font-medium italic">
-                  <EditableField
-                    value={localProspect.howItWorksSubtitle || 'Processo estruturado em 4 etapas para colocar seu crescimento em piloto automático'}
-                    onChange={(v) => updateField('howItWorksSubtitle' as any, v)}
-                    multiline
-                  />
-                </p>
               </div>
 
-              {/* 4 Stepper Nodes */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {[
-                  { step: '01', titleKey: 'howStep1Title', descKey: 'howStep1Desc', defTitle: 'DIAGNÓSTICO', defDesc: 'Imersão no seu modelo de negócio, oferta e métricas atuais.' },
-                  { step: '02', titleKey: 'howStep2Title', descKey: 'howStep2Desc', defTitle: 'ESTRUTURA', defDesc: 'Configuração técnica, pixel, rastreamento e cópias estratégicas.' },
-                  { step: '03', titleKey: 'howStep3Title', descKey: 'howStep3Desc', defTitle: 'OPERAÇÃO', defDesc: 'Lançamento das campanhas e testes contínuos de criativos.' },
-                  { step: '04', titleKey: 'howStep4Title', descKey: 'howStep4Desc', defTitle: 'ESCALA', defDesc: 'Otimização diária de verba e relatórios transparentes de ROI.' }
-                ].map((item, idx) => (
-                  <div key={idx} className={`bg-[#0e0e0e]/90 backdrop-blur-md border border-zinc-800 p-5 rounded-2xl space-y-2 relative group hover:border-yellow-400/50 transition-all ${getAnimProps(150 + idx * 120).className || ''}`} style={getAnimProps(150 + idx * 120).style}>
-                    <div className="text-yellow-400 font-black text-2xl tracking-tighter opacity-80 group-hover:opacity-100 transition-opacity">
-                      {item.step}
+              {/* 4 Circular Nodes Stepper with Dotted Line */}
+              <div className="relative my-4">
+                {/* Connecting Dotted Line */}
+                <div className="hidden lg:block absolute top-10 left-[10%] right-[10%] h-0.5 border-t-2 border-dashed border-yellow-500/40 z-0 pointer-events-none" />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+                  {[
+                    {
+                      titleKey: 'howStep1Title',
+                      descKey: 'howStep1Desc',
+                      defTitle: 'DIAGNÓSTICO',
+                      defDesc: 'Entendemos o cenário e os dados disponíveis.',
+                      icon: <Search className="w-8 h-8 text-yellow-400" />
+                    },
+                    {
+                      titleKey: 'howStep2Title',
+                      descKey: 'howStep2Desc',
+                      defTitle: 'ESTRUTURA',
+                      defDesc: 'Criamos a estrutura de funil e tracking.',
+                      icon: <Filter className="w-8 h-8 text-yellow-400" />
+                    },
+                    {
+                      titleKey: 'howStep3Title',
+                      descKey: 'howStep3Desc',
+                      defTitle: 'OPERAÇÃO',
+                      defDesc: 'Executamos, otimizamos e testamos diariamente.',
+                      icon: <Settings className="w-8 h-8 text-yellow-400" />
+                    },
+                    {
+                      titleKey: 'howStep4Title',
+                      descKey: 'howStep4Desc',
+                      defTitle: 'ESCALA',
+                      defDesc: 'Escalamos o que funciona com previsibilidade.',
+                      icon: <TrendingUp className="w-8 h-8 text-yellow-400" />
+                    }
+                  ].map((item, idx) => (
+                    <div key={idx} className={`flex flex-col items-center text-center space-y-3 ${getAnimProps(150 + idx * 120).className || ''}`} style={getAnimProps(150 + idx * 120).style}>
+                      {/* Circular Glassmorphism Sphere Icon */}
+                      <div className="w-20 h-20 rounded-full bg-gradient-to-b from-zinc-800/90 via-zinc-900/95 to-zinc-950 backdrop-blur-md border border-zinc-700/70 shadow-2xl flex items-center justify-center text-yellow-400 shadow-yellow-500/10 group hover:scale-105 hover:border-yellow-400 transition-all duration-300 relative z-10">
+                        {item.icon}
+                      </div>
+                      {/* Node Title */}
+                      <h4 className="text-base font-black text-white uppercase tracking-wider">
+                        <EditableField
+                          value={(localProspect as any)[item.titleKey] || item.defTitle}
+                          onChange={(v) => updateField(item.titleKey as any, v)}
+                        />
+                      </h4>
+                      {/* Node Description */}
+                      <p className="text-xs sm:text-sm text-zinc-300 font-medium leading-snug max-w-[220px] italic">
+                        <EditableField
+                          value={(localProspect as any)[item.descKey] || item.defDesc}
+                          onChange={(v) => updateField(item.descKey as any, v)}
+                          multiline
+                        />
+                      </p>
                     </div>
-                    <h4 className="text-base font-extrabold text-white uppercase tracking-wider">
-                      <EditableField
-                        value={(localProspect as any)[item.titleKey] || item.defTitle}
-                        onChange={(v) => updateField(item.titleKey as any, v)}
-                      />
-                    </h4>
-                    <p className="text-xs text-zinc-300 font-medium leading-relaxed italic">
-                      <EditableField
-                        value={(localProspect as any)[item.descKey] || item.defDesc}
-                        onChange={(v) => updateField(item.descKey as any, v)}
-                        multiline
-                      />
-                    </p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
 
-              {/* Deliverables Banner */}
-              <div className={`p-5 bg-zinc-900/90 backdrop-blur-md rounded-2xl border border-zinc-800 flex items-center justify-between shadow-xl ${getAnimProps(630).className || ''}`} style={getAnimProps(630).style}>
-                <div className="flex items-center space-x-3 text-yellow-400 font-black text-sm uppercase tracking-wider">
-                  <CheckCircle2 className="w-6 h-6 shrink-0" />
-                  <span>ENTREGÁVEIS INCLUSOS: SETUP + GESTÃO CONTÍNUA + RELATÓRIOS SEMANAIS</span>
+              {/* Bottom Deliverables Section: O QUE ESTÁ INCLUSO */}
+              <div className={`space-y-3 ${getAnimProps(630).className || ''}`} style={getAnimProps(630).style}>
+                <h4 className="text-yellow-400 font-extrabold text-sm uppercase tracking-widest">
+                  O QUE ESTÁ INCLUSO
+                </h4>
+
+                <div className="border border-zinc-800/90 bg-zinc-950/75 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-2xl">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
+                    {[
+                      'Até 4 campanhas ativas otimizadas por mês',
+                      'Relatórios de performance quinzenais com dashboards ao vivo',
+                      '8 a 12 peças publicitárias e criativos por mês',
+                      'Canais inclusos: Meta Ads (Instagram & Facebook) • Google Ads',
+                      'Reuniões quinzenais de alinhamento e estratégia',
+                      'Criação e otimização contínua de páginas de conversão'
+                    ].map((bulletText, bIdx) => (
+                      <div key={bIdx} className="flex items-start space-x-3 text-xs sm:text-sm font-semibold text-zinc-200">
+                        <div className="w-5 h-5 rounded-full bg-yellow-400 text-black flex items-center justify-center shrink-0 mt-0.5 shadow-md font-black">
+                          <Check className="w-3.5 h-3.5" strokeWidth={3} />
+                        </div>
+                        <span className="leading-snug">{bulletText}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

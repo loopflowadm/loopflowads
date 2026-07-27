@@ -270,7 +270,17 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
   };
 
   const renderSlideContent = (slide: Slide) => {
-    switch (slide.type) {
+    let effectiveType = slide.type;
+    if (currentStep === 0 || slide.id === 'prop-cover') effectiveType = 'proposal-cover';
+    else if (currentStep === 1 || slide.id === 'prop-agenda') effectiveType = 'proposal-agenda';
+    else if (currentStep === 2 || slide.id === 'prop-understanding') effectiveType = 'proposal-understanding';
+    else if (currentStep === 3 || slide.id === 'prop-findings') effectiveType = 'proposal-findings';
+    else if (currentStep === 4 || slide.id === 'prop-pillars') effectiveType = 'proposal-pillars';
+    else if (currentStep === 5 || slide.id === 'prop-how-it-works') effectiveType = 'proposal-how-it-works';
+    else if (currentStep === 6 || slide.id === 'prop-investment') effectiveType = 'proposal-investment';
+    else if (currentStep === 7 || slide.id === 'prop-next-steps') effectiveType = 'proposal-next-steps';
+
+    switch (effectiveType) {
       case 'proposal-cover':
         return (
           <div className="flex-1 flex flex-col justify-between -m-8 md:-m-12 p-8 md:p-14 bg-zinc-950 text-white relative overflow-hidden select-none">

@@ -344,8 +344,9 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
           <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden select-none bg-zinc-950">
             {/* Interactive GLSL 3D Hills Shader Background */}
             <GLSLHills />
-            {/* Soft dark vignette gradient to keep text crisp without hiding 3D hills */}
-            <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/60 via-transparent to-zinc-950/80 pointer-events-none z-0" />
+            {/* Dark gradient overlay from bottom to top & top vignette */}
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/80 via-60% to-transparent pointer-events-none z-0" />
+            <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/70 via-transparent to-transparent pointer-events-none z-0" />
 
             <div className="space-y-10 relative z-10">
               {/* Header */}

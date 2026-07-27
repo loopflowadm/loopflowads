@@ -156,7 +156,7 @@ const GLSLHills: React.FC<GLSLHillsProps> = ({
               varying vec3 vPosition;
 
               void main(void) {
-                float opacity = clamp((256.0 - length(vPosition)) / 256.0 * 0.75, 0.1, 0.85);
+                float opacity = clamp((256.0 - length(vPosition)) / 256.0 * 0.55, 0.05, 0.6);
                 vec3 goldColor = mix(vec3(0.98, 0.82, 0.15), vec3(0.85, 0.55, 0.0), clamp((vPosition.y + 10.0) / 40.0, 0.0, 1.0));
                 gl_FragColor = vec4(goldColor, opacity);
               }

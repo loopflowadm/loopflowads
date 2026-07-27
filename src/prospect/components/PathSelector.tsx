@@ -55,11 +55,11 @@ const PathSelector: React.FC<PathSelectorProps> = ({ prospect, onSelect, theme =
                   : 'bg-zinc-900/40 backdrop-blur-md border-yellow-400/50 ring-1 ring-yellow-400/20 shadow-[0_0_30px_rgba(250,204,21,0.1)]'
               }`}
             >
-              <div className="flex flex-col mb-4">
-                <div className="flex-shrink-0 w-14 h-14 flex items-center justify-center rounded-2xl border bg-yellow-400 text-black border-yellow-400 shadow-[0_0_25px_rgba(250,204,21,0.4)] mb-5">
+              <div className="flex items-center space-x-4 mb-5">
+                <div className="flex-shrink-0 w-14 h-14 flex items-center justify-center rounded-2xl border bg-yellow-400 text-black border-yellow-400 shadow-[0_0_25px_rgba(250,204,21,0.4)]">
                   {path.icon}
                 </div>
-                <h2 className={`text-xl font-black transition-colors uppercase tracking-tight italic leading-tight whitespace-pre-line ${
+                <h2 className={`text-lg lg:text-xl font-black transition-colors uppercase tracking-tight italic leading-tight whitespace-pre-line ${
                   isLight ? 'text-zinc-900 group-hover:text-yellow-600' : 'text-white group-hover:text-yellow-400'
                 }`}>
                   {path.title}

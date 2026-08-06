@@ -293,7 +293,7 @@ const ProspectDashboard: React.FC = () => {
       const backup: any[] = JSON.parse(localStorage.getItem('loopflow_prospects:v1') || '[]');
       const backupMap = new Map(backup.map((p: any) => [p.id, p]));
 
-      const mapped = data.map((p: any) => {
+      let mapped = data.map((p: any) => {
         const local: any = backupMap.get(p.id);
         let parsedSheetsUrl = p.google_sheets_url || '';
         let contactName = '';

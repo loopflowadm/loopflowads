@@ -100,18 +100,6 @@ export const getCommercialProposalSlides = (prospect?: ProspectData): Slide[] =>
       ]
     },
     {
-      id: 'prop-investment',
-      type: 'proposal-investment',
-      title: 'Investimento',
-      subtitle: 'Sem fidelidade após o setup — se não entregarmos o combinado no prazo, você sai sem multa.',
-      content: [
-        `PLAN_NAME:${prospect?.planName || 'Essencial'}`,
-        `PLAN_DESC:${prospect?.planDesc || 'Fase de setup: construção da esteira, ainda sem o ciclo completo rodando.'}`,
-        `SETUP_PRICE:${prospect?.setupPrice || 'R$ 2.000'}`,
-        `OPERATION_PRICE:${prospect?.operationPrice || 'R$ 3.000'}`
-      ]
-    },
-    {
       id: 'prop-how-it-works',
       type: 'proposal-how-it-works',
       title: 'Como funciona na prática',
@@ -123,6 +111,18 @@ export const getCommercialProposalSlides = (prospect?: ProspectData): Slide[] =>
         `REPORTS:${prospect?.reportFormat || 'Relatórios de performance quinzenais com dashboards ao vivo'}`,
         `CHANNELS:${prospect?.includedChannels || 'Canais inclusos: Meta Ads (Instagram & Facebook) + Google Ads'}`,
         `LANDING_PAGE:${prospect?.landingPageIncluded || 'Criação e otimização contínua de páginas de conversão'}`
+      ]
+    },
+    {
+      id: 'prop-investment',
+      type: 'proposal-investment',
+      title: 'Investimento',
+      subtitle: 'Sem fidelidade após o setup — se não entregarmos o combinado no prazo, você sai sem multa.',
+      content: [
+        `PLAN_NAME:${prospect?.planName || 'Essencial'}`,
+        `PLAN_DESC:${prospect?.planDesc || 'Fase de setup: construção da esteira, ainda sem o ciclo completo rodando.'}`,
+        `SETUP_PRICE:${prospect?.setupPrice || 'R$ 2.000'}`,
+        `OPERATION_PRICE:${prospect?.operationPrice || 'R$ 3.000'}`
       ]
     },
     {

@@ -337,7 +337,7 @@ const ProspectDashboard: React.FC = () => {
           date: p.created_at
         };
       });
-      // Garantir que o lead Anderson Lima (Blue Financial Intelligence) exista
+      // Garantir que o lead Anderson Lima (Blue Financial Intelligence) exista localmente e no Supabase
       let hasBlue = mapped.some((p: any) => p.name.toLowerCase().includes('blue financial'));
       if (!hasBlue) {
         const blueLead: ProspectWithId = {
@@ -358,6 +358,31 @@ const ProspectDashboard: React.FC = () => {
           date: new Date().toISOString()
         };
         mapped = [blueLead, ...mapped];
+
+        // Grava assincronamente no Supabase para sincronização global na nuvem
+        try {
+          const payload = JSON.stringify({
+            contactName: blueLead.contactName,
+            mainPainPoint: blueLead.mainPainPoint,
+            marketingSituation: blueLead.marketingSituation,
+            auditFinding1: blueLead.auditFinding1,
+            auditFinding2: blueLead.auditFinding2,
+            businessGoal: blueLead.businessGoal,
+            front1: blueLead.front1,
+            front2: blueLead.front2,
+            front3: blueLead.front3
+          });
+          await supabase.from('prospects').upsert({
+            id: 'blue-financial-anderson',
+            name: 'Blue Financial Intelligence',
+            segment: 'Venda para outras empresas (B2B)',
+            logo: '',
+            google_sheets_url: payload,
+            status: 'proposta'
+          });
+        } catch (e) {
+          console.error("Erro ao sincronizar Blue no Supabase:", e);
+        }
       }
 
       setProspects(mapped);

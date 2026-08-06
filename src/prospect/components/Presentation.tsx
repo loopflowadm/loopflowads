@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Slide, ProspectData } from '../types';
-import Logo from './Logo';
+import Logo, { BlueLogo } from './Logo';
 import GLSLHills from './GLSLHills';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
@@ -272,7 +272,9 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
 
   const renderSlideContent = (slide: Slide) => {
     let effectiveType = slide.type;
-    if (slide.type === 'proposal-cover' || slide.id === 'prop-cover') effectiveType = 'proposal-cover';
+    if (slide.type && slide.type.startsWith('cp-')) {
+      effectiveType = slide.type;
+    } else if (slide.type === 'proposal-cover' || slide.id === 'prop-cover') effectiveType = 'proposal-cover';
     else if (slide.type === 'proposal-agenda' || slide.id === 'prop-agenda') effectiveType = 'proposal-agenda';
     else if (slide.type === 'proposal-understanding' || slide.id === 'prop-understanding') effectiveType = 'proposal-understanding';
     else if (slide.type === 'proposal-findings' || slide.id === 'prop-findings') effectiveType = 'proposal-findings';
@@ -303,7 +305,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
             {/* Left side gradient overlay / transparency for crisp readability */}
             <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/85 to-transparent/30 z-1 pointer-events-none" />
 
-            {/* Top Bar: Pill Tag Left, Brand Logo Right */}
+            {/* Top Bar: Pill Tag Left, LoopFlow Logo Right */}
             <div className={`flex justify-between items-center relative z-10 ${getAnimProps(0).className || ''}`} style={getAnimProps(0).style}>
               <span className="bg-yellow-400 text-black px-5 py-2.5 rounded-full text-xs sm:text-sm font-black uppercase tracking-widest shadow-lg">
                 <EditableField
@@ -316,15 +318,25 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
               </div>
             </div>
 
-            {/* Center Content: Main Company Name & Subtitle */}
-            <div className="my-auto py-12 relative z-10 max-w-4xl space-y-6">
-              <h1 className={`text-5xl sm:text-7xl lg:text-8xl font-black text-white tracking-tight leading-none uppercase drop-shadow-lg ${getAnimProps(150).className || ''}`} style={getAnimProps(150).style}>
+            {/* Center Content: Layout executivo vertical com logo integrada */}
+            <div className="my-auto py-8 relative z-10 max-w-4xl space-y-6">
+              {/* Logo Badge da Blue Financial Intelligence */}
+              {localProspect.name?.toLowerCase().includes('blue') && (
+                <div className={`inline-flex items-center bg-[#0C2239]/95 border-2 border-white/20 p-5 px-8 rounded-3xl shadow-2xl backdrop-blur-md ${getAnimProps(100).className || ''}`} style={getAnimProps(100).style}>
+                  <BlueLogo className="h-24 sm:h-32 md:h-40 w-auto" color="#FFFFFF" />
+                </div>
+              )}
+
+              {/* Título Principal da Empresa */}
+              <h1 className={`text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight leading-none uppercase drop-shadow-xl ${getAnimProps(150).className || ''}`} style={getAnimProps(150).style}>
                 <EditableField
                   value={localProspect.name}
                   onChange={(v) => updateField('name', v)}
                   placeholder="Nome da Empresa"
                 />
               </h1>
+
+              {/* Subtítulo em Pill Destacada */}
               <div className={`inline-block bg-yellow-400 text-black px-6 py-3.5 rounded-2xl shadow-2xl ${getAnimProps(300).className || ''}`} style={getAnimProps(300).style}>
                 <p className="text-sm sm:text-xl font-bold tracking-tight">
                   <EditableField
@@ -1566,6 +1578,719 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
             </div>
           </div>
         );
+      case 'cp-cover':
+        return (
+          <div className="flex-1 flex flex-col justify-between -m-8 md:-m-12 p-8 md:p-14 bg-zinc-950 text-white relative overflow-hidden select-none">
+            <SmoothBgVideo src={slide.bgVideo || '/videos/rocket.mp4'} className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" targetOpacityClass="opacity-80" />
+            <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/85 to-transparent/30 z-1 pointer-events-none" />
+            <div className="flex justify-between items-center relative z-10">
+              <span className="bg-yellow-400 text-black px-5 py-2.5 rounded-full text-xs sm:text-sm font-black uppercase tracking-widest shadow-lg">
+                <EditableField value={localProspect.cpCoverTag || slide.highlight || 'CREATIVE PERFORMANCE'} onChange={(v) => updateField('cpCoverTag' as any, v)} />
+              </span>
+              {localProspect.name?.toLowerCase().includes('blue') ? (
+                <BlueLogo className="h-10 sm:h-12 w-auto" color="#FFFFFF" />
+              ) : (
+                <Logo className="h-8 sm:h-10 w-auto" color="#FFFFFF" />
+              )}
+            </div>
+            <div className="my-auto py-12 relative z-10 max-w-4xl space-y-6">
+              <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black text-white tracking-tight leading-none uppercase drop-shadow-lg">
+                <EditableField value={localProspect.name} onChange={(v) => updateField('name', v)} placeholder="Nome da Empresa" />
+              </h1>
+              <div className="inline-block bg-yellow-400 text-black px-6 py-3.5 rounded-2xl shadow-2xl">
+                <p className="text-sm sm:text-xl font-bold tracking-tight">
+                  <EditableField value={localProspect.cpCoverSubtitle || slide.subtitle || 'Proposta de Creative Performance'} onChange={(v) => updateField('cpCoverSubtitle' as any, v)} multiline />
+                </p>
+              </div>
+            </div>
+            <div className="relative z-10 pt-6 border-t border-white/10 flex justify-between items-center text-xs sm:text-sm font-black uppercase tracking-wider text-zinc-300">
+              <span>
+                <EditableField value={localProspect.cpCoverFooter || slide.pausePrompt || `APRESENTAÇÃO ESTRATÉGICA · ${new Date().toLocaleDateString('pt-BR')}`} onChange={(v) => updateField('cpCoverFooter' as any, v)} />
+              </span>
+            </div>
+          </div>
+        );
+
+      case 'cp-who-we-are':
+        return (
+          <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden bg-zinc-950">
+            <div className="max-w-4xl space-y-8 relative z-10">
+              <div>
+                <span className="text-xs font-black text-yellow-400 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/20 px-4 py-1.5 rounded-full inline-block mb-3">POSICIONAMENTO</span>
+                <h2 className="text-4xl sm:text-6xl font-black text-white uppercase tracking-tight leading-none">
+                  <EditableField value={localProspect.cpWhoWeAreTitle || slide.title} onChange={(v) => updateField('cpWhoWeAreTitle' as any, v)} />
+                </h2>
+                <p className="text-base sm:text-xl text-zinc-300 font-semibold italic mt-3 border-l-2 border-yellow-400 pl-4">
+                  <EditableField value={localProspect.cpWhoWeAreSubtitle || slide.subtitle || ''} onChange={(v) => updateField('cpWhoWeAreSubtitle' as any, v)} multiline />
+                </p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {slide.content.map((point, i) => (
+                  <div key={i} className="bg-[#0e0e0e]/90 border border-zinc-800 p-6 rounded-2xl flex items-start space-x-4 shadow-xl hover:border-yellow-400/40 transition-all">
+                    <div className="w-8 h-8 rounded-xl bg-yellow-400/10 text-yellow-400 font-black flex items-center justify-center shrink-0 text-sm">{i + 1}</div>
+                    <p className="text-sm sm:text-base font-bold text-zinc-200 leading-snug">
+                      <EditableField value={point} onChange={(v) => updateSlideContentItem(i, v)} multiline />
+                    </p>
+                  </div>
+                ))}
+              </div>
+              {slide.highlight && (
+                <div className="bg-yellow-400 text-black p-5 rounded-2xl font-black text-lg uppercase tracking-tight shadow-2xl flex items-center space-x-3">
+                  <Zap className="w-6 h-6 shrink-0 text-black" />
+                  <span>
+                    <EditableField value={localProspect.cpWhoWeAreHighlight || slide.highlight} onChange={(v) => updateField('cpWhoWeAreHighlight' as any, v)} />
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+
+      case 'cp-understanding':
+        return (
+          <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden bg-zinc-950">
+            <SmoothBgVideo src={slide.bgVideo || '/videos/Target_hit.mp4'} className="absolute right-0 top-0 bottom-0 h-full w-[75%] lg:w-[68%] object-cover object-right z-0 pointer-events-none" targetOpacityClass="opacity-100" />
+            <div className="absolute right-0 top-0 bottom-0 h-full w-[75%] lg:w-[68%] bg-gradient-to-r from-zinc-950 via-zinc-950/40 to-transparent z-1 pointer-events-none" />
+            <div className="relative z-10 max-w-3xl space-y-8">
+              <div>
+                <span className="text-xs font-black text-yellow-400 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/20 px-4 py-1.5 rounded-full inline-block mb-3">DIAGNÓSTICO</span>
+                <h2 className="text-4xl sm:text-6xl font-black text-white uppercase tracking-tight leading-none">
+                  <EditableField value={localProspect.cpUnderstandingTitle || slide.title} onChange={(v) => updateField('cpUnderstandingTitle' as any, v)} />
+                </h2>
+                <p className="text-sm sm:text-lg text-zinc-300 font-medium italic mt-3">
+                  <EditableField value={localProspect.cpUnderstandingSubtitle || slide.subtitle || ''} onChange={(v) => updateField('cpUnderstandingSubtitle' as any, v)} multiline />
+                </p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="bg-[#0e0e0e]/95 border border-zinc-800 p-6 rounded-2xl space-y-2 shadow-2xl">
+                  <span className="text-[10px] font-black text-yellow-400 uppercase tracking-widest">
+                    <EditableField value={localProspect.cpUnderstandingStat1Label || slide.content[0] || 'EMPRESAS ENDIVIDADAS'} onChange={(v) => updateField('cpUnderstandingStat1Label' as any, v)} />
+                  </span>
+                  <p className="text-xl sm:text-2xl font-black text-white">
+                    <EditableField value={localProspect.cpUnderstandingStat1Value || slide.content[1] || '5,4 milhões'} onChange={(v) => updateField('cpUnderstandingStat1Value' as any, v)} />
+                  </p>
+                </div>
+                <div className="bg-[#0e0e0e]/95 border border-zinc-800 p-6 rounded-2xl space-y-2 shadow-2xl">
+                  <span className="text-[10px] font-black text-yellow-400 uppercase tracking-widest">
+                    <EditableField value={localProspect.cpUnderstandingStat2Label || slide.content[2] || 'VOLUME DE DÍVIDAS'} onChange={(v) => updateField('cpUnderstandingStat2Label' as any, v)} />
+                  </span>
+                  <p className="text-xl sm:text-2xl font-black text-white">
+                    <EditableField value={localProspect.cpUnderstandingStat2Value || slide.content[3] || 'R$ 4,5 Trilhões'} onChange={(v) => updateField('cpUnderstandingStat2Value' as any, v)} />
+                  </p>
+                </div>
+              </div>
+              <div className="bg-yellow-400/10 border-2 border-yellow-400 p-6 rounded-2xl shadow-[0_0_30px_rgba(250,204,21,0.15)]">
+                <p className="text-lg sm:text-2xl font-black text-yellow-400 italic tracking-tight">
+                  "<EditableField value={localProspect.cpUnderstandingQuote || slide.content[4] || 'A Serasa trabalha para o credor. A Blue trabalha para o devedor.'} onChange={(v) => updateField('cpUnderstandingQuote' as any, v)} multiline />"
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'cp-challenge':
+        return (
+          <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden bg-zinc-950">
+            <SmoothBgVideo src={slide.bgVideo || '/videos/Growth_chart.mp4'} className="absolute right-0 top-0 bottom-0 h-full w-[75%] lg:w-[68%] object-cover object-right z-0 pointer-events-none" targetOpacityClass="opacity-100" />
+            <div className="absolute right-0 top-0 bottom-0 h-full w-[75%] lg:w-[68%] bg-gradient-to-r from-zinc-950 via-zinc-950/40 to-transparent z-1 pointer-events-none" />
+            <div className="relative z-10 max-w-3xl space-y-8">
+              <div>
+                <span className="text-xs font-black text-yellow-400 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/20 px-4 py-1.5 rounded-full inline-block mb-3">O GAP DE VALOR</span>
+                <h2 className="text-4xl sm:text-6xl font-black text-white uppercase tracking-tight leading-none">
+                  <EditableField value={localProspect.cpChallengeTitle || slide.title} onChange={(v) => updateField('cpChallengeTitle' as any, v)} />
+                </h2>
+                <p className="text-sm sm:text-lg text-zinc-300 font-medium italic mt-3">
+                  <EditableField value={localProspect.cpChallengeSubtitle || slide.subtitle || ''} onChange={(v) => updateField('cpChallengeSubtitle' as any, v)} multiline />
+                </p>
+              </div>
+              <div className="space-y-3">
+                {slide.content.map((point, i) => (
+                  <div key={i} className="bg-[#0e0e0e]/90 border border-zinc-800 p-4 rounded-xl flex items-center space-x-4 shadow-lg">
+                    <div className="w-3 h-3 rounded-full bg-yellow-400 shrink-0" />
+                    <p className="text-sm sm:text-base font-bold text-zinc-200">
+                      <EditableField value={point} onChange={(v) => updateSlideContentItem(i, v)} multiline />
+                    </p>
+                  </div>
+                ))}
+              </div>
+              {slide.highlight && (
+                <div className="bg-yellow-400 text-black p-5 rounded-2xl font-black text-base sm:text-lg uppercase tracking-tight shadow-xl">
+                  <EditableField value={localProspect.cpChallengeHighlight || slide.highlight} onChange={(v) => updateField('cpChallengeHighlight' as any, v)} multiline />
+                </div>
+              )}
+            </div>
+          </div>
+        );
+
+      case 'cp-solution':
+        return (
+          <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden bg-zinc-950">
+            <SmoothBgVideo src={slide.bgVideo || '/videos/montain.mp4'} className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" targetOpacityClass="opacity-75" />
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent/30 z-0 pointer-events-none" />
+            <div className="relative z-10 max-w-4xl space-y-8">
+              <div>
+                <span className="text-xs font-black text-yellow-400 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/20 px-4 py-1.5 rounded-full inline-block mb-3">NOSSA SOLUÇÃO</span>
+                <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black text-yellow-400 uppercase tracking-tight leading-none drop-shadow-xl">
+                  <EditableField value={localProspect.cpSolutionTitle || slide.title} onChange={(v) => updateField('cpSolutionTitle' as any, v)} />
+                </h2>
+                <p className="text-base sm:text-xl text-zinc-200 font-bold italic mt-3 max-w-2xl">
+                  <EditableField value={localProspect.cpSolutionSubtitle || slide.subtitle || ''} onChange={(v) => updateField('cpSolutionSubtitle' as any, v)} multiline />
+                </p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {slide.content.slice(1).map((benefit, i) => (
+                  <div key={i} className="bg-[#0e0e0e]/90 border border-zinc-800 p-5 rounded-2xl space-y-2 shadow-xl hover:border-yellow-400/50 transition-all">
+                    <CheckCircle2 className="w-6 h-6 text-yellow-400" />
+                    <p className="text-xs sm:text-sm font-bold text-white leading-snug">
+                      <EditableField value={benefit} onChange={(v) => updateSlideContentItem(i + 1, v)} multiline />
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'cp-how-it-works':
+        return (
+          <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden bg-zinc-950">
+            <GLSLHills />
+            <div className="relative z-10 space-y-10">
+              <div className="text-center max-w-4xl mx-auto space-y-3">
+                <span className="text-xs font-black text-yellow-400 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/20 px-4 py-1.5 rounded-full inline-block">PROCESSO</span>
+                <h2 className="text-4xl sm:text-6xl font-black text-white uppercase tracking-tight leading-none">
+                  <EditableField value={slide.title} onChange={updateSlideTitle} />
+                </h2>
+                <p className="text-sm sm:text-base text-zinc-300 font-medium italic">
+                  <EditableField value={slide.subtitle || ''} onChange={updateSlideSubtitle} />
+                </p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[
+                  { num: '01', titleKey: 'cpHowStep1Title', descKey: 'cpHowStep1Desc', defaultT: 'Briefing Estratégico', defaultD: 'Entendemos o objetivo de cada peça antes de iniciar.' },
+                  { num: '02', titleKey: 'cpHowStep2Title', descKey: 'cpHowStep2Desc', defaultT: 'Criação & Design', defaultD: 'Desenvolvimento do ativo com foco em clareza e conversão.' },
+                  { num: '03', titleKey: 'cpHowStep3Title', descKey: 'cpHowStep3Desc', defaultT: 'Revisão Colaborativa', defaultD: 'Ajustes guiados pelo seu feedback até aprovação final.' },
+                  { num: '04', titleKey: 'cpHowStep4Title', descKey: 'cpHowStep4Desc', defaultT: 'Entrega & Aplicação', defaultD: 'Formatos otimizados prontos para uso imediato.' }
+                ].map((step, idx) => (
+                  <div key={idx} className="bg-[#0b0b0b]/95 border border-zinc-800 p-6 rounded-2xl flex flex-col justify-between min-h-[220px] shadow-2xl hover:border-yellow-400/50 transition-all">
+                    <span className="text-3xl font-black text-yellow-400">{step.num}</span>
+                    <div className="space-y-2 mt-auto">
+                      <h4 className="text-lg font-bold text-white tracking-tight">
+                        <EditableField value={(localProspect as any)[step.titleKey] || step.defaultT} onChange={(v) => updateField(step.titleKey as any, v)} />
+                      </h4>
+                      <p className="text-xs text-zinc-400 leading-relaxed font-medium">
+                        <EditableField value={(localProspect as any)[step.descKey] || step.defaultD} onChange={(v) => updateField(step.descKey as any, v)} multiline />
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'cp-examples':
+      case 'cp-opportunities':
+        return (
+          <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden bg-zinc-950">
+            {/* Soft Background Gradient Glow */}
+            <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] bg-yellow-400/5 rounded-full blur-[140px] pointer-events-none" />
+            <div className="relative z-10 space-y-8 max-w-6xl mx-auto w-full">
+              <div>
+                <span className="text-xs font-black text-yellow-400 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/30 px-4 py-1.5 rounded-full inline-block mb-3 shadow-md">
+                  ECOSSISTEMA DE COMUNICAÇÃO
+                </span>
+                <h2 className="text-4xl sm:text-6xl font-black text-white uppercase tracking-tight leading-none">
+                  <EditableField value={localProspect.cpOpportunitiesTitle || slide.title} onChange={(v) => updateField('cpOpportunitiesTitle' as any, v)} />
+                </h2>
+                <p className="text-sm sm:text-base text-zinc-300 font-semibold italic mt-3 border-l-2 border-yellow-400/60 pl-4">
+                  <EditableField value={localProspect.cpOpportunitiesSubtitle || slide.subtitle || ''} onChange={(v) => updateField('cpOpportunitiesSubtitle' as any, v)} multiline />
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {slide.content.map((item, i) => {
+                  const parts = item.includes('|') ? item.split('|') : ['ATIVO', item];
+                  const category = parts[0].trim().toUpperCase();
+                  const details = (parts[1] || '').split('·').map(s => s.trim()).filter(Boolean);
+
+                  // Ícones específicos por categoria
+                  let icon = <Zap className="w-6 h-6 text-yellow-400" />;
+                  if (category.includes('MÍDIA') || category.includes('ADS')) {
+                    icon = (
+                      <svg className="w-6 h-6 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                      </svg>
+                    );
+                  } else if (category.includes('CONVERSÃO')) {
+                    icon = (
+                      <svg className="w-6 h-6 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                        <line x1="8" y1="21" x2="16" y2="21" />
+                        <line x1="12" y1="17" x2="12" y2="21" />
+                      </svg>
+                    );
+                  } else if (category.includes('AUTORIDADE')) {
+                    icon = (
+                      <svg className="w-6 h-6 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                      </svg>
+                    );
+                  } else if (category.includes('COMERCIAL')) {
+                    icon = (
+                      <svg className="w-6 h-6 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="8.5" cy="7" r="4" />
+                        <line x1="20" y1="8" x2="20" y2="14" />
+                        <line x1="23" y1="11" x2="17" y2="11" />
+                      </svg>
+                    );
+                  } else if (category.includes('INSTITUCIONAL')) {
+                    icon = (
+                      <svg className="w-6 h-6 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10" />
+                        <line x1="12" y1="20" x2="12" y2="4" />
+                        <line x1="6" y1="20" x2="6" y2="14" />
+                      </svg>
+                    );
+                  } else if (category.includes('VÍDEO')) {
+                    icon = (
+                      <svg className="w-6 h-6 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <polygon points="10 8 16 12 10 16 10 8" />
+                      </svg>
+                    );
+                  }
+
+                  return (
+                    <div
+                      key={i}
+                      className="bg-[#0c0c0c]/90 border border-zinc-800/90 rounded-2xl p-6 flex flex-col justify-between hover:border-yellow-400/50 hover:bg-[#111111] transition-all duration-300 group shadow-xl hover:shadow-[0_0_30px_rgba(250,204,21,0.1)] relative overflow-hidden"
+                    >
+                      {/* Top Bar: Icon + Title Aligned Horizontally */}
+                      <div className="flex items-center justify-between mb-5 border-b border-zinc-850 pb-4">
+                        <div className="flex items-center space-x-3.5">
+                          <div className="p-3 rounded-xl bg-yellow-400/10 border border-yellow-400/20 group-hover:scale-105 transition-transform shrink-0">
+                            {icon}
+                          </div>
+                          <span className="text-base sm:text-lg font-black text-yellow-400 uppercase tracking-tight">
+                            {parts[0]}
+                          </span>
+                        </div>
+                        <span className="text-xs font-black text-zinc-600 group-hover:text-yellow-400/40 transition-colors uppercase tracking-widest">
+                          0{i + 1}
+                        </span>
+                      </div>
+
+                      {/* Content Pills with Increased Typography */}
+                      <div className="space-y-3">
+                        {details.length > 1 ? (
+                          <div className="flex flex-wrap gap-2 pt-1">
+                            {details.map((tag, tIdx) => (
+                              <span
+                                key={tIdx}
+                                className="text-xs sm:text-sm font-extrabold text-zinc-200 bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-lg group-hover:border-zinc-700 transition-colors shadow-sm"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-sm sm:text-base font-bold text-zinc-200 leading-relaxed italic">
+                            <EditableField value={parts[1] || parts[0]} onChange={(v) => updateSlideContentItem(i, `${parts[0]}|${v}`)} multiline />
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'cp-workflow':
+        return (
+          <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden bg-zinc-950">
+            <div className="relative z-10 space-y-8">
+              <div>
+                <span className="text-xs font-black text-yellow-400 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/20 px-4 py-1.5 rounded-full inline-block mb-3">ROTINA</span>
+                <h2 className="text-4xl sm:text-6xl font-black text-white uppercase tracking-tight leading-none">
+                  <EditableField value={localProspect.cpWorkflowTitle || slide.title} onChange={(v) => updateField('cpWorkflowTitle' as any, v)} />
+                </h2>
+                <p className="text-sm sm:text-base text-zinc-300 font-medium italic mt-3">
+                  <EditableField value={localProspect.cpWorkflowSubtitle || slide.subtitle || ''} onChange={(v) => updateField('cpWorkflowSubtitle' as any, v)} multiline />
+                </p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {slide.content.map((step, i) => {
+                  const parts = step.includes('|') ? step.split('|') : [`FASE ${i + 1}`, step];
+                  return (
+                    <div key={i} className="bg-[#0e0e0e]/95 border border-zinc-800 p-6 rounded-2xl space-y-3 shadow-xl hover:border-yellow-400/50 transition-all">
+                      <span className="text-xs font-black text-yellow-400 uppercase tracking-widest">{parts[0]}</span>
+                      <p className="text-xs sm:text-sm text-zinc-300 font-medium leading-relaxed">
+                        <EditableField value={parts[1]} onChange={(v) => updateSlideContentItem(i, `${parts[0]}|${v}`)} multiline />
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'cp-credits':
+        return (
+          <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-6 md:p-10 overflow-hidden bg-zinc-950">
+            {/* Background Glow */}
+            <div className="absolute top-1/3 right-1/4 w-[450px] h-[450px] bg-yellow-400/5 rounded-full blur-[130px] pointer-events-none" />
+            <div className="relative z-10 space-y-4 max-w-6xl mx-auto w-full">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-2 border-b border-zinc-850 pb-4">
+                <div>
+                  <span className="text-[10px] font-black text-yellow-400 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/30 px-3 py-1 rounded-full inline-block mb-1.5 shadow-md">
+                    ESTRUTURA DE CONSUMO
+                  </span>
+                  <h2 className="text-3xl sm:text-5xl font-black text-white uppercase tracking-tight leading-none">
+                    <EditableField value={localProspect.cpCreditsTitle || slide.title} onChange={(v) => updateField('cpCreditsTitle' as any, v)} />
+                  </h2>
+                </div>
+                <p className="text-xs sm:text-sm text-zinc-300 font-semibold italic max-w-md">
+                  <EditableField value={localProspect.cpCreditsSubtitle || slide.subtitle || ''} onChange={(v) => updateField('cpCreditsSubtitle' as any, v)} multiline />
+                </p>
+              </div>
+
+              {/* Tabela em 2 Colunas Otimizadas para Exibição Total dos 14 Itens */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                {slide.content.map((row, i) => {
+                  const [item, credits] = row.split('|');
+                  const numCredits = parseInt(credits.trim(), 10);
+                  const label = numCredits === 1 ? 'CRÉDITO' : 'CRÉDITOS';
+                  return (
+                    <div
+                      key={i}
+                      className="bg-[#0c0c0c]/95 border border-zinc-800/90 hover:border-yellow-400/60 p-3 px-5 rounded-xl flex items-center justify-between shadow-lg transition-all duration-300 group"
+                    >
+                      <div className="flex items-center space-x-3">
+                        <span className="w-2 h-2 rounded-full bg-yellow-400 group-hover:scale-125 transition-transform shrink-0" />
+                        <span className="text-xs sm:text-sm font-extrabold text-white leading-tight">
+                          <EditableField value={item} onChange={(v) => updateSlideContentItem(i, `${v}|${credits}`)} />
+                        </span>
+                      </div>
+                      <span className="text-[11px] sm:text-xs font-black bg-yellow-400 text-black px-3 py-1 rounded-lg shadow-md group-hover:scale-105 transition-transform tracking-wider shrink-0 ml-3">
+                        <EditableField value={credits} onChange={(v) => updateSlideContentItem(i, `${item}|${v}`)} /> {label}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'cp-plans':
+      case 'cp-investment':
+        return (
+          <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden bg-zinc-950">
+            {/* Background Glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-yellow-400/5 rounded-full blur-[160px] pointer-events-none" />
+            
+            <div className="relative z-10 space-y-10 max-w-6xl mx-auto w-full">
+              <div className="text-center max-w-3xl mx-auto space-y-3">
+                <span className="text-xs font-black text-yellow-400 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/30 px-4 py-1.5 rounded-full inline-block shadow-md">
+                  INVESTIMENTO & FRANQUIAS
+                </span>
+                <h2 className="text-4xl sm:text-6xl font-black text-white uppercase tracking-tight leading-none">
+                  <EditableField value={localProspect.cpInvestmentTitle || slide.title} onChange={(v) => updateField('cpInvestmentTitle' as any, v)} />
+                </h2>
+                <p className="text-sm sm:text-base text-zinc-300 font-semibold italic">
+                  <EditableField value={localProspect.cpInvestmentSubtitle || slide.subtitle || ''} onChange={(v) => updateField('cpInvestmentSubtitle' as any, v)} multiline />
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+                {[
+                  {
+                    nameKey: 'cpStarterName',
+                    creditsKey: 'cpStarterCredits',
+                    priceKey: 'cpStarterPrice',
+                    defaultN: 'Starter',
+                    defaultC: '20 créditos',
+                    defaultP: 'R$ 1.000',
+                    desc: 'Ideal para demandas pontuais e validação de modelo.',
+                    icon: <Rocket className="w-6 h-6 text-zinc-400" />
+                  },
+                  {
+                    nameKey: 'cpPerformanceName',
+                    creditsKey: 'cpPerformanceCredits',
+                    priceKey: 'cpPerformancePrice',
+                    defaultN: 'Performance',
+                    defaultC: '35 créditos',
+                    defaultP: 'R$ 1.650',
+                    desc: 'Volume ideal para manter materiais de vendas sempre atualizados.',
+                    badge: 'RECOMENDADO',
+                    icon: <TrendingUp className="w-6 h-6 text-yellow-400" />
+                  },
+                  {
+                    nameKey: 'cpEnterpriseName',
+                    creditsKey: 'cpEnterpriseCredits',
+                    priceKey: 'cpEnterprisePrice',
+                    defaultN: 'Enterprise',
+                    defaultC: '50 créditos',
+                    defaultP: 'R$ 2.250',
+                    desc: 'Para operações que precisam de alta frequência e escala.',
+                    icon: <Building2 className="w-6 h-6 text-zinc-400" />
+                  }
+                ].map((plan, idx) => {
+                  const isHighlighted = !!plan.badge;
+                  return (
+                    <div
+                      key={idx}
+                      className={`rounded-3xl p-8 flex flex-col justify-between relative transition-all duration-500 group ${
+                        isHighlighted
+                          ? 'bg-zinc-900/90 border-2 border-yellow-400 shadow-[0_0_50px_rgba(250,204,21,0.25)] md:-translate-y-2'
+                          : 'bg-[#0d0d0d]/90 border border-zinc-800/90 hover:border-zinc-700 shadow-xl'
+                      }`}
+                    >
+                      {isHighlighted && (
+                        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-yellow-400 text-black font-black text-[10px] uppercase tracking-widest px-4 py-1 rounded-full shadow-xl flex items-center space-x-1">
+                          <Star className="w-3 h-3 fill-black" />
+                          <span>{plan.badge}</span>
+                        </div>
+                      )}
+
+                      <div className="space-y-6">
+                        <div className="flex items-center justify-between border-b border-zinc-800 pb-5">
+                          <div>
+                            <h3 className="text-2xl font-black text-white uppercase tracking-tight">
+                              <EditableField value={(localProspect as any)[plan.nameKey] || plan.defaultN} onChange={(v) => updateField(plan.nameKey as any, v)} />
+                            </h3>
+                            <span className="text-[10px] font-black text-yellow-400 uppercase tracking-widest block mt-0.5">
+                              FLUXO CONTÍNUO
+                            </span>
+                          </div>
+                          <div className={`p-3 rounded-2xl ${isHighlighted ? 'bg-yellow-400/10' : 'bg-zinc-800/60'}`}>
+                            {plan.icon}
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="flex items-baseline space-x-1">
+                            <span className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+                              <EditableField value={(localProspect as any)[plan.priceKey] || plan.defaultP} onChange={(v) => updateField(plan.priceKey as any, v)} />
+                            </span>
+                            <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">/mês</span>
+                          </div>
+
+                          <div className="mt-3 inline-flex items-center space-x-2 bg-yellow-400/10 border border-yellow-400/30 px-3.5 py-1.5 rounded-xl text-yellow-400 text-xs font-black uppercase tracking-wider">
+                            <Zap className="w-3.5 h-3.5" />
+                            <span>
+                              <EditableField value={(localProspect as any)[plan.creditsKey] || plan.defaultC} onChange={(v) => updateField(plan.creditsKey as any, v)} />
+                            </span>
+                          </div>
+                        </div>
+
+                        <p className="text-xs text-zinc-300 font-medium leading-relaxed italic border-t border-zinc-850 pt-4">
+                          {plan.desc}
+                        </p>
+                      </div>
+
+                      <div className="pt-6 mt-6 border-t border-zinc-850">
+                        <div className={`w-full py-3.5 rounded-xl font-black text-xs uppercase tracking-widest text-center transition-all ${
+                          isHighlighted
+                            ? 'bg-yellow-400 text-black shadow-lg shadow-yellow-400/20'
+                            : 'bg-zinc-850 text-zinc-300 group-hover:bg-zinc-800 group-hover:text-white'
+                        }`}>
+                          Contratar Plano
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'cp-differentials':
+        return (
+          <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden bg-zinc-950">
+            {/* Background Glow */}
+            <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-yellow-400/5 rounded-full blur-[150px] pointer-events-none" />
+            
+            <div className="relative z-10 space-y-8 max-w-6xl mx-auto w-full">
+              <div className="border-b border-zinc-850 pb-5">
+                <span className="text-xs font-black text-yellow-400 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/30 px-4 py-1.5 rounded-full inline-block mb-3 shadow-md">
+                  PATRIMÔNIO DIGITAL
+                </span>
+                <h2 className="text-4xl sm:text-6xl font-black text-white uppercase tracking-tight leading-none">
+                  <EditableField value={localProspect.cpDifferentialsTitle || slide.title} onChange={(v) => updateField('cpDifferentialsTitle' as any, v)} />
+                </h2>
+                <p className="text-sm sm:text-base text-zinc-300 font-semibold italic mt-3 border-l-2 border-yellow-400/60 pl-4">
+                  <EditableField value={localProspect.cpDifferentialsSubtitle || slide.subtitle || ''} onChange={(v) => updateField('cpDifferentialsSubtitle' as any, v)} multiline />
+                </p>
+              </div>
+
+              {/* Grid Rigorosamente 3 em cima e 3 em baixo (grid-cols-3) com design aprimorado */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                {slide.content.map((item, i) => {
+                  const parts = item.includes('|') ? item.split('|') : [`CANAL ${i + 1}`, item];
+                  const channel = parts[0].trim().toUpperCase();
+
+                  // Ícones específicos por canal
+                  let icon = <Zap className="w-5 h-5 text-yellow-400" />;
+                  if (channel.includes('SITE')) {
+                    icon = (
+                      <svg className="w-5 h-5 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                      </svg>
+                    );
+                  } else if (channel.includes('COMERCIAL')) {
+                    icon = (
+                      <svg className="w-5 h-5 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="8.5" cy="7" r="4" />
+                        <line x1="20" y1="8" x2="20" y2="14" />
+                        <line x1="23" y1="11" x2="17" y2="11" />
+                      </svg>
+                    );
+                  } else if (channel.includes('CAMPANHAS') || channel.includes('ADS')) {
+                    icon = (
+                      <svg className="w-5 h-5 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                      </svg>
+                    );
+                  } else if (channel.includes('EVENTOS')) {
+                    icon = (
+                      <svg className="w-5 h-5 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                      </svg>
+                    );
+                  } else if (channel.includes('LINKEDIN')) {
+                    icon = (
+                      <svg className="w-5 h-5 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                        <rect x="2" y="9" width="4" height="12" />
+                        <circle cx="4" cy="4" r="2" />
+                      </svg>
+                    );
+                  } else if (channel.includes('TREINAMENTOS')) {
+                    icon = (
+                      <svg className="w-5 h-5 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                        <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                      </svg>
+                    );
+                  }
+
+                  return (
+                    <div
+                      key={i}
+                      className="bg-[#0c0c0c]/95 border border-zinc-800/90 rounded-2xl p-6 flex flex-col justify-between hover:border-yellow-400/50 hover:bg-[#111111] transition-all duration-300 group shadow-xl hover:shadow-[0_0_30px_rgba(250,204,21,0.1)] relative overflow-hidden min-h-[170px]"
+                    >
+                      {/* Top Bar: Icon + Channel Title */}
+                      <div className="flex items-center space-x-3 border-b border-zinc-850 pb-3 mb-3">
+                        <div className="p-2.5 rounded-xl bg-yellow-400/10 border border-yellow-400/20 group-hover:scale-105 transition-transform shrink-0">
+                          {icon}
+                        </div>
+                        <span className="text-base sm:text-lg font-black text-yellow-400 uppercase tracking-tight">
+                          {parts[0]}
+                        </span>
+                      </div>
+
+                      {/* Description with Increased Typography */}
+                      <p className="text-sm sm:text-base font-semibold text-zinc-200 leading-relaxed italic flex-1">
+                        <EditableField value={parts[1]} onChange={(v) => updateSlideContentItem(i, `${parts[0]}|${v}`)} multiline />
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Banner Inferior com Destaque */}
+              {(slide.highlight || isEditing) && (
+                <div className="bg-[#0b0b0b] border border-yellow-400/40 p-4 px-6 rounded-2xl flex items-center space-x-4 shadow-xl">
+                  <div className="w-9 h-9 rounded-xl bg-yellow-400 text-black flex items-center justify-center font-black shrink-0">
+                    🏆
+                  </div>
+                  <p className="text-sm sm:text-base font-black text-white uppercase tracking-wide flex-1 italic">
+                    <EditableField value={localProspect.cpDifferentialHighlight || slide.highlight || ''} onChange={(v) => updateField('cpDifferentialHighlight' as any, v)} multiline />
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+
+      case 'cp-next-steps':
+        return (
+          <div className="flex-1 flex flex-col justify-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden bg-zinc-950">
+            <SmoothBgVideo src={slide.bgVideo || '/videos/Astronaut.mp4'} className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" targetOpacityClass="opacity-75" />
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent/30 z-0 pointer-events-none" />
+            <div className="relative z-10 max-w-3xl space-y-8">
+              <div>
+                <span className="text-xs font-black text-yellow-400 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/20 px-4 py-1.5 rounded-full inline-block mb-3">ONBOARDING</span>
+                <h2 className="text-4xl sm:text-6xl font-black text-white uppercase tracking-tight leading-none">
+                  <EditableField value={localProspect.cpNextStepsTitle || slide.title} onChange={(v) => updateField('cpNextStepsTitle' as any, v)} />
+                </h2>
+                <p className="text-sm sm:text-base text-zinc-300 font-medium italic mt-3">
+                  <EditableField value={localProspect.cpNextStepsSubtitle || slide.subtitle || ''} onChange={(v) => updateField('cpNextStepsSubtitle' as any, v)} multiline />
+                </p>
+              </div>
+              <div className="space-y-4">
+                {slide.content.map((step, i) => {
+                  const parts = step.includes('|') ? step.split('|') : [`PASSO ${i + 1}`, step];
+                  return (
+                    <div key={i} className="bg-[#0e0e0e]/90 border border-zinc-800 p-5 rounded-2xl flex items-start space-x-4 shadow-xl">
+                      <div className="w-8 h-8 rounded-xl bg-yellow-400 text-black font-black flex items-center justify-center shrink-0 text-sm">{i + 1}</div>
+                      <div>
+                        <h4 className="text-sm font-extrabold text-yellow-400 uppercase tracking-wider">{parts[0]}</h4>
+                        <p className="text-xs sm:text-sm font-medium text-zinc-200 mt-0.5">
+                          <EditableField value={parts[1]} onChange={(v) => updateSlideContentItem(i, `${parts[0]}|${v}`)} multiline />
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'cp-closing':
+        return (
+          <div className="flex-1 flex flex-col justify-center items-center text-center relative -m-8 md:-m-12 p-8 md:p-14 overflow-hidden bg-zinc-950">
+            <SmoothBgVideo src={slide.bgVideo || '/videos/Astronaut.mp4'} className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none" targetOpacityClass="opacity-80" />
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-zinc-950/40 z-0 pointer-events-none" />
+            <div className="relative z-10 max-w-3xl space-y-6">
+              {localProspect.name?.toLowerCase().includes('blue') ? (
+                <BlueLogo className="h-14 sm:h-16 w-auto mx-auto" color="#FFFFFF" />
+              ) : (
+                <Logo className="h-12 w-auto mx-auto" color="#FFFFFF" />
+              )}
+              <h1 className="text-4xl sm:text-6xl font-black text-white uppercase tracking-tight">
+                <EditableField value={localProspect.cpClosingTitle || slide.title} onChange={(v) => updateField('cpClosingTitle' as any, v)} />
+              </h1>
+              <p className="text-base sm:text-xl text-zinc-300 font-semibold italic max-w-2xl mx-auto">
+                <EditableField value={localProspect.cpClosingSubtitle || slide.subtitle || ''} onChange={(v) => updateField('cpClosingSubtitle' as any, v)} multiline />
+              </p>
+              <div className="pt-4">
+                <span className="inline-block bg-yellow-400 text-black px-8 py-4 rounded-2xl font-black text-lg uppercase tracking-wider shadow-2xl">
+                  <EditableField value={localProspect.cpClosingCTA || slide.highlight || 'Vamos começar?'} onChange={(v) => updateField('cpClosingCTA' as any, v)} />
+                </span>
+              </div>
+            </div>
+          </div>
+        );
+
       case 'conclusion':
         return (
           <div className="flex-1 flex flex-col justify-center">

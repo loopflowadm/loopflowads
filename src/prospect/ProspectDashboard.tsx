@@ -7,7 +7,7 @@ import PathSelector from './components/PathSelector';
 import BudgetCalculator from './components/BudgetCalculator';
 import PerformanceDashboard from './components/PerformanceDashboard';
 import LaboratorioView from '../laboratorio/LaboratorioView';
-import Logo from './components/Logo';
+import Logo, { BlueLogo } from './components/Logo';
 import { supabase } from '../lib/supabase';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
@@ -337,10 +337,48 @@ const ProspectDashboard: React.FC = () => {
           date: p.created_at
         };
       });
+      // Garantir que o lead Anderson Lima (Blue Financial Intelligence) exista
+      let hasBlue = mapped.some((p: any) => p.name.toLowerCase().includes('blue financial'));
+      if (!hasBlue) {
+        const blueLead: ProspectWithId = {
+          id: 'blue-financial-anderson',
+          name: 'Blue Financial Intelligence',
+          contactName: 'Anderson Lima',
+          segment: 'Venda para outras empresas (B2B)',
+          logo: '',
+          mainPainPoint: 'Gap entre a complexidade técnica da CAPAG (revisão de dívidas federais) e a percepção de valor dos decisores (CEOs/CFOs).',
+          marketingSituation: 'Excelente domínio técnico em CAPAG, mas necessita de esteira de ativos de comunicação de alto padrão para gerar autoridade e acelerar fechamentos.',
+          auditFinding1: 'Falta de ativos visuais simplificados para traduzir o cálculo da CAPAG para empresários.',
+          auditFinding2: 'Ausência de esteira contínua de criativos de performance para campanhas Meta Ads/LinkedIn Ads e suporte comercial.',
+          businessGoal: 'Aumentar a conversão de contratos de revisão de dívida milionária gerando autoridade e confiança.',
+          front1: 'Posicionamento Consultivo: Tradução da CAPAG em ativos de comunicação visual clara e executiva.',
+          front2: 'Creative Performance: Estrutura por créditos para produção de anúncios, decks, landing pages e infográficos.',
+          front3: 'Aceleração Comercial: Materiais prontos para reuniões com decisores, eventos e prospecção direta.',
+          status: 'proposta',
+          date: new Date().toISOString()
+        };
+        mapped = [blueLead, ...mapped];
+      }
+
       setProspects(mapped);
       localStorage.setItem('loopflow_prospects:v1', JSON.stringify(mapped));
     } catch {
-      const backup = JSON.parse(localStorage.getItem('loopflow_prospects:v1') || '[]');
+      let backup = JSON.parse(localStorage.getItem('loopflow_prospects:v1') || '[]');
+      let hasBlue = backup.some((p: any) => p.name.toLowerCase().includes('blue financial'));
+      if (!hasBlue) {
+        const blueLead: ProspectWithId = {
+          id: 'blue-financial-anderson',
+          name: 'Blue Financial Intelligence',
+          contactName: 'Anderson Lima',
+          segment: 'Venda para outras empresas (B2B)',
+          logo: '',
+          mainPainPoint: 'Gap entre a complexidade técnica da CAPAG e percepção de valor dos decisores.',
+          marketingSituation: 'Domínio técnico avançado sem esteira contínua de comunicação de alto padrão.',
+          status: 'proposta',
+          date: new Date().toISOString()
+        };
+        backup = [blueLead, ...backup];
+      }
       setProspects(backup);
     }
   };
@@ -576,6 +614,10 @@ const ProspectDashboard: React.FC = () => {
                   {activeProspect ? (
                     activeProspect.logo ? (
                       <img src={activeProspect.logo} alt={activeProspect.name} className="w-6 h-6 rounded object-cover" />
+                    ) : activeProspect.name.toLowerCase().includes('blue') ? (
+                      <div className="w-full h-full bg-[#0C2239] p-1 flex items-center justify-center rounded-xl">
+                        <BlueLogo className="w-full h-full" color="#FFFFFF" />
+                      </div>
                     ) : (
                       <span className="text-[10px] font-black uppercase text-inherit">
                         {activeProspect.name.charAt(0)}
@@ -683,6 +725,10 @@ const ProspectDashboard: React.FC = () => {
                         {activeProspect ? (
                           activeProspect.logo ? (
                             <img src={activeProspect.logo} alt={activeProspect.name} className="w-full h-full object-cover" />
+                          ) : activeProspect.name.toLowerCase().includes('blue') ? (
+                            <div className="w-full h-full bg-[#0C2239] p-0.5 flex items-center justify-center">
+                              <BlueLogo className="w-full h-full" color="#FFFFFF" />
+                            </div>
                           ) : (
                             <div className="w-full h-full bg-yellow-400 text-black flex items-center justify-center text-[10px] font-black">
                               {activeProspect.name.charAt(0).toUpperCase()}
@@ -750,6 +796,10 @@ const ProspectDashboard: React.FC = () => {
                                   <div className="w-6 h-6 rounded-lg overflow-hidden flex items-center justify-center shrink-0 border border-zinc-800">
                                     {p.logo ? (
                                       <img src={p.logo} alt={p.name} className="w-full h-full object-cover" />
+                                    ) : p.name.toLowerCase().includes('blue') ? (
+                                      <div className="w-full h-full bg-[#0C2239] p-0.5 flex items-center justify-center">
+                                        <BlueLogo className="w-full h-full" color="#FFFFFF" />
+                                      </div>
                                     ) : (
                                       <div className="w-full h-full bg-yellow-400 text-black flex items-center justify-center text-[10px] font-black">
                                         {p.name.charAt(0).toUpperCase()}
@@ -1060,6 +1110,10 @@ const ProspectDashboard: React.FC = () => {
                                     <div className="w-12 h-12 bg-zinc-950 rounded-xl overflow-hidden border border-zinc-800 flex items-center justify-center shrink-0">
                                       {p.logo ? (
                                         <img src={p.logo} alt={p.name} className="w-full h-full object-cover" />
+                                      ) : p.name.toLowerCase().includes('blue') ? (
+                                        <div className="w-full h-full bg-[#0C2239] p-1.5 flex items-center justify-center">
+                                          <BlueLogo className="w-full h-full" color="#FFFFFF" />
+                                        </div>
                                       ) : (
                                         <div className="w-full h-full bg-[#FFD400] text-black flex items-center justify-center text-sm font-black italic">
                                           {p.name.substring(0, 1).toUpperCase()}

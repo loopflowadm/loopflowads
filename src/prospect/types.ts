@@ -5,7 +5,7 @@ export interface Slide {
   title: string;
   subtitle?: string;
   content: string[];
-  type: 'text' | 'metrics' | 'roadmap' | 'comparison' | 'conclusion' | 'proposal-cover' | 'proposal-agenda' | 'proposal-understanding' | 'proposal-findings' | 'proposal-pillars' | 'proposal-investment' | 'proposal-how-it-works' | 'proposal-next-steps';
+  type: 'text' | 'metrics' | 'roadmap' | 'comparison' | 'conclusion' | 'proposal-cover' | 'proposal-agenda' | 'proposal-understanding' | 'proposal-findings' | 'proposal-pillars' | 'proposal-investment' | 'proposal-how-it-works' | 'proposal-next-steps' | 'cp-cover' | 'cp-who-we-are' | 'cp-understanding' | 'cp-challenge' | 'cp-solution' | 'cp-how-it-works' | 'cp-examples' | 'cp-opportunities' | 'cp-workflow' | 'cp-credits' | 'cp-plans' | 'cp-differentials' | 'cp-next-steps' | 'cp-investment' | 'cp-closing';
   highlight?: string;
   pausePrompt?: string;
   image?: string;
@@ -124,6 +124,110 @@ export interface ProspectData {
   step3CardTitle?: string;
   ctaBannerTitle?: string;
   ctaBannerSubtext?: string;
+
+  // ============================================
+  // Campos Creative Performance
+  // ============================================
+
+  // Capa
+  cpCoverTag?: string;
+  cpCoverSubtitle?: string;
+  cpCoverFooter?: string;
+
+  // Quem Somos
+  cpWhoWeAreTitle?: string;
+  cpWhoWeAreSubtitle?: string;
+  cpWhoWeArePoint1?: string;
+  cpWhoWeArePoint2?: string;
+  cpWhoWeArePoint3?: string;
+  cpWhoWeArePoint4?: string;
+  cpWhoWeAreHighlight?: string;
+
+  // Entendimento Blue
+  cpUnderstandingTitle?: string;
+  cpUnderstandingSubtitle?: string;
+  cpUnderstandingStat1Label?: string;
+  cpUnderstandingStat1Value?: string;
+  cpUnderstandingStat2Label?: string;
+  cpUnderstandingStat2Value?: string;
+  cpUnderstandingQuote?: string;
+
+  // Desafio de Comunicação
+  cpChallengeTitle?: string;
+  cpChallengeSubtitle?: string;
+  cpChallengePoint1?: string;
+  cpChallengePoint2?: string;
+  cpChallengePoint3?: string;
+  cpChallengePoint4?: string;
+  cpChallengeHighlight?: string;
+
+  // Solução
+  cpSolutionTitle?: string;
+  cpSolutionSubtitle?: string;
+  cpSolutionDesc?: string;
+  cpSolutionBenefit1?: string;
+  cpSolutionBenefit2?: string;
+  cpSolutionBenefit3?: string;
+  cpSolutionBenefit4?: string;
+  cpSolutionBenefit5?: string;
+
+  // Como funciona
+  cpHowStep1Title?: string;
+  cpHowStep1Desc?: string;
+  cpHowStep2Title?: string;
+  cpHowStep2Desc?: string;
+  cpHowStep3Title?: string;
+  cpHowStep3Desc?: string;
+  cpHowStep4Title?: string;
+  cpHowStep4Desc?: string;
+
+  // Oportunidades
+  cpOpportunitiesTitle?: string;
+  cpOpportunitiesSubtitle?: string;
+
+  // Diferencial (Patrimônio)
+  cpDifferentialTitle?: string;
+  cpDifferentialSubtitle?: string;
+  cpDifferentialHighlight?: string;
+
+  // Fluxo de Trabalho
+  cpWorkflowTitle?: string;
+  cpWorkflowSubtitle?: string;
+
+  // Créditos
+  cpCreditsTitle?: string;
+  cpCreditsSubtitle?: string;
+
+  // Planos — Starter
+  cpStarterName?: string;
+  cpStarterCredits?: string;
+  cpStarterPrice?: string;
+  // Planos — Performance
+  cpPerformanceName?: string;
+  cpPerformanceCredits?: string;
+  cpPerformancePrice?: string;
+  // Planos — Enterprise
+  cpEnterpriseName?: string;
+  cpEnterpriseCredits?: string;
+  cpEnterprisePrice?: string;
+
+  // Diferenciais
+  cpDifferentialsTitle?: string;
+  cpDifferentialsSubtitle?: string;
+
+  // Próximos Passos
+  cpNextStepsTitle?: string;
+  cpNextStepsSubtitle?: string;
+
+  // Investimento
+  cpInvestmentTitle?: string;
+  cpInvestmentSubtitle?: string;
+  cpInvestmentFooter?: string;
+
+  // Encerramento
+  cpClosingTitle?: string;
+  cpClosingSubtitle?: string;
+  cpClosingCTA?: string;
 }
 
 export type AppState = 'list' | 'setup' | 'menu' | 'presentation' | 'calculator' | 'performance-dashboard' | 'pitch-editor' | 'laboratorio';

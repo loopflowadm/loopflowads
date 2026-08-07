@@ -850,7 +850,16 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
               {/* Main Title: COMO FUNCIONA NA PRÁTICA */}
               <div className={getAnimProps(0).className} style={getAnimProps(0).style}>
                 <h3 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-none tracking-tight uppercase">
-                  COMO <span className="text-yellow-400">FUNCIONA NA PRÁTICA</span>
+                  <EditableField
+                    value={localProspect.howItWorksTitlePrefix || 'COMO'}
+                    onChange={(v) => updateField('howItWorksTitlePrefix' as any, v)}
+                  />{' '}
+                  <span className="text-yellow-400">
+                    <EditableField
+                      value={localProspect.howItWorksTitle || 'FUNCIONA NA PRÁTICA'}
+                      onChange={(v) => updateField('howItWorksTitle' as any, v)}
+                    />
+                  </span>
                 </h3>
               </div>
 
@@ -918,24 +927,33 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
               {/* Bottom Deliverables Section: O QUE ESTÁ INCLUSO */}
               <div className={`space-y-3 ${getAnimProps(630).className || ''}`} style={getAnimProps(630).style}>
                 <h4 className="text-yellow-400 font-extrabold text-sm uppercase tracking-widest">
-                  O QUE ESTÁ INCLUSO
+                  <EditableField
+                    value={localProspect.deliverablesTag || 'O QUE ESTÁ INCLUSO'}
+                    onChange={(v) => updateField('deliverablesTag' as any, v)}
+                  />
                 </h4>
 
                 <div className="border border-zinc-800/90 bg-zinc-950/75 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-2xl">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
                     {[
-                      'Até 4 campanhas ativas otimizadas por mês',
-                      'Relatórios de performance quinzenais com dashboards ao vivo',
-                      '8 a 12 peças publicitárias e criativos por mês',
-                      'Canais inclusos: Meta Ads (Instagram & Facebook) • Google Ads',
-                      'Reuniões quinzenais de alinhamento e estratégia',
-                      'Criação e otimização contínua de páginas de conversão'
-                    ].map((bulletText, bIdx) => (
+                      { key: 'activeCampaignsCount', def: 'Até 4 campanhas ativas otimizadas por mês' },
+                      { key: 'reportFormat', def: 'Relatórios de performance quinzenais com dashboards ao vivo' },
+                      { key: 'creativesCount', def: '8 a 12 peças publicitárias e criativos por mês' },
+                      { key: 'includedChannels', def: 'Canais inclusos: Meta Ads (Instagram & Facebook) • Google Ads' },
+                      { key: 'meetingFrequency', def: 'Reuniões quinzenais de alinhamento e estratégia' },
+                      { key: 'landingPageIncluded', def: 'Criação e otimização contínua de páginas de conversão' }
+                    ].map((item, bIdx) => (
                       <div key={bIdx} className="flex items-start space-x-3 text-xs sm:text-sm font-semibold text-zinc-200">
                         <div className="w-5 h-5 rounded-full bg-yellow-400 text-black flex items-center justify-center shrink-0 mt-0.5 shadow-md font-black">
                           <Check className="w-3.5 h-3.5" strokeWidth={3} />
                         </div>
-                        <span className="leading-snug">{bulletText}</span>
+                        <span className="leading-snug">
+                          <EditableField
+                            value={(localProspect as any)[item.key] || item.def}
+                            onChange={(v) => updateField(item.key as any, v)}
+                            multiline
+                          />
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -1050,177 +1068,6 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                   multiline
                 />
               </span>
-            </div>
-          </div>
-        );
-      }
-
-      case 'proposal-how-it-works': {
-        return (
-          <div className="flex-1 flex flex-col justify-center space-y-8 select-none">
-            {/* Header */}
-            <div className={`text-center ${getAnimProps(0).className || ''}`} style={getAnimProps(0).style}>
-              <h3 className="text-3xl lg:text-5xl font-black text-white leading-tight tracking-tight uppercase mb-2">
-                <EditableField
-                  value={localProspect.howItWorksTitlePrefix || 'COMO'}
-                  onChange={(v) => updateField('howItWorksTitlePrefix' as any, v)}
-                />{' '}
-                <span className="text-yellow-400">
-                  <EditableField
-                    value={localProspect.howItWorksTitle || 'FUNCIONA NA PRÁTICA'}
-                    onChange={(v) => updateField('howItWorksTitle' as any, v)}
-                  />
-                </span>
-              </h3>
-            </div>
-
-            {/* Top Stepper 4-Step Process Timeline */}
-            <div className="relative py-2">
-              {/* Connecting Dotted Golden Line */}
-              <div className="hidden sm:block absolute top-[36px] left-[10%] right-[10%] h-0.5 border-t-2 border-dashed border-yellow-500/40 z-0" />
-
-              <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 relative z-10 text-center">
-                {[
-                  {
-                    keyTitle: 'step1Title',
-                    keyDesc: 'step1Desc',
-                    defaultTitle: 'DIAGNÓSTICO',
-                    defaultDesc: 'Entendemos o cenário e os dados disponíveis.',
-                    icon: <Search className="w-8 h-8 text-yellow-400" />,
-                    delay: 150
-                  },
-                  {
-                    keyTitle: 'step2Title',
-                    keyDesc: 'step2Desc',
-                    defaultTitle: 'ESTRUTURA',
-                    defaultDesc: 'Criamos a estrutura de funil e tracking.',
-                    icon: <Filter className="w-8 h-8 text-yellow-400" />,
-                    delay: 270
-                  },
-                  {
-                    keyTitle: 'step3Title',
-                    keyDesc: 'step3Desc',
-                    defaultTitle: 'OPERAÇÃO',
-                    defaultDesc: 'Executamos, otimizamos e testamos diariamente.',
-                    icon: <Cog className="w-8 h-8 text-yellow-400" />,
-                    delay: 390
-                  },
-                  {
-                    keyTitle: 'step4Title',
-                    keyDesc: 'step4Desc',
-                    defaultTitle: 'ESCALA',
-                    defaultDesc: 'Escalamos o que funciona com previsibilidade.',
-                    icon: <TrendingUp className="w-8 h-8 text-yellow-400" />,
-                    delay: 510
-                  }
-                ].map((step, idx) => (
-                  <div key={idx} className={`flex flex-col items-center group ${getAnimProps(step.delay).className || ''}`} style={getAnimProps(step.delay).style}>
-                    {/* Dark 3D Circular Capsule Button */}
-                    <div className="w-18 h-18 rounded-full bg-[#141414] border border-zinc-700/80 shadow-2xl flex items-center justify-center mb-3 group-hover:border-yellow-400/60 group-hover:scale-105 transition-all duration-300 ring-4 ring-black">
-                      {step.icon}
-                    </div>
-                    <h4 className="text-sm font-black text-white tracking-widest uppercase mb-1">
-                      <EditableField
-                        value={(localProspect as any)[step.keyTitle] || step.defaultTitle}
-                        onChange={(v) => updateField(step.keyTitle as any, v)}
-                      />
-                    </h4>
-                    <p className="text-xs text-zinc-400 font-medium leading-relaxed max-w-[200px]">
-                      <EditableField
-                        value={(localProspect as any)[step.keyDesc] || step.defaultDesc}
-                        onChange={(v) => updateField(step.keyDesc as any, v)}
-                        multiline
-                      />
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Bottom Deliverables Section */}
-            <div className={`space-y-2 ${getAnimProps(630).className || ''}`} style={getAnimProps(630).style}>
-              <span className="text-xs font-black text-yellow-400 uppercase tracking-widest block mb-2 text-center">
-                <EditableField
-                  value={localProspect.deliverablesTag || 'O QUE ESTÁ INCLUSO'}
-                  onChange={(v) => updateField('deliverablesTag' as any, v)}
-                />
-              </span>
-
-              <div className="bg-[#0b0b0b]/95 backdrop-blur-md border border-zinc-800/90 rounded-2xl p-6 shadow-2xl">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Item 1 */}
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle2 className="w-5 h-5 text-yellow-400 fill-yellow-400/20 shrink-0" />
-                    <p className="text-xs sm:text-sm font-semibold text-zinc-200">
-                      <EditableField
-                        value={localProspect.activeCampaignsCount || 'Até 4 campanhas ativas otimizadas por mês'}
-                        onChange={(v) => updateField('activeCampaignsCount', v)}
-                        multiline
-                      />
-                    </p>
-                  </div>
-
-                  {/* Item 2 */}
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle2 className="w-5 h-5 text-yellow-400 fill-yellow-400/20 shrink-0" />
-                    <p className="text-xs sm:text-sm font-semibold text-zinc-200">
-                      <EditableField
-                        value={localProspect.reportFormat || 'Relatórios de performance quinzenais com dashboards ao vivo'}
-                        onChange={(v) => updateField('reportFormat', v)}
-                        multiline
-                      />
-                    </p>
-                  </div>
-
-                  {/* Item 3 */}
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle2 className="w-5 h-5 text-yellow-400 fill-yellow-400/20 shrink-0" />
-                    <p className="text-xs sm:text-sm font-semibold text-zinc-200">
-                      <EditableField
-                        value={localProspect.creativesCount || '8 a 12 peças publicitárias e criativos por mês'}
-                        onChange={(v) => updateField('creativesCount', v)}
-                        multiline
-                      />
-                    </p>
-                  </div>
-
-                  {/* Item 4 */}
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle2 className="w-5 h-5 text-yellow-400 fill-yellow-400/20 shrink-0" />
-                    <p className="text-xs sm:text-sm font-semibold text-zinc-200">
-                      <EditableField
-                        value={localProspect.includedChannels || 'Canais inclusos: Meta Ads (Instagram & Facebook) + Google Ads'}
-                        onChange={(v) => updateField('includedChannels', v)}
-                        multiline
-                      />
-                    </p>
-                  </div>
-
-                  {/* Item 5 */}
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle2 className="w-5 h-5 text-yellow-400 fill-yellow-400/20 shrink-0" />
-                    <p className="text-xs sm:text-sm font-semibold text-zinc-200">
-                      <EditableField
-                        value={localProspect.meetingFrequency || 'Reuniões quinzenais de alinhamento e estratégia'}
-                        onChange={(v) => updateField('meetingFrequency', v)}
-                        multiline
-                      />
-                    </p>
-                  </div>
-
-                  {/* Item 6 */}
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle2 className="w-5 h-5 text-yellow-400 fill-yellow-400/20 shrink-0" />
-                    <p className="text-xs sm:text-sm font-semibold text-zinc-200">
-                      <EditableField
-                        value={localProspect.landingPageIncluded || 'Criação e otimização contínua de páginas de conversão'}
-                        onChange={(v) => updateField('landingPageIncluded', v)}
-                        multiline
-                      />
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         );
@@ -1876,7 +1723,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                             {icon}
                           </div>
                           <span className="text-base sm:text-lg font-black text-yellow-400 uppercase tracking-tight">
-                            {parts[0]}
+                            <EditableField value={parts[0]} onChange={(v) => updateSlideContentItem(i, `${v}|${parts[1] || ''}`)} />
                           </span>
                         </div>
                         <span className="text-xs font-black text-zinc-600 group-hover:text-yellow-400/40 transition-colors uppercase tracking-widest">
@@ -1893,7 +1740,14 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                                 key={tIdx}
                                 className="text-xs sm:text-sm font-extrabold text-zinc-200 bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-lg group-hover:border-zinc-700 transition-colors shadow-sm"
                               >
-                                {tag}
+                                <EditableField
+                                  value={tag}
+                                  onChange={(v) => {
+                                    const newDetails = [...details];
+                                    newDetails[tIdx] = v;
+                                    updateSlideContentItem(i, `${parts[0]}|${newDetails.join(' · ')}`);
+                                  }}
+                                />
                               </span>
                             ))}
                           </div>
@@ -1929,7 +1783,9 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                   const parts = step.includes('|') ? step.split('|') : [`FASE ${i + 1}`, step];
                   return (
                     <div key={i} className="bg-[#0e0e0e]/95 border border-zinc-800 p-6 rounded-2xl space-y-3 shadow-xl hover:border-yellow-400/50 transition-all">
-                      <span className="text-xs font-black text-yellow-400 uppercase tracking-widest">{parts[0]}</span>
+                      <span className="text-xs font-black text-yellow-400 uppercase tracking-widest">
+                        <EditableField value={parts[0]} onChange={(v) => updateSlideContentItem(i, `${v}|${parts[1]}`)} />
+                      </span>
                       <p className="text-xs sm:text-sm text-zinc-300 font-medium leading-relaxed">
                         <EditableField value={parts[1]} onChange={(v) => updateSlideContentItem(i, `${parts[0]}|${v}`)} multiline />
                       </p>
@@ -2092,7 +1948,15 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                         </div>
 
                         <p className="text-xs text-zinc-300 font-medium leading-relaxed italic border-t border-zinc-850 pt-4">
-                          {plan.desc}
+                          <EditableField
+                            value={(slide.content[idx] || '').split('|')[3] || plan.desc}
+                            onChange={(v) => {
+                              const parts = (slide.content[idx] || '').split('|');
+                              parts[3] = v;
+                              updateSlideContentItem(idx, parts.join('|'));
+                            }}
+                            multiline
+                          />
                         </p>
                       </div>
 
@@ -2202,7 +2066,7 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                           {icon}
                         </div>
                         <span className="text-base sm:text-lg font-black text-yellow-400 uppercase tracking-tight">
-                          {parts[0]}
+                          <EditableField value={parts[0]} onChange={(v) => updateSlideContentItem(i, `${v}|${parts[1]}`)} />
                         </span>
                       </div>
 
@@ -2252,7 +2116,9 @@ const Presentation: React.FC<PresentationProps> = ({ slides, prospect, onExit, o
                     <div key={i} className="bg-[#0e0e0e]/90 border border-zinc-800 p-5 rounded-2xl flex items-start space-x-4 shadow-xl">
                       <div className="w-8 h-8 rounded-xl bg-yellow-400 text-black font-black flex items-center justify-center shrink-0 text-sm">{i + 1}</div>
                       <div>
-                        <h4 className="text-sm font-extrabold text-yellow-400 uppercase tracking-wider">{parts[0]}</h4>
+                        <h4 className="text-sm font-extrabold text-yellow-400 uppercase tracking-wider">
+                          <EditableField value={parts[0]} onChange={(v) => updateSlideContentItem(i, `${v}|${parts[1]}`)} />
+                        </h4>
                         <p className="text-xs sm:text-sm font-medium text-zinc-200 mt-0.5">
                           <EditableField value={parts[1]} onChange={(v) => updateSlideContentItem(i, `${parts[0]}|${v}`)} multiline />
                         </p>
